@@ -100,6 +100,16 @@ env_per_label <- sites |>
     .groups = "drop"
   )
 
+# Rich label descriptions (from 18_label_descriptions.R) — top indicator
+# species, top abundant species, physiognomic profile. Optional: only join
+# if the file is present.
+desc_path <- "data/derived/label_descriptions.csv"
+descriptions <- if (file.exists(desc_path)) {
+  readr::read_csv(desc_path, show_col_types = FALSE)
+} else {
+  tibble::tibble(final_label = character())
+}
+
 label_summary <- fc$final_summary |>
   dplyr::transmute(
     final_label,
@@ -112,6 +122,7 @@ label_summary <- fc$final_summary |>
     top_features
   ) |>
   dplyr::left_join(env_per_label, by = "final_label") |>
+  dplyr::left_join(descriptions, by = "final_label") |>
   dplyr::arrange(dplyr::desc(recall), dplyr::desc(n_sites))
 
 readr::write_csv(label_summary, "data/derived/training_labels_summary.csv")
