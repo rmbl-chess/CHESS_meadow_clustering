@@ -2,3 +2,4 @@ campaign,raw_name,canonical_name,gbif_id,needs_review,note
 2018,RibMon,Ribes montigenum,10137876,FALSE,"2018 cover used RibMon; missing from 2018 species_list but present in 2025 as Ribes montigenum."
 2018,RubIda,Rubus idaeus,2993094,FALSE,"2018 cover used RubIda; missing from 2018 species_list but present in 2025 as Rubus idaeus."
 2018,engelmann,Picea engelmannii,5284917,FALSE,"2018 cover used lowercase ""engelmann""; species_list has ""Engelmann"" — case mismatch."
+2025,Melanthiaceae-Veratrum californicum,Veratrum tenuipetalum,,FALSE,"V. californicum and V. tenuipetalum are synonymized in the RMBL flora; the 2018 list explicitly notes *syn. = V. californicum var. californicum. Treat all Veratrum samples as V. tenuipetalum."
