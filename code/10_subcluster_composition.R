@@ -27,7 +27,7 @@ comp_species <- readRDS("data/derived/composition_species.rds")
 spec_feat    <- readRDS("data/derived/spectral_features.rds")$features
 env          <- readRDS("data/derived/environment.rds")
 
-primary_k       <- 15
+primary_k       <- 18
 primary_variant <- "variant_G"   # PCs 2,4-12 + DOY z-scaled (drop PC1 brightness + PC3 year-shift)
 k_col           <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
