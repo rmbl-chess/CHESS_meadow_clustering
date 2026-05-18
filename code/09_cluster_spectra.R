@@ -37,7 +37,7 @@ comp_species <- readRDS("data/derived/composition_species.rds")
 #                                      greenness (PC2) and beyond. Should
 #                                      cluster on shape variation rather
 #                                      than albedo.
-ks <- c(4, 5, 6, 7, 8, 10, 12, 15, 18, 22)
+ks <- c(4, 5, 6, 7, 8, 10, 12, 15, 18, 19, 20, 21, 22)
 
 run_clustering <- function(pc_idx, label) {
   pc_cols <- sprintf("spec_PC%02d", pc_idx)

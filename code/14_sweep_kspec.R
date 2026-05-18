@@ -22,7 +22,7 @@ sc        <- readRDS("data/derived/spectral_clusters.rds")
 env       <- readRDS("data/derived/environment.rds")
 spec_feat <- readRDS("data/derived/spectral_features.rds")$features
 
-variant <- sc$variant_F
+variant <- sc$variant_G
 ks <- sc$ks
 
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
