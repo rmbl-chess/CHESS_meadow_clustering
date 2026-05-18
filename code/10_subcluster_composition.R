@@ -1,40 +1,36 @@
 # 10_subcluster_composition.R — Architecture B step 2: within each spectral
-# cluster (variant A, k=8), sub-cluster sites by Hellinger composition.
-# Coherent spec clusters stay as single training classes; heterogeneous ones
-# split into 2-3 sub-types by Ward on Hellinger.
+# cluster (variant C, k=8 = drop PC1 brightness), sub-cluster sites by
+# Hellinger composition AT SPECIES LEVEL. Coherent spec clusters stay as
+# single training classes; heterogeneous ones split into 2-3 species-level
+# sub-types by Ward on species Hellinger.
 #
 # Note: sub-clusters within a spectral cluster share the same spectral
 # signature, so the downstream AOP classifier will not be able to fully
 # distinguish them. The final RF eval here is diagnostic — it shows exactly
-# which sub-classes are spectrally confused. The user can use that to decide
-# whether to drop the granular labels for the final map product.
+# which sub-classes are spectrally confused.
 #
 # Inputs:
-#   data/derived/spectral_clusters.rds   (variant_A$assignments at k=8)
-#   data/derived/composition_genus.rds   (Hellinger composition)
-#   data/derived/spectral_features.rds   (RF input features)
+#   data/derived/spectral_clusters.rds     (variant_C$assignments at k=8)
+#   data/derived/composition_species.rds   (species-level Hellinger)
+#   data/derived/spectral_features.rds     (RF input features)
 # Outputs:
-#   data/derived/final_clusters_B.rds    list with:
-#     assignments      (site_number, Year, spec_cluster, sub_cluster, final_label)
-#     summary          (per final_label: n, dominance, heterogeneity, recall, ...)
-#     final_eval       RF CV result on the final labels
-#     primary_k        8
-#     spec_summary     per-spec-cluster summary (parent-level)
+#   data/derived/final_clusters_B.rds      same structure as before, with
+#                                          species-level indicators.
 
 suppressPackageStartupMessages({
   library(tidyverse)
   library(ranger)
 })
 
-sc         <- readRDS("data/derived/spectral_clusters.rds")
-comp_genus <- readRDS("data/derived/composition_genus.rds")
-spec_feat  <- readRDS("data/derived/spectral_features.rds")$features
+sc           <- readRDS("data/derived/spectral_clusters.rds")
+comp_species <- readRDS("data/derived/composition_species.rds")
+spec_feat    <- readRDS("data/derived/spectral_features.rds")$features
 
 primary_k <- 8
 k_col     <- sprintf("k%02d", primary_k)
-spec_summary <- sc$variant_A$characterizations[[k_col]]
+spec_summary <- sc$variant_C$characterizations[[k_col]]
 
-asg <- sc$variant_A$assignments |>
+asg <- sc$variant_C$assignments |>
   dplyr::select(site_number, Year, spec_cluster = dplyr::all_of(k_col)) |>
   mutate(spec_cluster = sprintf("S%02d", spec_cluster))
 
@@ -46,15 +42,16 @@ spec_summary <- spec_summary |>
   mutate(spec_cluster = sprintf("S%02d", cluster),
          coherent = dominance >= dom_threshold | heterogeneity <= het_threshold)
 
-cat("\nCoherence classification:\n")
+cat("\nCoherence classification (Variant C, species-level):\n")
 print(spec_summary |> dplyr::select(spec_cluster, n_sites, dominance,
-                                    heterogeneity, indicator_genus, coherent),
+                                    heterogeneity, indicator_species,
+                                    indicator_genus, coherent),
       n = Inf, width = Inf)
 
 incoherent <- spec_summary$spec_cluster[!spec_summary$coherent]
 
-# --- Sub-cluster the incoherent ones by Hellinger Ward ----------------------
-hell <- comp_genus$hellinger
+# --- Sub-cluster the incoherent ones by species-level Hellinger Ward -------
+hell <- comp_species$hellinger
 nonsp_cover <- c("Other_Forb_cover", "Other_Graminoid_cover", "NPV_cover",
                  "Bare_cover", "Other_Moss_Lichen_cover",
                  "Other_Deciduous_Shrub_cover")
@@ -146,7 +143,7 @@ eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
 final_eval <- eval_rf_cv(joined$final_label, X)
 
 # --- Per-final-label characterization ---------------------------------------
-hell_long <- hell |>
+hell_long <- comp_species$hellinger |>
   pivot_longer(-c(site_number, Year), names_to = "feature", values_to = "h") |>
   mutate(feature = stringr::str_replace(feature, "_cover$", "")) |>
   inner_join(asg |> dplyr::select(site_number, Year, final_label),
@@ -160,7 +157,7 @@ per_label <- hell_long |>
   group_by(final_label) |>
   arrange(desc(mean_h), .by_group = TRUE) |>
   summarise(
-    indicator_genus = {
+    indicator_species = {
       sp <- feature[!feature %in% nonsp_short]
       if (length(sp) == 0) "(no named)" else sp[1]
     },
@@ -192,7 +189,8 @@ spec_roll <- asg |>
   summarise(n = dplyr::n(),
             n_sub = dplyr::n_distinct(stats::na.omit(sub_cluster)),
             .groups = "drop") |>
-  left_join(spec_summary |> dplyr::select(spec_cluster, indicator_genus,
+  left_join(spec_summary |> dplyr::select(spec_cluster, indicator_species,
+                                          indicator_genus,
                                           dominance, heterogeneity, coherent),
             by = "spec_cluster") |>
   arrange(desc(n))

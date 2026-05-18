@@ -21,7 +21,11 @@ suppressPackageStartupMessages({
 fc <- readRDS("data/derived/final_clusters_B.rds")
 sc <- readRDS("data/derived/spectral_clusters.rds")
 vs <- readRDS("data/derived/veg_spectra.rds")
-cg <- readRDS("data/derived/composition_genus.rds")
+cs <- readRDS("data/derived/composition_species.rds")
+
+# Active variant: matches the choice in 10 (variant C, drop PC1 brightness).
+variant_used <- "variant_C"
+spec_variant <- sc[[variant_used]]
 
 dir.create("output/figures", showWarnings = FALSE, recursive = TRUE)
 
@@ -35,11 +39,13 @@ spec_palette <- setNames(
   spec_levels
 )
 
-# Add interpretive labels for the legend.
+# Add interpretive labels for the legend — show species indicator now.
 spec_label_lookup <- fc$spec_summary |>
   dplyr::transmute(
     spec_cluster,
-    legend = sprintf("%s — %s (n=%d)", spec_cluster, indicator_genus, n_sites)
+    legend = sprintf("%s — %s (n=%d)", spec_cluster,
+                     stringr::str_replace_all(indicator_species, "_", " "),
+                     n_sites)
   ) |>
   tibble::deframe()
 
@@ -87,7 +93,8 @@ p1 <- ggplot(mean_per_spec,
                       name = "Spec cluster — indicator (n)") +
   labs(x = "Wavelength (nm)",
        y = "Brightness-normalized reflectance",
-       title = "Per-spec-cluster mean spectrum (Architecture B, k=8)",
+       title = sprintf("Per-spec-cluster mean spectrum (Architecture B, %s, k=8)",
+                       variant_used),
        subtitle = "Grey bands = water absorption regions (masked in feature engineering)") +
   theme_minimal(base_size = 11) +
   theme(legend.position = "right")
@@ -160,9 +167,11 @@ ggsave("output/figures/confusion_matrix.png", p3,
 # ============================================================================
 png("output/figures/dendrogram.png", width = 1400, height = 700, res = 110)
 op <- par(mar = c(2, 4, 3, 1))
-hc <- sc$variant_A$hclust
+hc <- spec_variant$hclust
 plot(hc, labels = FALSE,
-     main = "Spectral Ward hierarchical (PCs 1-12), cut at k=8",
+     main = sprintf("Spectral Ward hierarchical (%s), cut at k=8",
+                    paste(spec_variant$pc_cols[c(1, length(spec_variant$pc_cols))],
+                          collapse = "..")),
      sub = "", xlab = "", ylab = "Ward height")
 rect.hclust(hc, k = 8, border = spec_palette[spec_levels])
 par(op)
@@ -174,34 +183,35 @@ dev.off()
 nonsp_cover <- c("Other_Forb_cover", "Other_Graminoid_cover", "NPV_cover",
                  "Bare_cover", "Other_Moss_Lichen_cover",
                  "Other_Deciduous_Shrub_cover")
-hell_named <- cg$hellinger |> dplyr::select(-dplyr::any_of(nonsp_cover))
+hell_named <- cs$hellinger |> dplyr::select(-dplyr::any_of(nonsp_cover))
 hell_long_named <- hell_named |>
   pivot_longer(-c(site_number, Year), names_to = "feature", values_to = "h") |>
-  mutate(feature = stringr::str_replace(feature, "_cover$", "")) |>
+  mutate(feature = stringr::str_replace(feature, "_cover$", ""),
+         feature = stringr::str_replace_all(feature, "_", " ")) |>
   inner_join(fc$assignments |>
                dplyr::select(site_number, Year, spec_cluster, final_label),
              by = c("site_number", "Year"))
 
-top_genera_per_label <- hell_long_named |>
+top_species_per_label <- hell_long_named |>
   group_by(spec_cluster, final_label, feature) |>
   summarise(mean_h = mean(h), .groups = "drop") |>
   group_by(spec_cluster, final_label) |>
   slice_max(mean_h, n = 6, with_ties = FALSE) |>
   ungroup()
 
-p5 <- ggplot(top_genera_per_label,
+p5 <- ggplot(top_species_per_label,
              aes(x = reorder(feature, mean_h), y = mean_h, fill = spec_cluster)) +
   geom_col() +
   scale_fill_manual(values = spec_palette, guide = "none") +
   facet_wrap(~ final_label, scales = "free_y", ncol = 4) +
   coord_flip() +
-  labs(x = NULL, y = "Mean Hellinger value (named genera only)",
-       title = "Top 6 named genera per final label") +
+  labs(x = NULL, y = "Mean Hellinger value (named species only)",
+       title = "Top 6 named species per final label") +
   theme_minimal(base_size = 9) +
   theme(strip.text = element_text(face = "bold", size = 9),
         axis.text.y = element_text(size = 7))
 ggsave("output/figures/composition_profile.png", p5,
-       width = 13, height = 10, dpi = 150)
+       width = 14, height = 10, dpi = 150)
 
 cat("Wrote:\n")
 for (f in c("spectra_per_spec_cluster.png", "spectra_per_final_label.png",
