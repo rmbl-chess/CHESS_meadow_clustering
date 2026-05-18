@@ -25,12 +25,14 @@ suppressPackageStartupMessages({
 sc           <- readRDS("data/derived/spectral_clusters.rds")
 comp_species <- readRDS("data/derived/composition_species.rds")
 spec_feat    <- readRDS("data/derived/spectral_features.rds")$features
+env          <- readRDS("data/derived/environment.rds")
 
-primary_k <- 8
-k_col     <- sprintf("k%02d", primary_k)
-spec_summary <- sc$variant_C$characterizations[[k_col]]
+primary_k       <- 8
+primary_variant <- "variant_D"   # PCs 2-12 + z-scaled snow-free DOY
+k_col           <- sprintf("k%02d", primary_k)
+spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
 
-asg <- sc$variant_C$assignments |>
+asg <- sc[[primary_variant]]$assignments |>
   dplyr::select(site_number, Year, spec_cluster = dplyr::all_of(k_col)) |>
   mutate(spec_cluster = sprintf("S%02d", spec_cluster))
 
@@ -112,9 +114,13 @@ asg <- asg |>
 # --- RF eval on final labels (5-fold CV) ------------------------------------
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
                   names(spec_feat), value = TRUE)
+# At deployment, the classifier will have spectra (per pixel) + env rasters
+# (per pixel). Use both here so CV accuracy reflects the deployment setup.
 joined <- asg |>
-  inner_join(spec_feat, by = c("site_number", "Year"))
-X <- as.matrix(joined[, spec_cols])
+  inner_join(spec_feat, by = c("site_number", "Year")) |>
+  inner_join(env,       by = c("site_number", "Year"))
+rf_feature_cols <- c(spec_cols, "snow_free_doy")
+X <- as.matrix(joined[, rf_feature_cols])
 
 eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
   y <- factor(labels); n <- length(y)
