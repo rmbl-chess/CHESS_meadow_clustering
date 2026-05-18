@@ -64,9 +64,12 @@ variant_C <- run_clustering(2:12,        "PCs_2to12")
 #   E  PCs 1-12 z-scaled + snow_free_doy z-scaled. Every feature has sd=1,
 #      so PC1 (brightness, for local discrimination) and env (broad-scale
 #      ecology) both contribute equally alongside greenness, etc.
+#   F  PCs 2-12 z-scaled + snow_free_doy z-scaled. Like E but drops PC1
+#      (brightness), so equal-weight equal-scale but brightness-free.
 env_path <- "data/derived/environment.rds"
 variant_D <- NULL
 variant_E <- NULL
+variant_F <- NULL
 if (file.exists(env_path)) {
   env <- readRDS(env_path)
   feat_env <- spec_feat |>
@@ -107,8 +110,26 @@ if (file.exists(env_path)) {
   )
   cat(sprintf("Variant E: %d sites, %d features (all z-scaled, equal weight).\n",
               nrow(variant_E$assignments), ncol(mat_E)))
+
+  # --- Variant F: equal-weight, drop PC1 (z-scale PCs 2-12 + DOY) ----------
+  pc_cols_F <- sprintf("spec_PC%02d", 2:12)
+  mat_F <- cbind(scale(as.matrix(feat_env[, pc_cols_F])),
+                 snow_free_doy_z = as.numeric(scale(feat_env$snow_free_doy)))
+  d_F  <- dist(mat_F, method = "euclidean")
+  hc_F <- hclust(d_F, method = "ward.D2")
+  cuts_F <- as_tibble(setNames(
+    lapply(ks, function(k) cutree(hc_F, k = k)),
+    sprintf("k%02d", ks)
+  ))
+  variant_F <- list(
+    hclust = hc_F, dist = d_F,
+    assignments = bind_cols(feat_env |> dplyr::select(site_number, Year), cuts_F),
+    pc_cols = c(pc_cols_F, "snow_free_doy_z"), label = "PCs_2to12_z+SF_z"
+  )
+  cat(sprintf("Variant F: %d sites, %d features (PCs 2-12 z-scaled + DOY z-scaled).\n",
+              nrow(variant_F$assignments), ncol(mat_F)))
 } else {
-  cat("Variants D, E skipped: data/derived/environment.rds not found.\n")
+  cat("Variants D, E, F skipped: data/derived/environment.rds not found.\n")
 }
 
 # --- Per-cluster characterization helper -----------------------------------
@@ -215,6 +236,7 @@ char_B <- characterize_variant(variant_B)
 char_C <- characterize_variant(variant_C)
 char_D <- if (!is.null(variant_D)) characterize_variant(variant_D) else NULL
 char_E <- if (!is.null(variant_E)) characterize_variant(variant_E) else NULL
+char_F <- if (!is.null(variant_F)) characterize_variant(variant_F) else NULL
 
 # Variance breakdown for context.
 spec_meta <- readRDS("data/derived/spectral_features.rds")
@@ -238,6 +260,10 @@ for (k in ks) {
   if (!is.null(char_E)) {
     cat("\n[variant E: PCs 1-12 + DOY, all z-scaled (equal weight per feature)]\n")
     print(char_E[[sprintf("k%02d", k)]], n = Inf, width = Inf)
+  }
+  if (!is.null(char_F)) {
+    cat("\n[variant F: PCs 2-12 + DOY, all z-scaled (drop PC1, equal weight)]\n")
+    print(char_F[[sprintf("k%02d", k)]], n = Inf, width = Inf)
   }
   cat("\n[variant B: PCs 3-12, drop brightness AND greenness]\n")
   print(char_B[[sprintf("k%02d", k)]], n = Inf, width = Inf)
@@ -264,5 +290,10 @@ if (!is.null(variant_E)) {
   out$variant_E <- list(hclust = variant_E$hclust, dist = variant_E$dist,
                         assignments = variant_E$assignments,
                         characterizations = char_E, pc_cols = variant_E$pc_cols)
+}
+if (!is.null(variant_F)) {
+  out$variant_F <- list(hclust = variant_F$hclust, dist = variant_F$dist,
+                        assignments = variant_F$assignments,
+                        characterizations = char_F, pc_cols = variant_F$pc_cols)
 }
 saveRDS(out, "data/derived/spectral_clusters.rds")

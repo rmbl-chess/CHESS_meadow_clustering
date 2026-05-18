@@ -23,8 +23,8 @@ sc <- readRDS("data/derived/spectral_clusters.rds")
 vs <- readRDS("data/derived/veg_spectra.rds")
 cs <- readRDS("data/derived/composition_species.rds")
 
-# Active variant: matches the choice in 10 (variant E, equal-weight z-scaled).
-variant_used <- "variant_E"
+# Active variant: matches the choice in 10 (variant F, PCs 2-12 + DOY, all z-scaled).
+variant_used <- "variant_F"
 spec_variant <- sc[[variant_used]]
 
 dir.create("output/figures", showWarnings = FALSE, recursive = TRUE)

@@ -1,5 +1,5 @@
 # 10_subcluster_composition.R — Architecture B step 2: within each spectral
-# cluster (variant C, k=8 = drop PC1 brightness), sub-cluster sites by
+# cluster (variant F, k=12 = PCs 2-12 z-scaled + DOY z-scaled), sub-cluster sites by
 # Hellinger composition AT SPECIES LEVEL. Coherent spec clusters stay as
 # single training classes; heterogeneous ones split into 2-3 species-level
 # sub-types by Ward on species Hellinger.
@@ -27,8 +27,8 @@ comp_species <- readRDS("data/derived/composition_species.rds")
 spec_feat    <- readRDS("data/derived/spectral_features.rds")$features
 env          <- readRDS("data/derived/environment.rds")
 
-primary_k       <- 12
-primary_variant <- "variant_E"   # PCs 1-12 + snow_free_doy, all z-scaled
+primary_k       <- 15
+primary_variant <- "variant_F"   # PCs 2-12 + snow_free_doy, all z-scaled (drop PC1 brightness)
 k_col           <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
 
@@ -44,7 +44,7 @@ spec_summary <- spec_summary |>
   mutate(spec_cluster = sprintf("S%02d", cluster),
          coherent = dominance >= dom_threshold | heterogeneity <= het_threshold)
 
-cat("\nCoherence classification (Variant C, species-level):\n")
+cat("\nCoherence classification (Variant F, species-level):\n")
 print(spec_summary |> dplyr::select(spec_cluster, n_sites, dominance,
                                     heterogeneity, indicator_species,
                                     indicator_genus, coherent),

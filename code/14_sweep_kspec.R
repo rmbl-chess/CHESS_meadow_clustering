@@ -1,4 +1,4 @@
-# 14_sweep_kspec.R — sweep k_spec for variant E and report per-k metrics that
+# 14_sweep_kspec.R — sweep k_spec for variant F and report per-k metrics that
 # tell us where bimodality on snow-free DOY disappears:
 #   - n_clusters
 #   - Eta²(snow_free_doy)                   higher = more env-coherent
@@ -6,7 +6,7 @@
 #   - mean within-cluster IQR of DOY (days)  lower = tighter env band
 #   - 5-fold CV RF accuracy on PC + env      higher = more mappable
 #
-# Uses variant_E (PC1-12 z + DOY z), characterizations already computed in 09.
+# Uses variant_F (PCs 2-12 z + DOY z), characterizations already computed in 09.
 # Adds RF eval here so we can see accuracy at every k.
 
 suppressPackageStartupMessages({
@@ -22,7 +22,7 @@ sc        <- readRDS("data/derived/spectral_clusters.rds")
 env       <- readRDS("data/derived/environment.rds")
 spec_feat <- readRDS("data/derived/spectral_features.rds")$features
 
-variant <- sc$variant_E
+variant <- sc$variant_F
 ks <- sc$ks
 
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
@@ -88,7 +88,7 @@ results <- purrr::map_dfr(ks, function(k) {
   )
 })
 
-cat("\n=== Variant E k_spec sweep on snow-free DOY ===\n")
+cat("\n=== Variant F k_spec sweep on snow-free DOY ===\n")
 cat("(higher eta_sq, lower mean_within_*, lower max_dip, more clusters non-bimodal\n")
 cat(" is the direction we want; bimodal cutoff is Hartigan dip > 0.08)\n\n")
 print(results |> dplyr::mutate(dplyr::across(where(is.numeric), ~ round(.x, 3))),
