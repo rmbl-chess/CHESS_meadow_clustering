@@ -110,6 +110,18 @@ descriptions <- if (file.exists(desc_path)) {
   tibble::tibble(final_label = character())
 }
 
+# Curated narrative labels (from 19_label_narratives.R + manual editing in
+# data/small_reference/label_community_names.csv). Optional.
+narr_path <- "data/small_reference/label_community_names.csv"
+narratives <- if (file.exists(narr_path)) {
+  readr::read_csv(narr_path, show_col_types = FALSE) |>
+    dplyr::select(final_label,
+                  narrative_draft,
+                  dplyr::any_of(c("narrative_curated", "notes")))
+} else {
+  tibble::tibble(final_label = character())
+}
+
 label_summary <- fc$final_summary |>
   dplyr::transmute(
     final_label,
@@ -123,6 +135,7 @@ label_summary <- fc$final_summary |>
   ) |>
   dplyr::left_join(env_per_label, by = "final_label") |>
   dplyr::left_join(descriptions, by = "final_label") |>
+  dplyr::left_join(narratives,   by = "final_label") |>
   dplyr::arrange(dplyr::desc(recall), dplyr::desc(n_sites))
 
 readr::write_csv(label_summary, "data/derived/training_labels_summary.csv")
