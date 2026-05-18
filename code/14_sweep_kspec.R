@@ -27,6 +27,8 @@ ks <- sc$ks
 
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
                   names(spec_feat), value = TRUE)
+# Match 10's classifier: drop year-shift features PC3 and PRI.
+spec_cols <- setdiff(spec_cols, c("spec_PC03", "pri"))
 joined <- variant$assignments |>
   dplyr::inner_join(spec_feat, by = c("site_number", "Year")) |>
   dplyr::inner_join(env,       by = c("site_number", "Year"))
@@ -51,7 +53,12 @@ eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
     preds[te] <- predict(fit, data.frame(X[te, , drop = FALSE]))$predictions
   }
   ok <- !is.na(preds)
-  mean(as.character(y[ok]) == as.character(preds[ok]))
+  truth <- y[ok]; pred <- preds[ok]
+  cm <- table(truth = truth, pred = pred)
+  list(
+    accuracy   = mean(truth == pred),
+    recall     = diag(cm) / rowSums(cm)
+  )
 }
 
 eta_sq <- function(x, g) {
@@ -65,7 +72,6 @@ results <- purrr::map_dfr(ks, function(k) {
   labels <- joined[[k_col]]
   doy    <- joined$snow_free_doy
 
-  # per-cluster summaries
   per_cl <- tibble::tibble(cluster = labels, doy = doy) |>
     group_by(cluster) |>
     summarise(
@@ -77,14 +83,21 @@ results <- purrr::map_dfr(ks, function(k) {
              else NA_real_,
       .groups = "drop"
     )
+
+  rf  <- eval_rf_cv(labels, X)
+  rec <- as.numeric(rf$recall)
+
   tibble::tibble(
     k                  = k,
     eta_sq_doy         = eta_sq(doy, labels),
-    mean_within_sd     = mean(per_cl$sd,  na.rm = TRUE),
     mean_within_iqr    = mean(per_cl$iqr, na.rm = TRUE),
-    max_dip_stat       = max(per_cl$dip,  na.rm = TRUE),
-    n_bimodal_clusters = sum(per_cl$dip > 0.08, na.rm = TRUE),
-    cv_accuracy        = eval_rf_cv(labels, X)
+    n_bimodal          = sum(per_cl$dip > 0.08, na.rm = TRUE),
+    cv_accuracy        = rf$accuracy,
+    n_strong           = sum(rec >= 0.80,        na.rm = TRUE),
+    n_marginal         = sum(rec >= 0.50 & rec < 0.80, na.rm = TRUE),
+    n_weak             = sum(rec <  0.50,        na.rm = TRUE),
+    n_tiny             = sum(per_cl$n  < 6),
+    smallest_cluster   = min(per_cl$n)
   )
 })
 

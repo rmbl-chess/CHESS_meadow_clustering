@@ -27,9 +27,16 @@ comp_species <- readRDS("data/derived/composition_species.rds")
 spec_feat    <- readRDS("data/derived/spectral_features.rds")$features
 env          <- readRDS("data/derived/environment.rds")
 
-primary_k       <- 20
-primary_variant <- "variant_G"   # PCs 2,4-12 + DOY z-scaled (drop PC1 brightness + PC3 year-shift)
-k_col           <- sprintf("k%02d", primary_k)
+primary_k        <- 26
+primary_variant  <- "variant_G"  # PCs 2,4-12 + DOY z-scaled (drop PC1 brightness + PC3 year-shift)
+# do_subclustering = FALSE means spec_cluster is the training label and the
+# sub_cluster column is kept only as ecological metadata. Sub-classes within a
+# parent share the parent's spectral signature, so the AOP classifier can't
+# tell them apart -- forcing them apart just creates classes with recall ~0.
+# Setting this to TRUE restores the old behavior of splitting heterogeneous
+# parents into sub-labels.
+do_subclustering <- FALSE
+k_col            <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
 
 asg <- sc[[primary_variant]]$assignments |>
@@ -107,9 +114,15 @@ asg <- asg |>
     )
   ) |>
   dplyr::select(-modal_sub) |>
-  mutate(final_label = if_else(is.na(sub_cluster),
-                               spec_cluster,
-                               paste0(spec_cluster, ".", sub_cluster)))
+  mutate(final_label = if (do_subclustering) {
+    if_else(is.na(sub_cluster),
+            spec_cluster,
+            paste0(spec_cluster, ".", sub_cluster))
+  } else {
+    # No sub-clustering: spec_cluster IS the training label. sub_cluster
+    # remains in the assignments tibble as ecological metadata.
+    spec_cluster
+  })
 
 # --- RF eval on final labels (5-fold CV) ------------------------------------
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
