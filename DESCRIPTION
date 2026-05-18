@@ -1,0 +1,23 @@
+Package: CHESS.meadow.clustering
+Title: Cluster Species + NEON AOP Spectra Into Map Training Samples
+Version: 0.0.0.9000
+Authors@R:
+    person("Ian", "Breckheimer", email = "ibreckhe@gmail.com", role = c("aut", "cre"))
+Description: Not a real package. This DESCRIPTION exists solely to drive renv
+    dependency tracking for the CHESS_meadow_clustering analysis. The pipeline
+    joins ESS-DIVE field vegetation data with NEON AOP spectra and clusters the
+    combined feature space to seed training samples for a meadow map classifier.
+License: file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Imports:
+    terra,
+    sf,
+    stars,
+    rstac,
+    tidyverse,
+    cluster,
+    rSDP
+Remotes:
+    RMBL-SDP/rSDP

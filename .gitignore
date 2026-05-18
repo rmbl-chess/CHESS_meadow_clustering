@@ -1,0 +1,105 @@
+# Generic
+.DS_Store
+*.swp
+*.bak
+*~
+.idea/
+.vscode/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.python-version
+.venv/
+venv/
+env/
+build/
+dist/
+site/         # mkdocs build output
+_version.py   # hatch-vcs
+
+# uv
+.uv/
+uv.lock        # uncomment to gitignore lockfile in apps; commit it for libraries
+
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+renv/library/
+renv/local/
+renv/lock/
+renv/python/
+renv/staging/
+docs/         # pkgdown output (keep README.Rmd / vignettes; ignore built site)
+inst/doc/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Geospatial — derived / large outputs (keep canonical inputs separately)
+*.tif.aux.xml
+*.tif.ovr
+*.tif.msk
+*.gpkg-shm
+*.gpkg-wal
+*.shp.iddx
+*.gdb/
+*.kmz~
+*.zarr/        # comment out if zarr stores are tracked
+*.tif.tmp
+
+# Common output dirs (override per project — many of these are intentional)
+output/
+outputs/
+results/
+figs/
+figures/
+scratch/
+tmp/
+temp/
+
+# Big data — explicitly ignore; check in canonical inputs separately if needed
+data/raw/
+data/derived/
+data/cache/
+data/*.parquet
+data/*.feather
+*.h5
+*.nc           # NetCDF — uncomment selectively if you commit small reference files
+
+# Cloud / infra
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+.envrc
+.env
+.env.*
+!.env.example
+
+# Docker
+*.dockerignore.bak
+
+# Frontend (when applicable)
+node_modules/
+.parcel-cache/
+.next/
+.nuxt/
+.vercel/
+.cache/

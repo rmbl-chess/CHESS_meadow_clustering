@@ -1,0 +1,11 @@
+^renv$
+^renv\.lock$
+^\.Rproj\.user$
+^code$
+^data$
+^output$
+^docs$
+^\.github$
+^\.claude$
+^README\.md$
+^CLAUDE\.md$
