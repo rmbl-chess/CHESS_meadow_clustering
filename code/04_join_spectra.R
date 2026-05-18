@@ -51,17 +51,24 @@ wavelengths <- wl_2025 |>
     fwhm_nm              = fwhm * 1000
   )
 
-# Aggregate spectra to one mean reflectance vector per (site_number, Year).
+# Aggregate spectra to one mean *brightness-normalized* reflectance vector per
+# (site_number, Year). Order matters: averaging raw spectra mixes pixels with
+# different illumination, blurring the shape; brightness-normalize each pixel
+# (L2 unit-vector) first, then mean.
 #
-# `shade == 1` flags sunlit pixels in this extraction (the column polarity is
-# inverted relative to its name). Verified empirically: 2025 meadow pixels are
-# 1935:14 sunlit-vs-shaded; 2018 (all meadow) is 13524:2624 same direction.
-# Default is to keep sunlit pixels; flip `keep_sunlit = FALSE` to retain all.
+# `shade == 1` flags sunlit pixels (the column polarity is inverted relative
+# to its name; verified empirically: 2025 meadow pixels are 1935:14 sunlit:
+# shaded; 2018 (all meadow) is 13524:2624 same direction). Default keeps
+# sunlit pixels; flip `keep_sunlit = FALSE` to retain all.
 agg_spectra <- function(df, year, keep_sunlit = TRUE) {
   rfl_cols <- grep("^rfl_band_", names(df), value = TRUE)
   if (keep_sunlit && "shade" %in% names(df)) {
     df <- dplyr::filter(df, shade == 1 | is.na(shade))
   }
+  spec_mat <- as.matrix(df[, rfl_cols])
+  norms <- sqrt(rowSums(spec_mat^2, na.rm = TRUE))
+  norms[norms == 0] <- NA_real_
+  df[, rfl_cols] <- spec_mat / norms
   df |>
     dplyr::group_by(site_number) |>
     dplyr::summarise(dplyr::across(dplyr::all_of(rfl_cols),
