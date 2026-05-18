@@ -18,10 +18,26 @@ veg_2018  <- readRDS("data/derived/veg_2018.rds")
 veg_2025  <- readRDS("data/derived/veg_2025.rds")
 crosswalk <- readr::read_csv("data/derived/taxonomy_crosswalk.csv",
                              show_col_types = FALSE)
+woody     <- readr::read_csv("data/small_reference/woody_taxa.csv",
+                             show_col_types = FALSE)
 
 cw <- crosswalk |>
   dplyr::filter(!is.na(canonical_name)) |>
   dplyr::select(campaign, raw_name, canonical_name)
+
+# Woody-pure-pixel filter: 2018 records cover up to 100% (often a single woody
+# crown), 2025 does not. Drop 2018 records where (cover == 100) AND the
+# canonical name matches a woody entry — either genus alone (species blank in
+# the woody list) or genus+species (e.g., Artemisia tridentata only). Woody
+# records at lower cover are kept.
+is_woody <- function(canonical_names, woody_tbl) {
+  parts <- stringr::str_split_fixed(canonical_names, " ", 2)
+  g <- parts[, 1]; s <- parts[, 2]
+  genus_only <- woody_tbl |> dplyr::filter(is.na(species)) |> dplyr::pull(genus)
+  genus_sp   <- woody_tbl |> dplyr::filter(!is.na(species)) |>
+                  dplyr::transmute(key = paste(genus, species)) |> dplyr::pull(key)
+  g %in% genus_only | paste(g, s) %in% genus_sp
+}
 
 # --- 2018: long-form cover keyed by site_number and CoverCode --------------
 long_2018 <- veg_2018$cover |>
@@ -33,6 +49,12 @@ long_2018 <- veg_2018$cover |>
                       dplyr::select(raw_name, canonical_name),
                     by = "raw_name") |>
   dplyr::mutate(Year = 2018L)
+
+n_before <- nrow(long_2018)
+long_2018 <- long_2018 |>
+  dplyr::filter(!(cover == 100 & is_woody(canonical_name, woody)))
+message(sprintf("Dropped %d 2018 woody-pure-pixel records (cover==100 & woody).",
+                n_before - nrow(long_2018)))
 
 # --- 2025: filter to named species, then join on Cover_Class_Name ----------
 long_2025 <- veg_2025$cover |>
