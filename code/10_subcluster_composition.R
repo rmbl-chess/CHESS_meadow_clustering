@@ -28,7 +28,7 @@ spec_feat    <- readRDS("data/derived/spectral_features.rds")$features
 env          <- readRDS("data/derived/environment.rds")
 
 primary_k       <- 15
-primary_variant <- "variant_F"   # PCs 2-12 + snow_free_doy, all z-scaled (drop PC1 brightness)
+primary_variant <- "variant_G"   # PCs 2,4-12 + DOY z-scaled (drop PC1 brightness + PC3 year-shift)
 k_col           <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
 
@@ -114,6 +114,11 @@ asg <- asg |>
 # --- RF eval on final labels (5-fold CV) ------------------------------------
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
                   names(spec_feat), value = TRUE)
+# Drop the two features that 17_year_effect_pcs.R flagged as carrying the
+# strongest year-vs-composition shift: spec_PC03 (effect = 1.60 SD) and
+# pri (effect = 1.26 SD). Keeping them risks the classifier learning year
+# rather than vegetation type.
+spec_cols <- setdiff(spec_cols, c("spec_PC03", "pri"))
 # At deployment, the classifier will have spectra (per pixel) + env rasters
 # (per pixel). Use both here so CV accuracy reflects the deployment setup.
 joined <- asg |>
