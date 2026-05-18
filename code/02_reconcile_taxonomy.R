@@ -57,13 +57,18 @@ crosswalk <- dplyr::bind_rows(cw_2018, cw_2025)
 crosswalk <- crosswalk |>
   dplyr::mutate(canonical_name = stringr::str_squish(canonical_name))
 
-# Optional manual override: a committed CSV with the same columns; rows here
-# replace auto-derived canonical_name for any matching (campaign, raw_name).
+# Optional manual override: a committed CSV with the same columns. Existing
+# (campaign, raw_name) rows are updated; new rows are inserted (use this for
+# 2018 cover codes that were missing or mistyped in the 2018 species_list).
 manual_path <- "data/small_reference/taxonomy_crosswalk_manual_edits.csv"
 if (file.exists(manual_path)) {
-  manual <- readr::read_csv(manual_path, show_col_types = FALSE)
+  manual <- readr::read_csv(
+    manual_path,
+    col_types = readr::cols(campaign = readr::col_character(),
+                            gbif_id  = readr::col_integer())
+  )
   crosswalk <- crosswalk |>
-    dplyr::rows_update(manual, by = c("campaign", "raw_name"))
+    dplyr::rows_upsert(manual, by = c("campaign", "raw_name"))
 }
 
 # Flag species recorded in only one campaign — useful for the user to decide

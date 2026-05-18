@@ -1,0 +1,14 @@
+campaign,raw_name,unified_category,note
+2018,OF,Other_Forb,
+2018,OG,Other_Graminoid,
+2018,Moss,Other_Moss_Lichen,
+2018,Litter,NPV,Litter -- non-photosynthetic vegetation
+2018,Bare,Bare,Bare soil (2018 does not split dirt vs rock)
+2025,Other Forb,Other_Forb,
+2025,Other Graminoid,Other_Graminoid,
+2025,Other Moss/Lichen,Other_Moss_Lichen,
+2025,Non-Photosynthetic Vegetation,NPV,Litter + standing dead
+2025,Nonvegetated Dirt,Bare,Lumped with Rock into single Bare column per user decision
+2025,Nonvegetated Rock,Bare,Lumped with Dirt into single Bare column per user decision
+2025,Other Deciduous Shrub,Other_Deciduous_Shrub,2025-only; 2018 records shrubs individually as Salix/Ribes/etc.
+2025,Other Succulent,Other_Forb,Reassigned to Other_Forb per user decision (n=1, 5% cover)
