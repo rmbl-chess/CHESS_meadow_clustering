@@ -57,34 +57,58 @@ variant_A <- run_clustering(seq_len(12), "PCs_1to12")
 variant_B <- run_clustering(3:12,        "PCs_3to12")
 variant_C <- run_clustering(2:12,        "PCs_2to12")
 
-# Variant D: PCs 2-12 + z-scaled snow-free DOY (equal weight to env feature).
-# Requires 12_extract_environment.R to have run.
+# Variants D and E both add snow-free DOY but weight it differently:
+#   D  PCs 2-12 (raw) + snow_free_doy z-scaled. Env at sd=1 dominates the
+#      raw PCs (PC1 sd=0.19, PC2 sd=0.035), giving eta²~0.98 on env.
+#      Useful as the env-stratified baseline.
+#   E  PCs 1-12 z-scaled + snow_free_doy z-scaled. Every feature has sd=1,
+#      so PC1 (brightness, for local discrimination) and env (broad-scale
+#      ecology) both contribute equally alongside greenness, etc.
 env_path <- "data/derived/environment.rds"
 variant_D <- NULL
+variant_E <- NULL
 if (file.exists(env_path)) {
   env <- readRDS(env_path)
   feat_env <- spec_feat |>
     dplyr::inner_join(env, by = c("site_number", "Year"))
-  pc_cols_D <- sprintf("spec_PC%02d", 2:12)
-  mat_D_pcs <- as.matrix(feat_env[, pc_cols_D])  # raw PC scores (PCA scales)
-  mat_D_env <- as.numeric(scale(feat_env$snow_free_doy))  # z-scaled to sd=1
-  mat_D <- cbind(mat_D_pcs, snow_free_doy_z = mat_D_env)
 
+  # --- Variant D: env-dominated (env z-scaled, PCs raw) -------------------
+  pc_cols_D <- sprintf("spec_PC%02d", 2:12)
+  mat_D <- cbind(as.matrix(feat_env[, pc_cols_D]),
+                 snow_free_doy_z = as.numeric(scale(feat_env$snow_free_doy)))
   d_D  <- dist(mat_D, method = "euclidean")
   hc_D <- hclust(d_D, method = "ward.D2")
   cuts_D <- as_tibble(setNames(
     lapply(ks, function(k) cutree(hc_D, k = k)),
     sprintf("k%02d", ks)
   ))
-  assignments_D <- bind_cols(feat_env |> dplyr::select(site_number, Year), cuts_D)
   variant_D <- list(
-    hclust = hc_D, dist = d_D, assignments = assignments_D,
-    pc_cols = c(pc_cols_D, "snow_free_doy_z"), label = "PCs_2to12+SF"
+    hclust = hc_D, dist = d_D,
+    assignments = bind_cols(feat_env |> dplyr::select(site_number, Year), cuts_D),
+    pc_cols = c(pc_cols_D, "snow_free_doy_z"), label = "PCs_2to12+SF_raw"
   )
-  cat(sprintf("Variant D: %d sites, %d features (PC2-12 + snow_free_doy_z).\n",
-              nrow(assignments_D), ncol(mat_D)))
+  cat(sprintf("Variant D: %d sites, %d features (PC2-12 raw + DOY z-scaled).\n",
+              nrow(variant_D$assignments), ncol(mat_D)))
+
+  # --- Variant E: equal-weight everything (z-scale all features) ----------
+  pc_cols_E <- sprintf("spec_PC%02d", 1:12)
+  mat_E <- cbind(scale(as.matrix(feat_env[, pc_cols_E])),
+                 snow_free_doy_z = as.numeric(scale(feat_env$snow_free_doy)))
+  d_E  <- dist(mat_E, method = "euclidean")
+  hc_E <- hclust(d_E, method = "ward.D2")
+  cuts_E <- as_tibble(setNames(
+    lapply(ks, function(k) cutree(hc_E, k = k)),
+    sprintf("k%02d", ks)
+  ))
+  variant_E <- list(
+    hclust = hc_E, dist = d_E,
+    assignments = bind_cols(feat_env |> dplyr::select(site_number, Year), cuts_E),
+    pc_cols = c(pc_cols_E, "snow_free_doy_z"), label = "PCs_1to12_z+SF_z"
+  )
+  cat(sprintf("Variant E: %d sites, %d features (all z-scaled, equal weight).\n",
+              nrow(variant_E$assignments), ncol(mat_E)))
 } else {
-  cat("Variant D skipped: data/derived/environment.rds not found.\n")
+  cat("Variants D, E skipped: data/derived/environment.rds not found.\n")
 }
 
 # --- Per-cluster characterization helper -----------------------------------
@@ -190,6 +214,7 @@ char_A <- characterize_variant(variant_A)
 char_B <- characterize_variant(variant_B)
 char_C <- characterize_variant(variant_C)
 char_D <- if (!is.null(variant_D)) characterize_variant(variant_D) else NULL
+char_E <- if (!is.null(variant_E)) characterize_variant(variant_E) else NULL
 
 # Variance breakdown for context.
 spec_meta <- readRDS("data/derived/spectral_features.rds")
@@ -207,8 +232,12 @@ for (k in ks) {
   cat("\n[variant C: PCs 2-12, drop brightness only]\n")
   print(char_C[[sprintf("k%02d", k)]], n = Inf, width = Inf)
   if (!is.null(char_D)) {
-    cat("\n[variant D: PCs 2-12 + snow_free_doy (z-scaled, equal weight)]\n")
+    cat("\n[variant D: PCs 2-12 raw + DOY z-scaled (env-dominant)]\n")
     print(char_D[[sprintf("k%02d", k)]], n = Inf, width = Inf)
+  }
+  if (!is.null(char_E)) {
+    cat("\n[variant E: PCs 1-12 + DOY, all z-scaled (equal weight per feature)]\n")
+    print(char_E[[sprintf("k%02d", k)]], n = Inf, width = Inf)
   }
   cat("\n[variant B: PCs 3-12, drop brightness AND greenness]\n")
   print(char_B[[sprintf("k%02d", k)]], n = Inf, width = Inf)
@@ -230,5 +259,10 @@ if (!is.null(variant_D)) {
   out$variant_D <- list(hclust = variant_D$hclust, dist = variant_D$dist,
                         assignments = variant_D$assignments,
                         characterizations = char_D, pc_cols = variant_D$pc_cols)
+}
+if (!is.null(variant_E)) {
+  out$variant_E <- list(hclust = variant_E$hclust, dist = variant_E$dist,
+                        assignments = variant_E$assignments,
+                        characterizations = char_E, pc_cols = variant_E$pc_cols)
 }
 saveRDS(out, "data/derived/spectral_clusters.rds")
