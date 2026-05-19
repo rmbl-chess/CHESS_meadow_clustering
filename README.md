@@ -31,8 +31,7 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Composition sub-clusters | `11_subcluster_composition.R` | within-spectral subclusters by composition |
 | Environment join | `13_extract_environment.R` | snow-free DOY per site |
 | Training-sample export | `17_export_training_samples.R` | `training_samples_*.{csv,gpkg}` |
-| Class descriptions | `19_label_descriptions.R` | IndVal + abundant species tables |
-| Narrative drafts | `20_label_narratives.R` | `data/small_reference/label_community_names.csv` |
+| Class descriptions + narratives | `19_label_descriptions.R` | `data/derived/label_descriptions.csv` (IndVal + abundant species + physiognomy) AND `data/small_reference/label_community_names.csv` (auto-drafted starter narratives; preserves user-curated rows on re-run) |
 | **Target pixel selection** | `23_target_pixels.R` | `target_pixels.{csv,gpkg}` (6,000 stratified meadow pixels) |
 | Classifier-feature export | `24_export_classifier_model.R` | `aop_classifier_*.{csv,json}` — R → Python handoff |
 | **Diagnostic suite** (last) | `25_diagnostics.R` | One file with seven sections: cluster figures (A), env coherence (B), PC1/PC2 (C), inference QC (D), size distribution (E), K-sweep (F), year-effect (G). All output PNGs + RDS artifacts |

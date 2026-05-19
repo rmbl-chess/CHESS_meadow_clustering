@@ -1,27 +1,31 @@
-# 18_label_descriptions.R — richer per-label cluster descriptions.
+# 19_label_descriptions.R — per-label IndVal description + auto-drafted
+# narrative. Combines the old 18 + 19 into one script: they share inputs
+# (final_clusters_B.rds, environment.rds, veg_spectra.rds) and the second
+# half consumes the first half's output directly.
 #
-# For each final_label, computes per-species and per-non-species:
-#   mean_cover_in_cluster   mean cover (%) among sites in this cluster
-#   freq_in_cluster         proportion of sites with cover > 0
-#   mean_cover_overall      mean cover across ALL sites
-#   specificity             mean_in_cluster / mean_overall  (>1 = enriched)
-#   indval                  specificity * freq  (Dufrêne-Legendre style)
+# Section 1 — Per-label IndVal stats
+#   mean_cover_in_cluster, freq_in_cluster, specificity, indval per
+#   species and per non-species category; top-5 indicators + abundant +
+#   top-3 physiognomy strings.
+#   Output: data/derived/label_descriptions.csv
 #
-# Then produces three top-N summary columns per cluster:
-#   indicators   top 5 named species by indval (what's characteristic)
-#   abundant     top 5 named species by mean cover (what dominates by mass)
-#   physiognomy  top 3 non-species categories by mean cover
-#
-# Inputs:  data/derived/final_clusters_B.rds, .../veg_spectra.rds
-# Outputs: data/derived/label_descriptions.csv (one row per final_label)
+# Section 2 — Auto-drafted starter narratives
+#   "{elevation cue} {habitat cue}, {top-indicator}-dominated", with cues
+#   derived from snow-free DOY + bare/NPV pct. Preserves curated rows in
+#   the existing CSV; CHESS_REGEN_NARRATIVES=1 forces a full regenerate.
+#   Output: data/small_reference/label_community_names.csv
 
 suppressPackageStartupMessages({
   library(tidyverse)
 })
 
-fc <- readRDS("data/derived/final_clusters_B.rds")
-vs <- readRDS("data/derived/veg_spectra.rds")$joined  # has raw cover columns
+fc  <- readRDS("data/derived/final_clusters_B.rds")
+vs  <- readRDS("data/derived/veg_spectra.rds")$joined
+env <- readRDS("data/derived/environment.rds")
 
+# ============================================================================
+# Section 1 — label_descriptions.csv
+# ============================================================================
 nonsp <- c("Other_Forb", "Other_Graminoid", "NPV", "Bare",
            "Other_Moss_Lichen", "Other_Deciduous_Shrub")
 
@@ -34,16 +38,16 @@ cover_long <- vs |>
     feature  = stringr::str_replace(feature, "_cover$", ""),
     is_named = !feature %in% nonsp
   ) |>
-  # Use only clustered (2025) sites for cluster characterization. Inferred
-  # 2018 sites should not feed the definition of what a cluster IS, since
-  # they were assigned by composition similarity to that cluster's
-  # centroid — that's circular.
-  dplyr::inner_join(fc$assignments |>
-                      dplyr::filter(is.na(source) | source == "clustered_2025") |>
-                      dplyr::select(site_number, Year, final_label),
-                    by = c("site_number", "Year"))
+  # Only clustered (2025) sites characterize a cluster — inferred 2018
+  # sites were assigned by similarity to its centroid, so they're
+  # circular for defining the cluster.
+  dplyr::inner_join(
+    fc$assignments |>
+      dplyr::filter(is.na(source) | source == "clustered_2025") |>
+      dplyr::select(site_number, Year, final_label),
+    by = c("site_number", "Year")
+  )
 
-# Per-(cluster, feature) stats: mean cover in cluster, frequency.
 per_cluster <- cover_long |>
   dplyr::group_by(final_label, feature, is_named) |>
   dplyr::summarise(
@@ -52,7 +56,6 @@ per_cluster <- cover_long |>
     .groups = "drop"
   )
 
-# Overall mean cover across all sites for each feature.
 overall <- cover_long |>
   dplyr::group_by(feature) |>
   dplyr::summarise(mean_cover_overall = mean(cover, na.rm = TRUE),
@@ -69,7 +72,6 @@ stats <- per_cluster |>
     indval = specificity * freq_in_cluster
   )
 
-# --- Top N indicator species per cluster (named species, by indval) --------
 top_indicators <- stats |>
   dplyr::filter(is_named, mean_cover_in_cluster > 0) |>
   dplyr::group_by(final_label) |>
@@ -85,7 +87,6 @@ top_indicators <- stats |>
     .groups = "drop"
   )
 
-# --- Top N abundant species per cluster (by mean cover) --------------------
 top_abundant <- stats |>
   dplyr::filter(is_named, mean_cover_in_cluster > 0) |>
   dplyr::group_by(final_label) |>
@@ -101,7 +102,6 @@ top_abundant <- stats |>
     .groups = "drop"
   )
 
-# --- Top non-species (physiognomic) ----------------------------------------
 top_phys <- stats |>
   dplyr::filter(!is_named) |>
   dplyr::group_by(final_label) |>
@@ -120,22 +120,125 @@ descriptions <- top_indicators |>
   dplyr::left_join(top_phys,     by = "final_label")
 
 readr::write_csv(descriptions, "data/derived/label_descriptions.csv")
-cat(sprintf("Wrote data/derived/label_descriptions.csv (%d labels)\n\n",
+cat(sprintf("[1] Wrote data/derived/label_descriptions.csv (%d labels)\n",
             nrow(descriptions)))
 
 # Pretty print for human review (sort by recall desc).
 recall_lookup <- fc$final_summary |>
   dplyr::select(final_label, recall, n, n_2018, n_2025)
-
 human_table <- descriptions |>
   dplyr::left_join(recall_lookup, by = "final_label") |>
   dplyr::arrange(dplyr::desc(recall))
-
 for (i in seq_len(nrow(human_table))) {
   r <- human_table[i, ]
   cat(sprintf("\n%s   n=%d  (%d/%d 2018/2025)  recall=%.2f\n",
               r$final_label, r$n, r$n_2018, r$n_2025, r$recall))
-  cat("  Indicators:  ", r$indicators,   "\n", sep = "")
-  cat("  Abundant:    ", r$abundant,     "\n", sep = "")
-  cat("  Physiognomy: ", r$physiognomy,  "\n", sep = "")
+  cat("  Indicators:  ", r$indicators,  "\n", sep = "")
+  cat("  Abundant:    ", r$abundant,    "\n", sep = "")
+  cat("  Physiognomy: ", r$physiognomy, "\n", sep = "")
+}
+
+# ============================================================================
+# Section 2 — label_community_names.csv (auto-drafted starter narratives)
+# ============================================================================
+env_per_label <- fc$assignments |>
+  dplyr::inner_join(env, by = c("site_number", "Year")) |>
+  dplyr::group_by(final_label) |>
+  dplyr::summarise(snow_free_doy_mean = mean(snow_free_doy, na.rm = TRUE),
+                   .groups = "drop")
+
+tier_of <- function(r) dplyr::case_when(
+  is.na(r) | r < 0.50 ~ "weak",
+  r        < 0.80     ~ "marginal",
+  TRUE                ~ "strong"
+)
+
+summ <- fc$final_summary |>
+  dplyr::transmute(final_label,
+                   n_sites = n,
+                   n_2018, n_2025,
+                   recall = as.numeric(recall),
+                   tier   = tier_of(recall)) |>
+  dplyr::left_join(env_per_label, by = "final_label")
+
+first_species <- function(top_string) {
+  if (is.na(top_string)) return(NA_character_)
+  first <- stringr::str_split(top_string, ";\\s*", simplify = TRUE)[1]
+  stringr::str_extract(first, "^[^(]+") |> stringr::str_trim()
+}
+extract_pct <- function(physiognomy, name) {
+  m <- stringr::str_match(physiognomy,
+                          sprintf("%s \\(([0-9.]+)%%\\)", name))[, 2]
+  as.numeric(m)
+}
+
+auto <- summ |>
+  dplyr::select(final_label, n_sites, n_2018, n_2025, recall, tier,
+                snow_free_doy_mean) |>
+  dplyr::left_join(descriptions, by = "final_label") |>
+  dplyr::mutate(
+    top_indicator = purrr::map_chr(indicators, first_species),
+    top_abundant  = purrr::map_chr(abundant,   first_species),
+    bare_pct      = extract_pct(physiognomy, "Bare"),
+    npv_pct       = extract_pct(physiognomy, "NPV"),
+    elevation_cue = dplyr::case_when(
+      snow_free_doy_mean < 110 ~ "Low-elevation",
+      snow_free_doy_mean < 130 ~ "Mid-elevation montane",
+      snow_free_doy_mean < 150 ~ "Subalpine",
+      snow_free_doy_mean < 165 ~ "Upper subalpine",
+      TRUE                     ~ "Late-melt alpine / subalpine"
+    ),
+    habitat_cue = dplyr::case_when(
+      !is.na(bare_pct) & bare_pct > 35 ~ "rocky shrub-steppe",
+      !is.na(bare_pct) & bare_pct > 20 ~ "sparse meadow / shrubland",
+      !is.na(npv_pct)  & npv_pct  > 25 ~ "dry meadow",
+      TRUE                              ~ "meadow"
+    ),
+    narrative_draft = sprintf("%s %s, %s-dominated",
+                              elevation_cue, habitat_cue, top_indicator)
+  )
+
+# Preserve user-edited rows. Set CHESS_REGEN_NARRATIVES=1 to overwrite.
+out_path <- "data/small_reference/label_community_names.csv"
+existing <- if (file.exists(out_path)) {
+  readr::read_csv(out_path, show_col_types = FALSE) |>
+    dplyr::select(final_label,
+                  dplyr::any_of(c("narrative_draft", "narrative_curated", "notes"))) |>
+    dplyr::rename_with(~ paste0(.x, "_existing"), -final_label)
+} else {
+  tibble::tibble(final_label = character())
+}
+force_regen <- isTRUE(nzchar(Sys.getenv("CHESS_REGEN_NARRATIVES", "")))
+
+out <- auto |>
+  dplyr::select(final_label, n_sites, n_2018, n_2025, recall, tier,
+                snow_free_doy_mean, top_indicator, top_abundant,
+                bare_pct, npv_pct, narrative_draft) |>
+  dplyr::left_join(existing, by = "final_label")
+for (col in c("narrative_draft_existing", "narrative_curated_existing",
+              "notes_existing")) {
+  if (!col %in% names(out)) out[[col]] <- NA_character_
+}
+out <- out |>
+  dplyr::mutate(
+    narrative_draft = if (force_regen) narrative_draft
+                       else dplyr::coalesce(narrative_draft_existing,
+                                            narrative_draft),
+    narrative_curated = narrative_curated_existing,
+    notes             = notes_existing
+  ) |>
+  dplyr::select(-narrative_draft_existing, -narrative_curated_existing,
+                -notes_existing) |>
+  dplyr::arrange(snow_free_doy_mean)
+
+dir.create("data/small_reference", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(out, out_path)
+cat(sprintf("\n[2] Wrote %s (%d labels)\n", out_path, nrow(out)))
+
+cat("\n=== Auto-drafted narratives (sort by snow-free DOY) ===\n\n")
+for (i in seq_len(nrow(out))) {
+  r <- out[i, ]
+  cat(sprintf("%s  n=%d  doy=%.0f  recall=%.2f  [%s]\n  -> %s\n",
+              r$final_label, r$n_sites, r$snow_free_doy_mean,
+              r$recall, r$tier, r$narrative_draft))
 }
