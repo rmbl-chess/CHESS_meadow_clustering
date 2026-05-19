@@ -211,7 +211,16 @@ asg_2018 <- tibble::tibble(
   inference_gap           = dist_gap,
   inference_hell_distance = hell_d[cbind(seq_along(best_idx), best_idx)],
   inference_doy_diff_days = doy_diff[cbind(seq_along(best_idx), best_idx)]
-)
+) |>
+  # Confidence tier: high = close match in both composition and DOY;
+  # low = composition very different from any 2025 cluster (likely a 2018-
+  # only ecological niche such as Sibbaldia-Acomastylis alpine cushion that
+  # the 2025 sampling didn't capture).
+  dplyr::mutate(inference_confidence = dplyr::case_when(
+    inference_distance < 0.90 ~ "high",
+    inference_distance < 1.05 ~ "medium",
+    TRUE                      ~ "low"
+  ))
 
 cat(sprintf("Inferred 2018 labels for %d sites\n", nrow(asg_2018)))
 cat(sprintf("  combined inference distance: median=%.3f, IQR %.3f-%.3f\n",
