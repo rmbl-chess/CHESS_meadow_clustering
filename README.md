@@ -32,17 +32,13 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Iterative merging | `09_iterative_merge.R` | merged class set, threshold = 0.4 |
 | **Architecture B: spectra-first cluster** | `10_cluster_spectra.R` | Ward / PCs 2–12 + snow-free DOY, z-scaled |
 | Composition sub-clusters | `11_subcluster_composition.R` | within-spectral subclusters by composition |
-| Diagnostics | `12_visualizations.R`, `14_diagnose_env.R`, `16_diagnose_brightness.R` | PNGs in `output/` |
 | Environment join | `13_extract_environment.R` | snow-free DOY per site |
-| Sweep over K | `15_sweep_kspec.R` | RF accuracy vs spectral K |
 | Training-sample export | `17_export_training_samples.R` | `training_samples_*.{csv,gpkg}` |
-| Year-effect check | `18_year_effect_pcs.R` | confirms 2018 spectra drift; clustering uses 2025 only |
 | Class descriptions | `19_label_descriptions.R` | IndVal + abundant species tables |
 | Narrative drafts | `20_label_narratives.R` | `data/small_reference/label_community_names.csv` |
-| Inference QC | `21_inference_quality.R` | confidence tier per 2018 site |
-| Size distribution | `22_size_distribution.R` | class sizes for review |
 | **Target pixel selection** | `23_target_pixels.R` | `target_pixels.{csv,gpkg}` (6,000 stratified meadow pixels) |
 | Classifier-feature export | `24_export_classifier_model.R` | `aop_classifier_*.{csv,json}` — R → Python handoff |
+| **Diagnostic suite** (last) | `25_diagnostics.R` | One file with seven sections: cluster figures (A), env coherence (B), PC1/PC2 (C), inference QC (D), size distribution (E), K-sweep (F), year-effect (G). All output PNGs + RDS artifacts |
 
 ### Phase 2 — Shrub classes (`code/shrub/`)
 
