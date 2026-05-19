@@ -1,6 +1,7 @@
-# 33_shrub_separability.R — class-imbalance + spectral-separability analysis
+# shrub/04_separability.R — class-imbalance + spectral-separability analysis
 # for the canonical shrub training set. Mirrors the meadow separability
-# work (05_preprocess + 07b_separability_rf):
+# work (`code/meadow/05_preprocess_features.R` + the retired RF-separability
+# attic script):
 #
 #   1. Apply water-band mask, then PCA on the brightness-normalized spectra.
 #   2. RF stratified-CV per-class recall (singleton classes have no test

@@ -27,10 +27,7 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Combine cover | `03_combine_cover.R` | `data/derived/cover_combined.rds` |
 | Join AOP spectra | `04_join_spectra.R` | `data/derived/veg_spectra.rds` |
 | Preprocess features | `05_preprocess_features.R` | brightness-normed spectra + Hellinger cover + PCA |
-| Composition clusters | `06_cluster_composition.R` | initial composition-only k-means |
-| Spectral separability (LDA / RF) | `07_spectral_separability.R`, `08_separability_rf.R` | recall + tier classification |
-| Iterative merging | `09_iterative_merge.R` | merged class set, threshold = 0.4 |
-| **Architecture B: spectra-first cluster** | `10_cluster_spectra.R` | Ward / PCs 2–12 + snow-free DOY, z-scaled |
+| **Architecture B: spectra-first cluster** | `10_cluster_spectra.R` | Ward / PCs 2–12 + snow-free DOY, z-scaled (K-selection exploration in `_attic/`, see attic README) |
 | Composition sub-clusters | `11_subcluster_composition.R` | within-spectral subclusters by composition |
 | Environment join | `13_extract_environment.R` | snow-free DOY per site |
 | Training-sample export | `17_export_training_samples.R` | `training_samples_*.{csv,gpkg}` |
