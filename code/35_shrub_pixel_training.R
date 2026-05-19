@@ -41,8 +41,8 @@ baseline  <- readRDS("data/derived/shrub_training_set.rds")  # site-averaged
 
 # Filter knobs. Pixels are dropped if NDVI < ndvi_min (filters shadows and
 # mixed/non-vegetation edges). A site is dropped if too few pixels survive.
-ndvi_min <- 0.30
-min_pixels_per_site <- 5L
+ndvi_min <- 0.20
+min_pixels_per_site <- 3L
 
 # --- 1. Build per-pixel feature table ------------------------------------
 # Map each pixel to its site's final_label via canonical binomial.

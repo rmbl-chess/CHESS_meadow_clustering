@@ -43,8 +43,13 @@ vs      <- readRDS("data/derived/shrub_veg_spectra.rds")
 joined  <- vs$joined
 wl      <- vs$wavelengths
 
-genus_collapse <- c("Salix", "Ribes", "Juniperus")
-drop_binomials <- c("Artemisia cana")
+genus_collapse <- c("Ribes", "Juniperus")
+# Salix is partially separable: the three high-N species (wolfii, boothii,
+# planifolia) are kept distinct; all other Salix species roll up to
+# "Salix other". DOY pulls the 4-way split overall accuracy to 59% in 33's
+# Salix-only test (vs 99% if everything collapses to one "Salix sp." class).
+salix_keep      <- c("Salix wolfii", "Salix boothii", "Salix planifolia")
+drop_binomials  <- c("Artemisia cana")
 min_n_per_class <- 3L
 
 # --- Build the crosswalk -------------------------------------------------
@@ -53,6 +58,9 @@ crosswalk <- joined |>
   dplyr::mutate(
     final_label = dplyr::case_when(
       canonical_binomial %in% drop_binomials       ~ NA_character_,
+      canonical_genus == "Salix" &
+        canonical_binomial %in% salix_keep         ~ canonical_binomial,
+      canonical_genus == "Salix"                   ~ "Salix other",
       canonical_genus    %in% genus_collapse       ~ paste(canonical_genus, "sp."),
       TRUE                                          ~ canonical_binomial
     )
