@@ -87,7 +87,9 @@ label_meta <- fc$final_summary |>
 
 asg_cols <- intersect(c("site_number", "Year", "spec_cluster", "sub_cluster",
                         "final_label", "source",
-                        "inference_distance", "inference_gap"),
+                        "inference_distance", "inference_gap",
+                        "inference_hell_distance", "inference_doy_diff_days",
+                        "inference_confidence"),
                       names(fc$assignments))
 sites <- fc$assignments |>
   dplyr::select(dplyr::all_of(asg_cols)) |>
