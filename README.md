@@ -57,8 +57,7 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Inference on basin pixels | `03_predict_inference_pixels.R` | `inference_predictions.csv` — unweighted RF predictions on the 5,354 extracted meadow pixels; refreshes the punch list with `predicted_n_pixels` |
 | Landscape novelty | `04_landscape_distance.R` | Mahalanobis distance from every inference pixel to every class centroid (pooled within-class covariance). `inference_pixel_distances.csv`, `novelty_by_class.csv`, `novelty_by_hex.gpkg` |
 | **Per-pixel sampling priority** | `05_sampling_priority.R` | `sampling_priority.gpkg` — leverage = `nearest_d / sqrt(n_training_for_predicted_class)` per pixel + per-class top-10 candidate sites |
-| Class summary table | `06_class_summary_table.R` | `class_summary_table.csv` — one row per class with N (2018, 2025, total), basin prevalence, recall, indicator + abundant taxa (full IndVal cov/freq/IV strings for meadows), description, median leverage |
-| Joint training GeoPackage | `07_training_gpkg.R` | `joint_training.gpkg` — two layers (`training_sites_crowns`, `training_sites_points`) with class metadata for QGIS review |
+| Joint summary outputs | `06_summary_outputs.R` | `class_summary_table.csv` (one row per class with N, prevalence, recall, indicator + abundant taxa, description, median leverage) AND `joint_training.gpkg` (two layers, `training_sites_crowns` + `training_sites_points`, with class metadata for QGIS review) |
 | Joint figures | `08_figures.R` | `docs/figures/joint_*.pdf` — recall + leverage scatter + feature space + confusion matrix |
 
 ### Python tools (`code/python/`)
