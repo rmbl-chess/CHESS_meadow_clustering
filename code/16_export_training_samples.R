@@ -60,6 +60,18 @@ tier_of <- function(r) dplyr::case_when(
   TRUE                ~ "strong"
 )
 
+# Curated narrative labels (from data/small_reference/label_community_names.csv).
+# Loaded here so each per-site row carries the narrative — that flows into the
+# crowns GeoPackage and supports spatial review in QGIS / similar.
+narr_path <- "data/small_reference/label_community_names.csv"
+narratives <- if (file.exists(narr_path)) {
+  readr::read_csv(narr_path, show_col_types = FALSE) |>
+    dplyr::select(final_label,
+                  dplyr::any_of(c("narrative_draft", "narrative_curated", "notes")))
+} else {
+  tibble::tibble(final_label = character())
+}
+
 label_meta <- fc$final_summary |>
   dplyr::transmute(
     final_label,
@@ -70,7 +82,8 @@ label_meta <- fc$final_summary |>
     label_n_2018            = n_2018,
     label_n_2025            = n_2025,
     tier                    = tier_of(label_recall)
-  )
+  ) |>
+  dplyr::left_join(narratives, by = "final_label")
 
 sites <- fc$assignments |>
   dplyr::select(site_number, Year, spec_cluster, sub_cluster, final_label) |>
@@ -81,8 +94,6 @@ sites <- fc$assignments |>
                                     dplyr::any_of(idx_cols)),
                     by = c("site_number", "Year")) |>
   dplyr::inner_join(env, by = c("site_number", "Year")) |>
-  # Pull the original-k15 spec_cluster character ("S03"), drop the redundant
-  # integer column from sub_cluster join.
   dplyr::arrange(final_label, site_number, Year)
 
 readr::write_csv(sites, "data/derived/training_samples_sites.csv")
@@ -110,17 +121,7 @@ descriptions <- if (file.exists(desc_path)) {
   tibble::tibble(final_label = character())
 }
 
-# Curated narrative labels (from 19_label_narratives.R + manual editing in
-# data/small_reference/label_community_names.csv). Optional.
-narr_path <- "data/small_reference/label_community_names.csv"
-narratives <- if (file.exists(narr_path)) {
-  readr::read_csv(narr_path, show_col_types = FALSE) |>
-    dplyr::select(final_label,
-                  narrative_draft,
-                  dplyr::any_of(c("narrative_curated", "notes")))
-} else {
-  tibble::tibble(final_label = character())
-}
+# (Narratives already loaded above and joined into the per-site table.)
 
 label_summary <- fc$final_summary |>
   dplyr::transmute(
@@ -161,6 +162,15 @@ sf::st_write(crowns_labeled,
 cat(sprintf("Wrote training_samples_crowns.gpkg: %d crown polygons, %d cols\n",
             nrow(crowns_labeled), ncol(crowns_labeled)))
 
+# --- Per-crown CENTROID point file (lighter-weight for display in QGIS) ----
+crowns_points <- crowns_labeled |>
+  sf::st_centroid()
+sf::st_write(crowns_points,
+             "data/derived/training_samples_points.gpkg",
+             delete_dsn = TRUE, quiet = TRUE)
+cat(sprintf("Wrote training_samples_points.gpkg: %d centroids, %d cols\n",
+            nrow(crowns_points), ncol(crowns_points)))
+
 # --- Console summary by tier ------------------------------------------------
 cat("\n=== Tier breakdown ===\n")
 tier_summary <- label_summary |>
@@ -177,6 +187,7 @@ print(tier_summary)
 cat("\nFiles in data/derived/:\n")
 for (f in c("training_samples_sites.csv",
             "training_samples_crowns.gpkg",
+            "training_samples_points.gpkg",
             "training_labels_summary.csv")) {
   p <- file.path("data/derived", f)
   if (file.exists(p)) {
