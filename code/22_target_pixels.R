@@ -25,12 +25,19 @@ suppressPackageStartupMessages({
 })
 
 # --- Config -----------------------------------------------------------------
-domains          <- c("ALMO", "CRBU", "UPTA")
-year             <- 2025
-landcover_path   <- "data/raw/SDP/UG_landcover_1m_v4.tif"
-meadow_class     <- 3L
-meadow_threshold <- 0.80
-agg_factor       <- 3L
+domains            <- c("ALMO", "CRBU", "UPTA")
+year               <- 2025
+landcover_path     <- "data/raw/SDP/UG_landcover_1m_v4.tif"
+meadow_class       <- 3L
+# Two-stage filter:
+#   1. Within-pixel: each 3m pixel must have >= meadow_pixel_threshold of its
+#      9 underlying 1m landcover pixels classified as meadow.
+#   2. Neighborhood: each candidate 3m pixel must have >= neighborhood_min
+#      of its 9 3x3 neighbors (including itself) also pass filter 1.
+# Combined, target pixels are spectrally clean (interior to 9m x 9m meadow).
+meadow_pixel_threshold     <- 0.80
+neighborhood_min_neighbors <- 6L    # 6 of 9 = >=67%
+agg_factor                 <- 3L
 doy_bands <- tibble::tribble(
   ~band,    ~min_doy, ~max_doy,
   "early",        0,    130,
@@ -98,15 +105,27 @@ for (i in seq_len(nrow(tile_inventory))) {
   win <- terra::crop(lc, win_ext)
   if (terra::ncell(win) == 0) next
 
-  # 1 m -> 3 m: fraction of class 3 in each 3x3 block
+  # 1 m -> 3 m: fraction of class 3 in each 3x3 block (within-pixel purity)
   win_meadow <- (win == meadow_class)
   agg <- terra::aggregate(win_meadow, fact = agg_factor,
                           fun = "mean", na.rm = TRUE)
-  pass <- terra::values(agg, mat = FALSE) >= meadow_threshold
-  pass[is.na(pass)] <- FALSE
-  if (!any(pass)) next
+  pass1 <- terra::classify(agg,
+    matrix(c(-Inf, meadow_pixel_threshold, 0,
+             meadow_pixel_threshold, Inf, 1), ncol = 3, byrow = TRUE),
+    right = FALSE)
 
-  xy <- terra::xyFromCell(agg, which(pass))
+  # 3x3 focal: count of pass1 neighbors (incl. self). Neighborhood filter
+  # requires >= neighborhood_min_neighbors of 9.
+  focal_count <- terra::focal(pass1, w = matrix(1, 3, 3),
+                              fun = "sum", na.policy = "all", fillvalue = 0)
+  pass2_vals <- terra::values(focal_count, mat = FALSE) >=
+                  neighborhood_min_neighbors
+  pass1_vals <- terra::values(pass1, mat = FALSE) == 1
+  keep_idx <- which(pass1_vals & pass2_vals & !is.na(pass1_vals) &
+                                              !is.na(pass2_vals))
+  if (length(keep_idx) == 0) next
+
+  xy <- terra::xyFromCell(agg, keep_idx)
   candidates_list[[i]] <- tibble::tibble(
     x = xy[, 1], y = xy[, 2],
     domain = tile_inventory$domain[i],
