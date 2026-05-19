@@ -71,6 +71,9 @@ outputs/
 results/
 figs/
 figures/
+# docs/figures/ holds canonical archived figures (per repo convention).
+!docs/figures/
+!docs/figures/**
 scratch/
 tmp/
 temp/
