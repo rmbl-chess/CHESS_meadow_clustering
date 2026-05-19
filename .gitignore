@@ -90,6 +90,14 @@ data/cache/
 !data/derived/shrub_taxonomy_crosswalk.csv
 !data/derived/shrub_label_crosswalk.csv
 !data/derived/shrub_training_set.csv
+!data/derived/canopy_height.rds
+!data/derived/joint_training_set.csv
+!data/derived/punch_list.csv
+!data/derived/punch_list_v1.csv
+!data/derived/inference_predictions.csv
+!data/derived/inference_pixel_distances.csv
+!data/derived/novelty_by_class.csv
+!data/derived/novelty_by_hex.gpkg
 data/*.parquet
 data/*.feather
 *.h5
