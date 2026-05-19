@@ -36,7 +36,13 @@ crosswalk <- readr::read_csv("data/derived/shrub_label_crosswalk.csv",
                              show_col_types = FALSE)
 sp_2018   <- readRDS("data/derived/spectra_2018.rds")
 sp_2025   <- readRDS("data/derived/spectra_2025.rds")
+env       <- readRDS("data/derived/environment.rds")           # snow-free DOY
 baseline  <- readRDS("data/derived/shrub_training_set.rds")  # site-averaged
+
+# Filter knobs. Pixels are dropped if NDVI < ndvi_min (filters shadows and
+# mixed/non-vegetation edges). A site is dropped if too few pixels survive.
+ndvi_min <- 0.30
+min_pixels_per_site <- 5L
 
 # --- 1. Build per-pixel feature table ------------------------------------
 # Map each pixel to its site's final_label via canonical binomial.
@@ -72,6 +78,22 @@ keep_cols <- rfl_cols[!water_mask]
 cat(sprintf("Bands retained after water mask: %d (of %d)\n",
             length(keep_cols), length(rfl_cols)))
 
+# --- Per-pixel NDVI filter ------------------------------------------------
+# NDVI on raw (non-normalized) reflectance: NIR ~860 nm, RED ~660 nm. The
+# ratio is invariant to L2 normalization, so we can compute it on raw and
+# apply the threshold before any other processing.
+idx_red <- rfl_cols[which.min(abs(band_wl - 660))]
+idx_nir <- rfl_cols[which.min(abs(band_wl - 860))]
+ndvi <- (pixels[[idx_nir]] - pixels[[idx_red]]) /
+        (pixels[[idx_nir]] + pixels[[idx_red]])
+cat(sprintf("Pre-NDVI pixels: %d  NDVI distribution: min=%.2f med=%.2f max=%.2f\n",
+            nrow(pixels), min(ndvi, na.rm=TRUE),
+            median(ndvi, na.rm=TRUE), max(ndvi, na.rm=TRUE)))
+pass_ndvi <- !is.na(ndvi) & ndvi >= ndvi_min
+cat(sprintf("After NDVI >= %.2f filter: %d pixels (%.1f%% retained)\n",
+            ndvi_min, sum(pass_ndvi), 100 * mean(pass_ndvi)))
+pixels <- pixels[pass_ndvi, ]
+
 # Per-pixel L2 normalize, then drop rows that are NA or zero-norm.
 spec_mat <- as.matrix(pixels[, keep_cols])
 norms    <- sqrt(rowSums(spec_mat^2, na.rm = TRUE))
@@ -81,10 +103,23 @@ pixels   <- pixels[good, ]
 spec_mat <- spec_mat / sqrt(rowSums(spec_mat^2))
 cat(sprintf("Pixels after QC: %d\n", nrow(spec_mat)))
 
-# Join the site → final_label map onto each pixel.
+# Drop sites whose surviving pixel count is below the threshold.
+site_pix <- pixels |>
+  dplyr::group_by(site_number, Year) |>
+  dplyr::summarise(n_pix = dplyr::n(), .groups = "drop")
+good_sites <- site_pix |> dplyr::filter(n_pix >= min_pixels_per_site)
+cat(sprintf("Sites with >= %d surviving pixels: %d / %d\n",
+            min_pixels_per_site, nrow(good_sites), nrow(site_pix)))
+keep_pix <- paste(pixels$site_number, pixels$Year, sep = "_") %in%
+              paste(good_sites$site_number, good_sites$Year, sep = "_")
+pixels   <- pixels[keep_pix, ]
+spec_mat <- spec_mat[keep_pix, , drop = FALSE]
+
+# Join the site → final_label map AND snow-free DOY onto each pixel.
 pixels <- pixels |>
   dplyr::left_join(labels, by = c("site_number", "Year")) |>
-  dplyr::filter(!is.na(final_label))
+  dplyr::left_join(env,    by = c("site_number", "Year")) |>
+  dplyr::filter(!is.na(final_label), !is.na(snow_free_doy))
 spec_mat <- spec_mat[seq_len(nrow(pixels)), , drop = FALSE]   # alignment guard
 
 cat(sprintf("Pixels with assigned label: %d across %d sites\n",
@@ -97,11 +132,15 @@ print(pixels |> dplyr::count(final_label, name = "n_pixels") |>
 # --- 2. PCA on pixel-level data -----------------------------------------
 pca <- prcomp(spec_mat, center = TRUE, scale. = FALSE)
 n_pc <- 20
-X <- pca$x[, seq_len(n_pc), drop = FALSE]
-colnames(X) <- sprintf("PC%02d", seq_len(n_pc))
+PCs <- pca$x[, seq_len(n_pc), drop = FALSE]
+colnames(PCs) <- sprintf("PC%02d", seq_len(n_pc))
 cat(sprintf("\nPixel-PCA: PC1-%d explain %.1f%% of variance\n",
             n_pc, 100 * sum(pca$sdev[seq_len(n_pc)]^2) / sum(pca$sdev^2)))
 
+# Feature matrix = pixel PCs concatenated with the site-level snow-free DOY
+# (z-scaled across all pixels — all pixels at the same site share a value).
+doy_z <- as.numeric(scale(pixels$snow_free_doy))
+X <- cbind(PCs, snow_free_doy_z = doy_z)
 y <- factor(pixels$final_label)
 site_key <- paste(pixels$site_number, pixels$Year, sep = "_")
 

@@ -79,10 +79,13 @@ print(crosswalk |>
         as.data.frame())
 
 # --- Apply crosswalk to the training data --------------------------------
+env <- readRDS("data/derived/environment.rds")  # snow_free_doy per site
 train <- joined |>
   dplyr::left_join(crosswalk |> dplyr::select(canonical_binomial, final_label),
                    by = "canonical_binomial") |>
-  dplyr::filter(!is.na(final_label))
+  dplyr::filter(!is.na(final_label)) |>
+  dplyr::left_join(env, by = c("site_number", "Year")) |>
+  dplyr::filter(!is.na(snow_free_doy))
 
 cat(sprintf("\nFinal training sites: %d (was %d)\n",
             nrow(train), nrow(joined)))
@@ -101,11 +104,16 @@ pca_rot   <- sep_old$pca$rotation
 pca_ctr   <- sep_old$pca$center
 
 # Project the training spectra into the same PC space (using the PCA fit
-# in 33, so PCs are comparable across runs).
+# in 33, so PCs are comparable across runs), then concatenate snow-free
+# DOY (z-scored) as a 21st feature. R4D061 medians separate dry shrub-
+# steppe (Purshia, Amelanchier, ArtTrid ~95-110 DOY) from riparian/sub-
+# alpine (Ribes, Betula, Lonicera ~155-160 DOY).
 spec_mat <- as.matrix(train[, keep_cols])
 spec_mat_ctr <- sweep(spec_mat, 2, pca_ctr, FUN = "-")
-X <- spec_mat_ctr %*% pca_rot
-colnames(X) <- sprintf("PC%02d", seq_len(ncol(X)))
+spec_pcs <- spec_mat_ctr %*% pca_rot
+colnames(spec_pcs) <- sprintf("PC%02d", seq_len(ncol(spec_pcs)))
+doy_z <- scale(train$snow_free_doy)[, 1]
+X <- cbind(spec_pcs, snow_free_doy_z = doy_z)
 y <- factor(train$final_label)
 n <- nrow(X)
 n_folds <- 5
