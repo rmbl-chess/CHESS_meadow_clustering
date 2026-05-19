@@ -12,8 +12,8 @@
 | `nearest_d`, `second_d`, `margin` | Mahalanobis distance to nearest + second-nearest class, and the gap. Big `nearest_d` = novel; small `margin` = classifier is on the fence. |
 | `ood_flag` | `TRUE` when `nearest_d` exceeds the training 95th-percentile (most pixels are flagged — see caveats). |
 | `n_total` | Number of training sites for the predicted class. |
-| `balanced_recall` | Class-weighted RF CV recall for that class. |
-| `predicted_n_pixels` | How many of the 5,354 inference pixels the classifier assigns to this class. |
+| `balanced_recall` | Class-weighted RF CV recall for that class (from script 37). |
+| `predicted_n_pixels` | How many of the 5,354 inference pixels the unweighted RF assigns to this class (from script 38). |
 | `leverage` | Composite priority score (see below). |
 | `augmentation_priority` | Bucket: `critical` / `high` / `medium` / `ok`. |
 | `snow_free_doy`, `canopy_height_m` | Site covariates pulled at the pixel. |
@@ -24,7 +24,14 @@
 
 **Shrub classes (16 total).** 2025 from the field shrub-crown table (one species per site by design). 2018 from `fractional_cover` filtered to rows where a shrub-dominated genus had cover = 100%. Synonyms reconciled (`Pentaphylloides floribunda → Dasiphora fruticosa`; `Distegia involucrata → Lonicera involucrata`). Salix species are not spectrally separable from each other; the three highest-N species (`Salix wolfii`, `boothii`, `planifolia`) are kept distinct and the remaining 9 binomials roll up to `Salix other`. Genera with <3 sites are dropped.
 
-**Joint training set.** 858 sites × 47 classes (548 meadow + 310 shrub). Shrub spectra are projected onto the deployed meadow PCA basis (in `aop_classifier_pca.csv`) so training and inference share one feature space. The classifier sees 28 features: 20 PCs, 6 narrow-band indices (NDVI / NDWI / PRI / red-edge slope / CAI / NDLI), snow-free DOY, and canopy height. Random Forest with inverse-frequency class weights, 5-fold site-level CV: 63–65% overall accuracy.
+**Joint training set.** 858 sites × 47 classes (548 meadow + 310 shrub). Shrub spectra are projected onto the deployed meadow PCA basis (in `aop_classifier_pca.csv`) so training and inference share one feature space. The classifier sees 28 features: 20 PCs, 6 narrow-band indices (NDVI / NDWI / PRI / red-edge slope / CAI / NDLI), snow-free DOY, and canopy height.
+
+**Two Random Forest fits, two purposes.** The same training data is used in two RFs that answer different questions:
+
+- **Balanced-weighted RF (script 37, 5-fold site-level CV)** — inverse-frequency class weights so every class contributes equally to per-class recall. This is where `balanced_recall` in the punch list comes from. Overall CV accuracy 63–65%.
+- **Unweighted RF (script 38, predicts on the 5,354 inference pixels)** — no class weights, so predictions follow the natural class proportions. This is where `predicted_label` and `predicted_n_pixels` come from. Using weights here was tried first and produced a wildly biased map: 33% of pixels assigned to the smallest meadow class (S26, n=7), because inverse-frequency weighting amplified rare classes ~22× and turned them into catch-alls for any uncertain pixel.
+
+The leverage score combines `balanced_recall`-style class quality with `predicted_n_pixels`-style prevalence, so both RFs feed into the prioritization.
 
 ## How leverage is computed
 
@@ -57,6 +64,7 @@ Multiplying these two signals captures the kind of pixel a new field plot helps 
 
 ## Caveats
 
+- `predicted_label` reflects the *unweighted* RF (script 38) — it shows the realistic class proportions for the basin. `balanced_recall` reflects the *weighted* RF (script 37) — it shows per-class quality at training time. Both are correct for their own purpose; just don't expect a class with high `balanced_recall` to also have high `predicted_n_pixels`.
 - The 5,354 inference pixels were drawn from R3D018 landcover class 3 (meadow) with strict neighborhood-purity filters. **Shrub leverage is therefore undercounted** in this dataset because shrub crowns are rare in the meadow sample. For shrub-specific priorities, work from `punch_list.csv` directly or generate a shrub-targeted inference set.
 - ~94% of inference pixels exceed the OOD threshold. Hand-picked field crowns are spectrally tighter than random basin pixels — the threshold is calibrated against training distribution, so OOD is genuinely common. Treat `nearest_d` as a continuous ranking rather than the binary `ood_flag`.
 - Predicted classes for high-`nearest_d` pixels are extrapolations: the classifier picked the closest known class, but it might be a class that doesn't even exist in the training set. New samples in these regions sometimes warrant a new class.
