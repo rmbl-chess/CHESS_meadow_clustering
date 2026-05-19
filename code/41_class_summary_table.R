@@ -24,41 +24,41 @@ spri  <- sf::st_read("data/derived/sampling_priority.gpkg", quiet = TRUE) |>
   sf::st_drop_geometry()
 narrs <- readr::read_csv("data/small_reference/label_community_names.csv",
                          show_col_types = FALSE) |>
-  dplyr::mutate(
-    # M-classes are post-hoc monotypic-species overrides; the species IS
-    # the indicator and lives in the label itself (e.g.
-    # "M05_Osmorhiza_occidentalis"). Fall back to that when IndVal didn't
-    # produce a top_indicator.
-    fallback_indicator = dplyr::if_else(
-      stringr::str_starts(final_label, "M\\d"),
-      stringr::str_replace(stringr::str_replace(final_label,
-                                                 "^M\\d+_", ""),
-                           "_", " "),
-      NA_character_
-    )
-  ) |>
   dplyr::transmute(final_label,
-                   indicator_taxa = dplyr::coalesce(top_indicator,
-                                                    fallback_indicator),
-                   abundant_taxa  = dplyr::coalesce(top_abundant,
-                                                    fallback_indicator),
-                   description    = dplyr::coalesce(narrative_curated,
-                                                    narrative_draft))
+                   description = dplyr::coalesce(narrative_curated,
+                                                 narrative_draft))
 
-# Shrub side: indicator taxon is just the canonical binomial (each shrub
-# site = one species; collapsed labels like "Salix sp." aggregate
-# several binomials, list those for the indicator column).
+# Meadow side: pull the full IndVal indicator + abundant + physiognomy
+# strings from label_descriptions (cov/freq/IV detail).
+meadow_desc <- readr::read_csv("data/derived/label_descriptions.csv",
+                               show_col_types = FALSE) |>
+  dplyr::transmute(final_label,
+                   indicator_taxa = indicators,
+                   abundant_taxa  = abundant,
+                   physiognomy    = physiognomy)
+
+# Shrub side: build an analogous "binomial (n=X, pct=Y%)" listing from
+# the per-record canonical binomials. Single-species labels collapse to
+# one entry; multi-binomial labels (Salix other, Ribes sp., Juniperus sp.)
+# list each constituent with its site count.
 shrub_train <- readRDS("data/derived/shrub_training_set.rds")$training
-shrub_inds <- shrub_train |>
-  dplyr::distinct(final_label, canonical_binomial) |>
+shrub_desc <- shrub_train |>
+  dplyr::count(final_label, canonical_binomial, name = "n_sites") |>
   dplyr::group_by(final_label) |>
-  dplyr::summarise(indicator_taxa = paste(sort(unique(canonical_binomial)),
-                                          collapse = "; "),
-                   .groups = "drop") |>
+  dplyr::mutate(pct = round(100 * n_sites / sum(n_sites), 1)) |>
+  dplyr::arrange(dplyr::desc(n_sites), .by_group = TRUE) |>
+  dplyr::summarise(
+    indicator_taxa = paste(
+      sprintf("%s (n=%d, %0.1f%%)", canonical_binomial, n_sites, pct),
+      collapse = "; "),
+    .groups = "drop"
+  ) |>
   dplyr::mutate(abundant_taxa = indicator_taxa,
-                description   = final_label)
+                physiognomy   = "shrub crown")
 
-descriptions <- dplyr::bind_rows(narrs, shrub_inds)
+class_extra <- dplyr::bind_rows(meadow_desc, shrub_desc) |>
+  dplyr::left_join(narrs, by = "final_label") |>
+  dplyr::mutate(description = dplyr::coalesce(description, final_label))
 
 # Per-class median leverage from the per-pixel scores.
 med_lev <- spri |>
@@ -81,10 +81,10 @@ summary_tbl <- punch |>
     augmentation_priority,
     top_confusions
   ) |>
-  dplyr::left_join(med_lev,      by = "final_label") |>
-  dplyr::left_join(descriptions, by = "final_label") |>
+  dplyr::left_join(med_lev,     by = "final_label") |>
+  dplyr::left_join(class_extra, by = "final_label") |>
   dplyr::select(final_label, class_type, description,
-                indicator_taxa, abundant_taxa,
+                indicator_taxa, abundant_taxa, physiognomy,
                 n_2018, n_2025, n_total,
                 predicted_n_pixels, pct_of_inference,
                 balanced_recall, median_leverage,
