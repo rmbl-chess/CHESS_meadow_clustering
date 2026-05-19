@@ -1,6 +1,18 @@
 # Sampling-Priority Guide
 
-`data/derived/sampling_priority.gpkg` ranks 5,354 candidate AOP pixels by how much each one would help the meadow / shrub classifier improve if a field crew went out and labeled it. This document explains what the labels mean, how the leverage score is built, and how to use the file in the field.
+The 2026 CHESS sampling priority dataset ranks 5,354 candidate AOP pixels by how much each one would help the meadow / shrub classifier improve if a field crew went out and labeled it. This document explains what the labels mean, how the leverage score is built, and how to use the file in the field.
+
+## Files for the team
+
+In `Google Drive / BreckheimerLab2025 / Projects / CHESS / Projects / Sampling_Priority_2026 / datasets / `:
+
+| File | What it is |
+|---|---|
+| `Meadow_shrub_sampling_priority_2026_5_19.gpkg` | **Primary deliverable** — 5,354 candidate pixels with leverage scores, predicted class, and novelty metrics. |
+| `Meadow_shrub_class_summary_table_2026_5_19.csv` | One row per class (47 classes) with 2018/2025 support, basin prevalence, recall, indicator + abundant taxa, narrative descriptions, median leverage, and augmentation priority. |
+| `Meadow_shrub_joint_training_2026_05_19.gpkg` | All 858 training sites (548 meadow + 310 shrub) as crown polygons + centroids, enriched with class summary attributes — for inspecting where each class is currently sampled. |
+
+These are versioned snapshots of `sampling_priority.gpkg`, `class_summary_table.csv`, and `joint_training.gpkg` in the analysis repo. Use the dated copies above for fieldwork planning; the repo holds the canonical source.
 
 ## What's in the gpkg
 
@@ -48,12 +60,12 @@ Multiplying these two signals captures the kind of pixel a new field plot helps 
 
 ## How to use it in QGIS / in the field
 
-1. **Load** `sampling_priority.gpkg` in QGIS.
+1. **Load** `Meadow_shrub_sampling_priority_2026_5_19.gpkg` in QGIS.
 2. **Symbolize** the points: graduated colors on `leverage` (quantile bins). Highest-leverage pixels jump out visually.
 3. **Filter** by `augmentation_priority IN ('critical', 'high')` to focus on the urgent classes first.
 4. **Label** points by `class_description` so the predicted vegetation type shows on the map.
-5. **Plan routes**: `data/derived/sampling_priority_top.csv` already holds the top 10 leverage pixels per predicted class (346 sites across 42 classes). Filter by `domain` and `augmentation_priority` to scope a single field day.
-6. **Cross-check** with `data/derived/punch_list.csv` for a class-level summary (training N, recall, predicted area, top confusions) before heading out.
+5. **Cross-check** with `Meadow_shrub_class_summary_table_2026_5_19.csv` for a class-level summary (training N, recall, predicted area, indicator taxa, top confusions) before heading out.
+6. **See existing training** by overlaying `Meadow_shrub_joint_training_2026_05_19.gpkg` (the `training_sites_points` layer) so you can avoid re-sampling well-covered classes.
 
 ## What the priority buckets mean
 
@@ -65,7 +77,7 @@ Multiplying these two signals captures the kind of pixel a new field plot helps 
 ## Caveats
 
 - `predicted_label` reflects the *unweighted* RF (script 38) — it shows the realistic class proportions for the basin. `balanced_recall` reflects the *weighted* RF (script 37) — it shows per-class quality at training time. Both are correct for their own purpose; just don't expect a class with high `balanced_recall` to also have high `predicted_n_pixels`.
-- The 5,354 inference pixels were drawn from R3D018 landcover class 3 (meadow) with strict neighborhood-purity filters. **Shrub leverage is therefore undercounted** in this dataset because shrub crowns are rare in the meadow sample. For shrub-specific priorities, work from `punch_list.csv` directly or generate a shrub-targeted inference set.
+- The 5,354 inference pixels were drawn from R3D018 landcover class 3 (meadow) with strict neighborhood-purity filters. **Shrub leverage is therefore undercounted** in this dataset because shrub crowns are rare in the meadow sample. For shrub-specific priorities, work from the class summary table directly (filter `class_type == "shrub"`) — a separate shrub-targeted inference run is planned.
 - ~94% of inference pixels exceed the OOD threshold. Hand-picked field crowns are spectrally tighter than random basin pixels — the threshold is calibrated against training distribution, so OOD is genuinely common. Treat `nearest_d` as a continuous ranking rather than the binary `ood_flag`.
 - Predicted classes for high-`nearest_d` pixels are extrapolations: the classifier picked the closest known class, but it might be a class that doesn't even exist in the training set. New samples in these regions sometimes warrant a new class.
 - Salix is at genus-plus-4 granularity by design. Don't expect a `Salix drummondiana` candidate to recover species-level resolution within Salix — that's not currently mappable.
