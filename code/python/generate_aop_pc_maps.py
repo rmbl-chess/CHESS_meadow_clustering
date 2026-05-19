@@ -30,11 +30,10 @@ Designed for the cloud server with AOP S3 data. For local testing, pass
 --tile-limit N to process only the first N tiles. Skips tiles whose output
 already exists, so re-running fills in gaps.
 
-Tile inventory is read directly from S3 via `aws s3 ls --no-sign-request`,
-so the AWS CLI must be on PATH.
+Tile inventory is read directly from S3 via boto3 (anonymous access).
 
 Required packages:
-    icechunk xarray rasterio numpy pandas
+    icechunk xarray rasterio numpy pandas boto3
 
 Usage:
     python generate_aop_pc_maps.py \\
@@ -106,28 +105,36 @@ def match_kept_bands(wls_full: np.ndarray, kept_wls: np.ndarray) -> np.ndarray:
 
 
 def list_tiles_s3(domains: list[str], year: int) -> pd.DataFrame:
-    """List AOP tile filenames per domain via `aws s3 ls --no-sign-request`.
+    """List AOP tile filenames per domain via boto3 (anonymous).
 
     Returns a DataFrame with columns (domain, tile, easting, northing).
     Matches the inventory R 22_target_pixels.R writes to aop_coverage.gpkg.
+    boto3 is used rather than the AWS CLI so this works on servers without
+    the CLI installed (it is pulled in by icechunk's S3 backend).
     """
+    import boto3
+    from botocore import UNSIGNED
+    from botocore.client import Config
+
+    s3 = boto3.client(
+        "s3", region_name="us-east-2",
+        config=Config(signature_version=UNSIGNED),
+    )
     rows = []
-    pat = re.compile(r"([^ ]+_rfl_(\d+)_(\d+)\.nc)$")
+    pat = re.compile(r"([^/]+_rfl_(\d+)_(\d+)\.nc)$")
     for dom in domains:
-        prefix = f"s3://rmbl-chess-data/AOP/spectrometer/mosaic/{dom}/{year}/"
-        res = subprocess.run(
-            ["aws", "s3", "ls", "--no-sign-request", prefix],
-            capture_output=True, text=True, check=True,
-        )
-        for line in res.stdout.splitlines():
-            m = pat.search(line)
-            if m:
-                rows.append({
-                    "domain":   dom,
-                    "tile":     m.group(1),
-                    "easting":  int(m.group(2)),
-                    "northing": int(m.group(3)),
-                })
+        prefix = f"AOP/spectrometer/mosaic/{dom}/{year}/"
+        paginator = s3.get_paginator("list_objects_v2")
+        for page in paginator.paginate(Bucket="rmbl-chess-data", Prefix=prefix):
+            for obj in page.get("Contents", []):
+                m = pat.search(obj["Key"])
+                if m:
+                    rows.append({
+                        "domain":   dom,
+                        "tile":     m.group(1),
+                        "easting":  int(m.group(2)),
+                        "northing": int(m.group(3)),
+                    })
     return pd.DataFrame(rows)
 
 
