@@ -3,3 +3,5 @@ campaign,raw_name,canonical_name,gbif_id,needs_review,note
 2018,RubIda,Rubus idaeus,2993094,FALSE,"2018 cover used RubIda; missing from 2018 species_list but present in 2025 as Rubus idaeus."
 2018,engelmann,Picea engelmannii,5284917,FALSE,"2018 cover used lowercase ""engelmann""; species_list has ""Engelmann"" — case mismatch."
 2025,Melanthiaceae-Veratrum californicum,Veratrum tenuipetalum,,FALSE,"V. californicum and V. tenuipetalum are synonymized in the RMBL flora; the 2018 list explicitly notes *syn. = V. californicum var. californicum. Treat all Veratrum samples as V. tenuipetalum."
+2018,PenFlo,Dasiphora fruticosa,5370380,FALSE,"2018 list uses segregate Pentaphylloides floribunda; 2025 uses Dasiphora fruticosa (modern accepted). Synonyms per the 2018 species_list note: *syn. = Potentilla fruticosa, Dasiphora fruticosa."
+2018,PsyLep,Caltha leptosepala,5371684,FALSE,"2018 list uses segregate Psychrophila leptosepala; 2025 uses Caltha leptosepala (modern accepted). 2018 species_list explicitly preferred Caltha (*syn. = Caltha leptosepala)."

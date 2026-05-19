@@ -62,18 +62,22 @@ auto <- summ |>
                               elevation_cue, habitat_cue, top_indicator)
   )
 
-# If a curated CSV already exists, preserve the narrative_curated and notes
-# columns; otherwise create empty ones.
+# Preserve user-edited columns (narrative_draft, narrative_curated, notes).
+# narrative_draft is auto-generated on first run but treated as user-editable
+# afterwards. Re-running this script never clobbers a non-NA hand-tuned value.
+# To force regeneration of all narrative_draft values, set the env var
+# CHESS_REGEN_NARRATIVES=1 before running.
 out_path <- "data/small_reference/label_community_names.csv"
-if (file.exists(out_path)) {
-  existing <- readr::read_csv(out_path, show_col_types = FALSE) |>
+existing <- if (file.exists(out_path)) {
+  readr::read_csv(out_path, show_col_types = FALSE) |>
     dplyr::select(final_label,
-                  dplyr::any_of(c("narrative_curated", "notes")))
+                  dplyr::any_of(c("narrative_draft", "narrative_curated", "notes"))) |>
+    dplyr::rename_with(~ paste0(.x, "_existing"), -final_label)
 } else {
-  existing <- tibble::tibble(final_label = character(),
-                             narrative_curated = character(),
-                             notes = character())
+  tibble::tibble(final_label = character())
 }
+
+force_regen <- isTRUE(nzchar(Sys.getenv("CHESS_REGEN_NARRATIVES", "")))
 
 out <- auto |>
   dplyr::select(final_label, n_sites, n_2018, n_2025, recall, tier,
@@ -81,9 +85,19 @@ out <- auto |>
                 bare_pct, npv_pct, narrative_draft) |>
   dplyr::left_join(existing, by = "final_label") |>
   dplyr::mutate(
-    narrative_curated = dplyr::coalesce(narrative_curated, NA_character_),
-    notes             = dplyr::coalesce(notes,             NA_character_)
+    # Keep existing hand-tuned narrative_draft unless told to regenerate.
+    narrative_draft = if (force_regen) {
+      narrative_draft
+    } else {
+      dplyr::coalesce(.data$narrative_draft_existing %||% NA_character_,
+                      narrative_draft)
+    },
+    narrative_curated = .data$narrative_curated_existing %||% NA_character_,
+    notes             = .data$notes_existing %||% NA_character_
   ) |>
+  dplyr::select(-dplyr::any_of(c("narrative_draft_existing",
+                                 "narrative_curated_existing",
+                                 "notes_existing"))) |>
   dplyr::arrange(snow_free_doy_mean)
 
 dir.create("data/small_reference", showWarnings = FALSE, recursive = TRUE)

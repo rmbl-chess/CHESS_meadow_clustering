@@ -1,27 +1,27 @@
-final_label,n_sites,n_2018,n_2025,recall,tier,snow_free_doy_mean,top_indicator,top_abundant,bare_pct,npv_pct,narrative_curated,narrative_draft,notes
-S20,6,0,6,0.8333333333333334,strong,100.78671391805013,Chrysothamnus depressus,Chrysothamnus depressus,55,6.7,NA,Low-elevation Chrysothamnus-Balsamorhiza dry shrub-steppe on open ground,Earliest-melting end of the gradient
-S21,13,0,13,0.6923076923076923,marginal,101.1731966458834,Ericameria nauseosa,Artemisia tridentata,20.8,28.8,NA,Low-elevation Artemisia-Ericameria sage shrubland,
-S19,10,0,10,1,strong,104.19846115112304,Balsamorhiza sagittata,Balsamorhiza sagittata,26,12,NA,Low-elevation Balsamorhiza-Wyethia mule-ear flower-field with Symphoricarpos shrubs,
-S07,35,1,34,0.8285714285714286,strong,105.39644775390624,Purshia tridentata,Purshia tridentata,37.6,15,NA,Mid-low elevation Purshia-Arctostaphylos-Mahonia evergreen shrubland,Dry sage-shrub gradient
-S22,5,0,5,0.2,weak,120.92691802978516,Festuca thurberi,Festuca thurberi,NA,47,NA,Festuca thurberi-Artemisia grass-shrub mosaic,
-S12,20,2,18,0.9,strong,124.47097282409668,Galium boreale,Potentilla pulcherrima,6.5,28,NA,Mid-elevation Potentilla-Heliomeris-Artemisia open meadow on sandy or disturbed substrate,
-S08,56,1,55,0.875,strong,124.93771035330636,Festuca saximontana,Festuca thurberi,9.9,21.2,NA,Festuca thurberi montane bunchgrass meadow with scattered Artemisia and Erigeron,Large generalist class
-S03,1,1,0,0,weak,130.08863830566406,Potentilla pulcherrima,Potentilla pulcherrima,0,20,NA,Singleton: pure Potentilla pulcherrima patch,Not a real class
-S23,14,0,14,1,strong,133.9848153250558,Amelanchier alnifolia,Eriogonum umbellatum,46.8,13.6,NA,Subalpine Eriogonum-Heterotheca dry rocky bench with Artemisia and Festuca thurberi,
-S01,46,34,12,0.8913043478260869,strong,136.24602707572606,Valeriana occidentalis,Veratrum tenuipetalum,3.8,20.5,NA,Subalpine mesic forb meadow generalist: Ligusticum-Potentilla-Frasera-Lathyrus mix,Large mesic-meadow generalist class
-S24,10,0,10,0.7,marginal,137.96686248779298,Caltha leptosepala,Caltha leptosepala,NA,8,NA,Subalpine Caltha leptosepala-Carex aquatilis snowmelt wetland with Delphinium,Marsh marigold pond margins
-S11,37,2,35,0.7837837837837838,marginal,140.69055423221073,Heliomeris multiflora,Heliomeris multiflora,25.5,14.7,NA,Subalpine Heliomeris-Eriogonum-Potentilla open forb meadow,Dry-side mid forb meadow
-S04,17,7,10,0.8823529411764706,strong,144.73874125761145,Carex sp.,Carex sp.,NA,30.9,NA,Subalpine sedge-grass wet meadow: Carex sp.-Deschampsia-Festuca thurberi with Caltha,
-S09,26,6,20,0.8461538461538461,strong,145.39120483398438,Taraxacum officinale,Carex aquatilis,NA,11,NA,Subalpine wet sedge meadow: Carex aquatilis-Juncus arcticus-Deschampsia,Disturbance indicators (Taraxacum) frequent; possibly hay-cut or grazed
-S25,15,0,15,0.8666666666666667,strong,146.88614400227866,Agoseris glauca,Achillea millefolium,NA,11.3,NA,Subalpine Achillea-Antennaria-Salix wolfii moist forb-shrub meadow,
-S05,70,53,17,0.9,strong,147.751541355678,Ligusticum porteri,Ligusticum porteri,4.6,10,NA,Subalpine tall-forb meadow: Ligusticum-Osmorhiza-Delphinium-Lathyrus generalist,Largest mesic-meadow strong class
-S06,25,21,4,0.72,marginal,148.0200994873047,Ligusticum porteri,Ligusticum porteri,3.8,5.6,NA,Subalpine Ligusticum porteri-dominated mesic forb meadow with Lathyrus and Thalictrum,
-S02,24,19,5,0.875,strong,150.5419553120931,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,2.5,NA,Upper subalpine Veratrum tenuipetalum tall-forb wet meadow,Iconic RMBL Veratrum meadow
-S15,15,4,11,0.8,strong,153.91510111490885,Mertensia ciliata,Veratrum tenuipetalum,1,1.7,NA,Upper subalpine Mertensia-Corydalis-Heracleum-Veratrum tall-forb wet drainage,Riparian / streamside
-S14,27,15,12,0.8148148148148148,strong,154.24134205005788,Festuca idahoensis,Ligusticum porteri,18.5,8.7,NA,Upper subalpine Helianthella-Vaccinium-Ligusticum mixed forb-shrub meadow,
-S17,19,3,16,0.8421052631578947,strong,160.16924245733964,Arnica mollis,Deschampsia cespitosa,10,17.9,NA,Upper subalpine Arnica mollis-Deschampsia-Festuca thurberi wet-mesic meadow,
-S13,12,2,10,0.8333333333333334,strong,162.20050557454428,Bromopsis ciliata,Heterotheca villosa,40.4,10,NA,Upper subalpine Heterotheca-Bromopsis-Senecio dry rocky slope,Dry rocky bench
-S26,12,0,12,0.8333333333333334,strong,165.5988337198893,Carex saxatilis,Carex saxatilis,18.8,17.5,NA,Late-melt Carex saxatilis-Vaccinium subalpine wetland-scrub,
-S16,13,9,4,0.6923076923076923,marginal,170.27689185509314,Vaccinium cespitosum,Vaccinium cespitosum,7.7,9.6,NA,Late-melt Vaccinium cespitosum-Acomastylis-Arnica alpine/subalpine scrub,
-S18,1,1,0,0,weak,170.93634033203125,Carex aquatilis,Carex aquatilis,0,0,NA,Singleton: pure Carex aquatilis wet site,Not a real class
-S10,19,18,1,0.8421052631578947,strong,172.43385395250823,Psychrophila leptosepala,Psychrophila leptosepala,NA,3.4,NA,Late-melt Psychrophila leptosepala-Corydalis-Tolmachevia tall-forb snowbed meadow,Snow-melt-fed mesic herbland
+final_label,n_sites,n_2018,n_2025,recall,tier,snow_free_doy_mean,top_indicator,top_abundant,bare_pct,npv_pct,narrative_draft,narrative_curated,notes
+S20,6,0,6,0.8333333333333334,strong,100.78671391805013,Chrysothamnus depressus,Chrysothamnus depressus,55,6.7,Low-elevation Chrysothamnus-Balsamorhiza dry shrub-steppe on open ground,NA,Earliest-melting end of the gradient
+S21,13,0,13,0.6923076923076923,marginal,101.1731966458834,Ericameria nauseosa,Artemisia tridentata,20.8,28.8,Low-elevation Artemisia-Ericameria sage shrubland,NA,NA
+S19,10,0,10,1,strong,104.19846115112304,Balsamorhiza sagittata,Balsamorhiza sagittata,26,12,Low-elevation Balsamorhiza-Wyethia mule-ear flower-field with Symphoricarpos shrubs,NA,NA
+S07,35,1,34,0.8285714285714286,strong,105.39644775390624,Purshia tridentata,Purshia tridentata,37.6,15,Mid-low elevation Purshia-Arctostaphylos-Mahonia evergreen shrubland,NA,Dry sage-shrub gradient
+S22,5,0,5,0.2,weak,120.92691802978516,Festuca thurberi,Festuca thurberi,NA,47,Festuca thurberi-Artemisia grass-shrub mosaic,NA,NA
+S12,20,2,18,0.9,strong,124.47097282409668,Galium boreale,Potentilla pulcherrima,6.5,28,Mid-elevation Potentilla-Heliomeris-Artemisia open meadow on sandy or disturbed substrate,NA,NA
+S08,56,1,55,0.875,strong,124.93771035330636,Festuca saximontana,Festuca thurberi,9.9,21.2,Festuca thurberi montane bunchgrass meadow with scattered Artemisia and Erigeron,NA,Large generalist class
+S03,1,1,0,0,weak,130.08863830566406,Potentilla pulcherrima,Potentilla pulcherrima,0,20,Singleton: pure Potentilla pulcherrima patch,NA,Not a real class
+S23,14,0,14,1,strong,133.9848153250558,Amelanchier alnifolia,Eriogonum umbellatum,46.8,13.6,Subalpine Eriogonum-Heterotheca dry rocky bench with Artemisia and Festuca thurberi,NA,NA
+S01,46,34,12,0.8913043478260869,strong,136.24602707572606,Valeriana occidentalis,Veratrum tenuipetalum,3.8,20.5,Montane sagebrush-margin forb meadow: Veratrum-Frasera-Potentilla-Bromopsis mix with scattered Artemisia tridentata and Dasiphora fruticosa shrubs,NA,"Drier ecotone with sagebrush steppe (early melt, no Ligusticum dominance)"
+S24,10,0,10,0.7,marginal,137.96686248779298,Caltha leptosepala,Caltha leptosepala,NA,8,Subalpine Caltha leptosepala-Carex aquatilis snowmelt wetland with Delphinium,NA,Marsh marigold pond margins
+S11,37,2,35,0.7837837837837838,marginal,140.69055423221073,Heliomeris multiflora,Heliomeris multiflora,25.5,14.7,Subalpine Heliomeris-Eriogonum-Potentilla open forb meadow,NA,Dry-side mid forb meadow
+S04,17,7,10,0.8823529411764706,strong,144.73874125761145,Carex sp.,Carex sp.,NA,30.9,Subalpine sedge-grass wet meadow: Carex sp.-Deschampsia-Festuca thurberi with Caltha,NA,NA
+S09,26,6,20,0.8461538461538461,strong,145.39120483398438,Taraxacum officinale,Carex aquatilis,NA,11,Subalpine wet sedge meadow: Carex aquatilis-Juncus arcticus-Deschampsia,NA,Disturbance indicators (Taraxacum) frequent; possibly hay-cut or grazed
+S25,15,0,15,0.8666666666666667,strong,146.88614400227866,Agoseris glauca,Achillea millefolium,NA,11.3,Subalpine Achillea-Antennaria-Salix wolfii moist forb-shrub meadow,NA,NA
+S05,70,53,17,0.9,strong,147.751541355678,Ligusticum porteri,Ligusticum porteri,4.6,10,"Subalpine Ligusticum porteri tall-forb meadow with Osmorhiza, Delphinium, Thalictrum, Lathyrus",NA,"True subalpine forb meadow (later melt, no Artemisia)"
+S06,25,21,4,0.72,marginal,148.0200994873047,Ligusticum porteri,Ligusticum porteri,3.8,5.6,Subalpine Ligusticum porteri-dominated mesic forb meadow with Lathyrus and Thalictrum,NA,NA
+S02,24,19,5,0.875,strong,150.5419553120931,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,2.5,Upper subalpine Veratrum tenuipetalum tall-forb wet meadow,NA,Iconic RMBL Veratrum meadow
+S15,15,4,11,0.8,strong,153.91510111490885,Mertensia ciliata,Veratrum tenuipetalum,1,1.7,Upper subalpine Mertensia-Corydalis-Heracleum-Veratrum tall-forb wet drainage,NA,Riparian / streamside
+S14,27,15,12,0.8148148148148148,strong,154.24134205005788,Festuca idahoensis,Ligusticum porteri,18.5,8.7,Upper subalpine Helianthella-Vaccinium-Ligusticum mixed forb-shrub meadow,NA,NA
+S17,19,3,16,0.8421052631578947,strong,160.16924245733964,Arnica mollis,Deschampsia cespitosa,10,17.9,Upper subalpine Arnica mollis-Deschampsia-Festuca thurberi wet-mesic meadow,NA,NA
+S13,12,2,10,0.8333333333333334,strong,162.20050557454428,Bromopsis ciliata,Heterotheca villosa,40.4,10,Upper subalpine Heterotheca-Bromopsis-Senecio dry rocky slope,NA,Dry rocky bench
+S26,12,0,12,0.8333333333333334,strong,165.5988337198893,Carex saxatilis,Carex saxatilis,18.8,17.5,Late-melt Carex saxatilis-Vaccinium subalpine wetland-scrub,NA,NA
+S16,13,9,4,0.6923076923076923,marginal,170.27689185509314,Vaccinium cespitosum,Vaccinium cespitosum,7.7,9.6,Late-melt Vaccinium cespitosum-Acomastylis-Arnica alpine/subalpine scrub,NA,NA
+S18,1,1,0,0,weak,170.93634033203125,Carex aquatilis,Carex aquatilis,0,0,Singleton: pure Carex aquatilis wet site,NA,Not a real class
+S10,19,18,1,0.8421052631578947,strong,172.43385395250823,Caltha leptosepala,Caltha leptosepala,NA,3.4,Late-melt Caltha leptosepala-Corydalis-Tolmachevia tall-forb snowbed meadow,NA,Snow-melt-fed mesic herbland
