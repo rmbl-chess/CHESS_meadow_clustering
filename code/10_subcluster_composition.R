@@ -241,6 +241,50 @@ asg <- asg |>
   dplyr::mutate(inference_distance = NA_real_, inference_gap = NA_real_) |>
   dplyr::bind_rows(asg_2018)
 
+# --- Monotypic-stand species overrides --------------------------------------
+# Some species form dense monotypic stands worth mapping as their own
+# classes. A site with >= monotypic_threshold cover of a candidate species
+# gets its final_label overridden to a monotypic class code (Mxx_...).
+# Each site can only trigger one override (cover sums to 100 per site).
+monotypic_threshold <- 70
+monotypic_table <- tibble::tribble(
+  ~species_col,                 ~label,
+  "Veratrum_tenuipetalum_cover", "M01_Veratrum_tenuipetalum",
+  "Ligusticum_porteri_cover",     "M02_Ligusticum_porteri",
+  "Caltha_leptosepala_cover",     "M03_Caltha_leptosepala",
+  "Corydalis_caseana_cover",      "M04_Corydalis_caseana",
+  "Osmorhiza_occidentalis_cover", "M05_Osmorhiza_occidentalis"
+)
+
+# Pull just the candidate cover columns from the joined veg+spectra table.
+cover_for_override <- readRDS("data/derived/cover_combined.rds") |>
+  dplyr::select(site_number, Year,
+                dplyr::any_of(monotypic_table$species_col))
+
+asg <- asg |>
+  dplyr::left_join(cover_for_override, by = c("site_number", "Year")) |>
+  dplyr::mutate(monotypic_species = NA_character_)
+
+n_overridden_per_species <- integer(nrow(monotypic_table))
+names(n_overridden_per_species) <- monotypic_table$label
+for (i in seq_len(nrow(monotypic_table))) {
+  col <- monotypic_table$species_col[i]
+  lbl <- monotypic_table$label[i]
+  if (!col %in% names(asg)) next
+  mask <- !is.na(asg[[col]]) & asg[[col]] >= monotypic_threshold
+  n_overridden_per_species[i] <- sum(mask)
+  asg$final_label[mask]       <- lbl
+  asg$monotypic_species[mask] <- sub("_cover$", "", col)
+  asg$spec_cluster[mask]      <- lbl   # also override spec_cluster for consistency
+}
+cat(sprintf("\nMonotypic overrides applied (threshold = %d%% cover):\n",
+            monotypic_threshold))
+print(tibble::tibble(label = names(n_overridden_per_species),
+                     n_sites = n_overridden_per_species))
+
+# Drop the temporary cover columns (we keep monotypic_species as the flag).
+asg <- asg |> dplyr::select(-dplyr::any_of(monotypic_table$species_col))
+
 # --- RF eval on the CLUSTERED 2025 set only (NOT the inferred 2018) -------
 # Including inferred labels in CV would be circular -- they were assigned
 # by composition similarity, not learned from spectra.

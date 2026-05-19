@@ -19,7 +19,27 @@ suppressPackageStartupMessages({
 })
 
 desc <- readr::read_csv("data/derived/label_descriptions.csv", show_col_types = FALSE)
-summ <- readr::read_csv("data/derived/training_labels_summary.csv", show_col_types = FALSE)
+# Build summ from final_clusters_B.rds + env (NOT from training_labels_summary.csv,
+# which would create a circular dep with 16_export_training_samples.R).
+fc  <- readRDS("data/derived/final_clusters_B.rds")
+env <- readRDS("data/derived/environment.rds")
+env_per_label <- fc$assignments |>
+  dplyr::inner_join(env, by = c("site_number", "Year")) |>
+  dplyr::group_by(final_label) |>
+  dplyr::summarise(snow_free_doy_mean = mean(snow_free_doy, na.rm = TRUE),
+                   .groups = "drop")
+tier_of <- function(r) dplyr::case_when(
+  is.na(r) | r < 0.50 ~ "weak",
+  r        < 0.80     ~ "marginal",
+  TRUE                ~ "strong"
+)
+summ <- fc$final_summary |>
+  dplyr::transmute(final_label,
+                   n_sites = n,
+                   n_2018, n_2025,
+                   recall = as.numeric(recall),
+                   tier = tier_of(recall)) |>
+  dplyr::left_join(env_per_label, by = "final_label")
 
 # Helper: strip the "(cov=..., freq=..., IV=...)" tails to get clean species name.
 first_species <- function(top_string) {

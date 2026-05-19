@@ -1,27 +1,32 @@
-final_label,n_sites,n_2018,n_2025,recall,tier,snow_free_doy_mean,top_indicator,top_abundant,bare_pct,npv_pct,narrative_curated,notes,narrative_draft
-S07,9,0,9,0.8888888888888888,strong,92.1180148654514,Chrysothamnus viscidiflorus,Chrysothamnus viscidiflorus,48.9,12.2,NA,Earliest-melting; 2025 sampling only,Low-elevation Chrysothamnus viscidiflorus-Achnatherum hymenoides dwarf rabbitbrush steppe
-S09,4,0,4,0,weak,95.98818016052246,Arctostaphylos uva-ursi,Arctostaphylos uva-ursi,12.5,15,NA,Tiny class; weak recall,Low-elevation Arctostaphylos uva-ursi-Purshia tridentata dryland scrub
-S08,12,0,12,0.75,marginal,98.41586621602376,Purshia tridentata,Purshia tridentata,33.8,21.7,NA,NA,Low-elevation Purshia tridentata-Mahonia repens evergreen shrubland
-S02,6,0,6,0.8333333333333334,strong,100.78671391805013,Chrysothamnus depressus,Chrysothamnus depressus,55,6.7,NA,Earliest-melting end; no 2018 East River analogues,Low-elevation Chrysothamnus depressus-Balsamorhiza sagittata dwarf rabbitbrush steppe
-S01,10,0,10,1,strong,104.19846115112304,Balsamorhiza sagittata,Balsamorhiza sagittata,26,12,NA,Perfect recall on bright spring forb display,Low-elevation Balsamorhiza sagittata-Wyethia amplexicaulis mule-ear flower-field
-S03,14,0,14,0.7142857142857143,marginal,107.22124426705496,Ericameria nauseosa,Artemisia tridentata,22.1,27.5,NA,NA,Low-elevation Artemisia tridentata-Ericameria nauseosa sage-rabbitbrush shrubland
-S06,38,0,38,0.868421052631579,strong,120.67505987066971,Lupinus bakeri,Artemisia tridentata,16.6,18,NA,Generalist sage-shrub class,Mid-elevation Artemisia tridentata-Arctostaphylos uva-ursi sage-bearberry shrub-grass mosaic
-S04,17,2,15,0.8,strong,121.10207277185776,Festuca thurberi,Festuca thurberi,1.7,33.7,NA,Strong Festuca thurberi indicator (80% frequency),Mid-elevation Festuca thurberi-Erigeron speciosus montane bunchgrass meadow
-S05,26,4,22,0.9545454545454546,strong,124.28268814086914,Oxytropis deflexa,Oxytropis deflexa,NA,25.5,NA,NA,Mid-elevation Oxytropis deflexa-Geum triflorum short-stature forb meadow
-S26,7,0,7,1,strong,130.0302025931222,Carex sp.,Carex sp.,NA,37.1,NA,Sedge-dominated mid-elevation wetland,Subalpine Carex-Caltha leptosepala sedge wet meadow
-S25,19,9,10,1,strong,130.62660016511617,Artemisia cana,Potentilla hippiana,7.5,50.5,NA,Perfect recall; small class,Mid-elevation Artemisia cana-Potentilla hippiana low sage-forb meadow
-S20,33,15,18,0.8888888888888888,strong,136.89569276751894,Taraxacum officinale,Taraxacum officinale,13.9,12.8,NA,Taraxacum officinale prominent; suggests hay-cut or grazed pastures,Subalpine Taraxacum officinale-Achillea millefolium disturbed herbland
-S17,8,2,6,0.5,marginal,139.20858764648438,Caltha leptosepala,Caltha leptosepala,2.5,10,NA,Marsh-marigold seep / pond margin,Subalpine Caltha leptosepala-Carex aquatilis snowmelt wetland
-S10,18,2,16,1,strong,139.93260871039496,Heterotheca villosa,Eriogonum umbellatum,47.5,12.5,NA,Perfect recall; dry rocky aspect,Subalpine Heterotheca villosa-Eriogonum umbellatum rocky shrub-bench
-S14,41,28,13,0.7692307692307693,marginal,141.84951893876237,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,5,NA,Iconic tall-forb wet meadow,Subalpine Veratrum tenuipetalum-Delphinium barbeyi tall-forb wet meadow
-S15,25,10,15,0.6666666666666666,marginal,142.0852883911133,Ipomopsis aggregata,Heterotheca villosa,51,11.7,NA,Marginal; >50% bare,Subalpine Heterotheca villosa-Heliomeris multiflora sparse rocky meadow
-S16,14,2,12,0.75,marginal,143.2229232788086,Carex aquatilis,Carex aquatilis,NA,15.4,NA,NA,Subalpine Carex aquatilis-Deschampsia cespitosa wet sedge-grass meadow
-S12,52,22,30,0.9,strong,146.7462301987868,Heliomeris multiflora,Vaccinium cespitosum,21.3,13.5,NA,NA,Subalpine Vaccinium cespitosum-Heliomeris multiflora dwarf-shrub forb meadow
-S22,18,4,14,0.8571428571428571,strong,146.77677239312067,Agoseris glauca,Antennaria corymbosa,NA,11.8,NA,Strong herbaceous wetland indicators,Subalpine Antennaria corymbosa-Salix wolfii moist willow-margin meadow
-S13,57,39,18,0.7777777777777778,marginal,149.66925530684622,Ligusticum porteri,Ligusticum porteri,5.8,7.2,NA,Canonical East River mesic forb meadow,Upper subalpine Ligusticum porteri-Eucephalus engelmannii mesic tall-forb meadow
-S11,35,11,24,0.7916666666666666,marginal,151.1251926967076,Arnica mollis,Festuca thurberi,11.7,23.1,NA,NA,Upper subalpine Festuca thurberi-Arnica mollis-Ligusticum porteri mesic grass-forb meadow
-S18,8,1,7,0.7142857142857143,marginal,161.46328163146973,Bromopsis ciliata,Heterotheca villosa,38.6,11.4,NA,NA,Upper subalpine Heterotheca villosa-Hymenoxys hoopesii dry rocky meadow
-S23,10,6,4,0.75,marginal,167.47781982421876,Bromopsis inermis,Deschampsia cespitosa,46.2,12.5,NA,Tiny class (n=4),Upper subalpine Deschampsia cespitosa-Vaccinium cespitosum sparse rocky meadow
-S21,13,7,6,0.8333333333333334,strong,168.4153078519381,Mertensia ciliata,Mertensia ciliata,2.5,3.3,NA,Streamside / riparian tall-forb community,Upper subalpine Mertensia ciliata-Heracleum maximum-Veratrum tenuipetalum tall-forb wet drainage
-S24,19,11,8,0.75,marginal,169.00970298365542,Carex saxatilis,Carex saxatilis,5,20,NA,NA,Upper subalpine Carex saxatilis-Arnica mollis sedge wetland
-S19,35,24,11,0.4545454545454546,weak,171.93250470842634,Vaccinium cespitosum,Vaccinium cespitosum,14.1,22.7,NA,Weak; recall 0.45,Upper subalpine Vaccinium cespitosum-Bistorta bistortoides dwarf-shrub meadow
+final_label,n_sites,n_2018,n_2025,recall,tier,snow_free_doy_mean,top_indicator,top_abundant,bare_pct,npv_pct,narrative_draft,narrative_curated,notes
+S07,9,0,9,0.8888888888888888,strong,92.1180148654514,Chrysothamnus viscidiflorus,Chrysothamnus viscidiflorus,48.9,12.2,Low-elevation Chrysothamnus viscidiflorus-Achnatherum hymenoides dwarf rabbitbrush steppe,NA,Earliest-melting; 2025 sampling only
+S09,4,0,4,0.25,weak,95.98818016052246,Arctostaphylos uva-ursi,Arctostaphylos uva-ursi,12.5,15,Low-elevation Arctostaphylos uva-ursi-Purshia tridentata dryland scrub,NA,Tiny class; weak recall
+S08,12,0,12,0.75,marginal,98.41586621602376,Purshia tridentata,Purshia tridentata,33.8,21.7,Low-elevation Purshia tridentata-Mahonia repens evergreen shrubland,NA,NA
+S02,6,0,6,0.8333333333333334,strong,100.78671391805013,Chrysothamnus depressus,Chrysothamnus depressus,55,6.7,Low-elevation Chrysothamnus depressus-Balsamorhiza sagittata dwarf rabbitbrush steppe,NA,Earliest-melting end; no 2018 East River analogues
+S01,10,0,10,1,strong,104.19846115112304,Balsamorhiza sagittata,Balsamorhiza sagittata,26,12,Low-elevation Balsamorhiza sagittata-Wyethia amplexicaulis mule-ear flower-field,NA,Perfect recall on bright spring forb display
+S03,14,0,14,0.8571428571428571,strong,107.22124426705496,Ericameria nauseosa,Artemisia tridentata,22.1,27.5,Low-elevation Artemisia tridentata-Ericameria nauseosa sage-rabbitbrush shrubland,NA,NA
+S06,38,0,38,0.9473684210526316,strong,120.67505987066971,Lupinus bakeri,Artemisia tridentata,16.6,18,Mid-elevation Artemisia tridentata-Arctostaphylos uva-ursi sage-bearberry shrub-grass mosaic,NA,Generalist sage-shrub class
+S04,17,2,15,0.9333333333333332,strong,121.10207277185776,Festuca thurberi,Festuca thurberi,1.7,33.7,Mid-elevation Festuca thurberi-Erigeron speciosus montane bunchgrass meadow,NA,Strong Festuca thurberi indicator (80% frequency)
+S05,26,4,22,1,strong,124.28268814086914,Oxytropis deflexa,Oxytropis deflexa,NA,25.5,Mid-elevation Oxytropis deflexa-Geum triflorum short-stature forb meadow,NA,NA
+S26,7,0,7,1,strong,130.0302025931222,Carex sp.,Carex sp.,NA,37.1,Subalpine Carex-Caltha leptosepala sedge wet meadow,NA,Sedge-dominated mid-elevation wetland
+S25,17,7,10,1,strong,130.3892781874713,Artemisia cana,Potentilla hippiana,7.5,50.5,Mid-elevation Artemisia cana-Potentilla hippiana low sage-forb meadow,NA,Perfect recall; small class
+S20,31,13,18,0.9444444444444444,strong,136.9283653997606,Taraxacum officinale,Taraxacum officinale,13.9,12.8,Subalpine Taraxacum officinale-Achillea millefolium disturbed herbland,NA,Taraxacum officinale prominent; suggests hay-cut or grazed pastures
+S17,6,1,5,0.8,strong,139.6428680419922,Phleum pratense,Carex aquatilis,3,12,Subalpine Caltha leptosepala-Carex aquatilis snowmelt wetland,NA,Marsh-marigold seep / pond margin
+S10,18,2,16,1,strong,139.93260871039496,Heterotheca villosa,Eriogonum umbellatum,47.5,12.5,Subalpine Heterotheca villosa-Eriogonum umbellatum rocky shrub-bench,NA,Perfect recall; dry rocky aspect
+M05_Osmorhiza_occidentalis,5,5,0,NA,weak,140.229052734375,NA,NA,NA,NA,Subalpine Osmorhiza occidentalis monotypic forb patch,NA,All 5 sites are inferred 2018; no spectral training
+S15,25,10,15,0.6666666666666666,marginal,142.0852883911133,Ipomopsis aggregata,Heterotheca villosa,51,11.7,Subalpine Heterotheca villosa-Heliomeris multiflora sparse rocky meadow,NA,Marginal; >50% bare
+S14,26,18,8,0.5,marginal,142.3592564509465,Delphinium barbeyi,Delphinium barbeyi,NA,6.9,Subalpine Veratrum tenuipetalum-Delphinium barbeyi tall-forb wet meadow,NA,Iconic tall-forb wet meadow
+S16,13,1,12,0.75,marginal,143.28148709810696,Carex aquatilis,Carex aquatilis,NA,15.4,Subalpine Carex aquatilis-Deschampsia cespitosa wet sedge-grass meadow,NA,NA
+M01_Veratrum_tenuipetalum,17,12,5,0.8,strong,144.98740611356848,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,1,Subalpine Veratrum tenuipetalum monotypic tall-forb stand,NA,Strong candidate; 5 2025 anchors support spectral training (recall 0.80)
+M02_Ligusticum_porteri,12,10,2,0,weak,146.2771759033203,Ligusticum porteri,Ligusticum porteri,NA,2.5,Subalpine Ligusticum porteri monotypic forb stand,NA,Only 2 2025 anchors; spectral training thin (recall 0.00 in CV)
+S12,52,22,30,0.9,strong,146.7462301987868,Heliomeris multiflora,Vaccinium cespitosum,21.3,13.5,Subalpine Vaccinium cespitosum-Heliomeris multiflora dwarf-shrub forb meadow,NA,NA
+S22,16,2,14,0.7857142857142857,marginal,146.82019424438477,Agoseris glauca,Antennaria corymbosa,NA,11.8,Subalpine Antennaria corymbosa-Salix wolfii moist willow-margin meadow,NA,Strong herbaceous wetland indicators
+S13,44,29,15,0.7333333333333333,marginal,150.26932109485972,Eucephalus engelmannii,Bromopsis sp.,7,8.3,Upper subalpine Ligusticum porteri-Eucephalus engelmannii mesic tall-forb meadow,NA,Canonical East River mesic forb meadow
+S11,35,11,24,0.875,strong,151.1251926967076,Arnica mollis,Festuca thurberi,11.7,23.1,Upper subalpine Festuca thurberi-Arnica mollis-Ligusticum porteri mesic grass-forb meadow,NA,NA
+M03_Caltha_leptosepala,5,3,2,0,weak,153.60030822753907,Rhodiola integrifolia,Caltha leptosepala,NA,2.5,Subalpine Caltha leptosepala monotypic snowmelt-wetland patch,NA,Only 2 2025 anchors; spectral training thin
+M04_Corydalis_caseana,5,5,0,NA,weak,156.65664978027343,NA,NA,NA,NA,Upper subalpine Corydalis caseana monotypic forb patch,NA,All 5 sites are inferred 2018; no spectral training
+S18,8,1,7,0.8571428571428571,strong,161.46328163146973,Bromopsis ciliata,Heterotheca villosa,38.6,11.4,Upper subalpine Heterotheca villosa-Hymenoxys hoopesii dry rocky meadow,NA,NA
+S23,10,6,4,0.5,marginal,167.47781982421876,Bromopsis inermis,Deschampsia cespitosa,46.2,12.5,Upper subalpine Deschampsia cespitosa-Vaccinium cespitosum sparse rocky meadow,NA,Tiny class (n=4)
+S24,19,11,8,0.5,marginal,169.00970298365542,Carex saxatilis,Carex saxatilis,5,20,Upper subalpine Carex saxatilis-Arnica mollis sedge wetland,NA,NA
+S21,10,4,6,0.8333333333333334,strong,169.95634002685546,Mertensia ciliata,Mertensia ciliata,2.5,3.3,Upper subalpine Mertensia ciliata-Heracleum maximum-Veratrum tenuipetalum tall-forb wet drainage,NA,Streamside / riparian tall-forb community
+S19,31,20,11,0.4545454545454546,weak,171.5456877677671,Vaccinium cespitosum,Vaccinium cespitosum,14.1,22.7,Upper subalpine Vaccinium cespitosum-Bistorta bistortoides dwarf-shrub meadow,NA,Weak; recall 0.45
