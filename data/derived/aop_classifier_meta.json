@@ -1,0 +1,17 @@
+{
+  "preprocessing": {
+    "description": "Per-pixel L2 normalization, then average across the 9 1m pixels in the 3x3 window centered on each 3m target. Apply water-band mask (see water_band_ranges_nm). Subtract PCA center, multiply by PCA rotation to get PC1..PC20.",
+    "water_band_ranges_nm": [
+      [1340, 1450],
+      [1800, 1950],
+      [2400, 9999]
+    ],
+    "no_data_sentinel": -9000,
+    "pixel_window_m": 3,
+    "bands_total": 426,
+    "bands_retained": 348,
+    "n_pcs": 20
+  },
+  "training_label_levels": ["M01_Veratrum_tenuipetalum", "M02_Ligusticum_porteri", "M03_Caltha_leptosepala", "M04_Corydalis_caseana", "M05_Osmorhiza_occidentalis", "S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24", "S25", "S26"],
+  "notes": "Classifier trained on training_samples_sites.csv with final_label as target. Features: spec_PC01..PC20, ndvi, ndwi, pri, red_edge_slope, cai, ndli, snow_free_doy."
+}

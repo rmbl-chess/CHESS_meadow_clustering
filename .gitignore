@@ -77,8 +77,15 @@ temp/
 
 # Big data — explicitly ignore; check in canonical inputs separately if needed
 data/raw/
-data/derived/
+data/derived/*
 data/cache/
+
+# Handoff artifacts that travel with the repo so cloud / collaborator
+# runs of the Python tools don't require a full R pipeline rebuild.
+!data/derived/target_pixels.csv
+!data/derived/aop_classifier_pca.csv
+!data/derived/aop_classifier_meta.json
+!data/derived/aop_classifier_indices.csv
 data/*.parquet
 data/*.feather
 *.h5
