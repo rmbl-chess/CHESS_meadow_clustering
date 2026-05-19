@@ -16,9 +16,9 @@ The CHESS map classifier needs training samples that are (a) spectrally separabl
 
 ## Pipeline
 
-R scripts under `code/` run in numeric order (`renv` environment assumed restored). Three logical phases:
+R scripts are grouped into one subdirectory per phase under `code/`; each phase is renumbered from 01 so the directory listing matches run order. `renv` env assumed restored.
 
-### Phase 1 — Meadow classes (01 → 24)
+### Phase 1 — Meadow classes (`code/meadow/`)
 
 | Step | Script | Output |
 |---|---|---|
@@ -28,45 +28,45 @@ R scripts under `code/` run in numeric order (`renv` environment assumed restore
 | Join AOP spectra | `04_join_spectra.R` | `data/derived/veg_spectra.rds` |
 | Preprocess features | `05_preprocess_features.R` | brightness-normed spectra + Hellinger cover + PCA |
 | Composition clusters | `06_cluster_composition.R` | initial composition-only k-means |
-| RF spectral separability | `07b_separability_rf.R` | recall + tier classification |
-| Iterative merging | `08_iterative_merge.R` | merged class set, threshold = 0.4 |
-| **Architecture B: spectra-first cluster** | `09_cluster_spectra.R` | Ward / PCs 2–12 + snow-free DOY, z-scaled |
-| Composition sub-clusters | `10_subcluster_composition.R` | within-spectral subclusters by composition |
-| Diagnostics | `11_visualizations.R`, `13_diagnose_env.R`, `15_diagnose_brightness.R` | PNGs in `output/` |
-| Environment join | `12_extract_environment.R` | snow-free DOY per site |
-| Sweep over K | `14_sweep_kspec.R` | RF accuracy vs spectral K |
-| Training-sample export | `16_export_training_samples.R` | `training_samples_*.{csv,gpkg}` |
-| Year-effect check | `17_year_effect_pcs.R` | confirms 2018 spectra drift; clustering uses 2025 only |
-| Class descriptions | `18_label_descriptions.R` | IndVal + abundant species tables |
-| Narrative drafts | `19_label_narratives.R` | `data/small_reference/label_community_names.csv` |
-| Inference QC | `20_inference_quality.R` | confidence tier per 2018 site |
-| Size distribution | `21_size_distribution.R` | class sizes for review |
-| **Target pixel selection** | `22_target_pixels.R` | `target_pixels.{csv,gpkg}` (6,000 stratified meadow pixels) |
+| Spectral separability (LDA / RF) | `07_spectral_separability.R`, `08_separability_rf.R` | recall + tier classification |
+| Iterative merging | `09_iterative_merge.R` | merged class set, threshold = 0.4 |
+| **Architecture B: spectra-first cluster** | `10_cluster_spectra.R` | Ward / PCs 2–12 + snow-free DOY, z-scaled |
+| Composition sub-clusters | `11_subcluster_composition.R` | within-spectral subclusters by composition |
+| Diagnostics | `12_visualizations.R`, `14_diagnose_env.R`, `16_diagnose_brightness.R` | PNGs in `output/` |
+| Environment join | `13_extract_environment.R` | snow-free DOY per site |
+| Sweep over K | `15_sweep_kspec.R` | RF accuracy vs spectral K |
+| Training-sample export | `17_export_training_samples.R` | `training_samples_*.{csv,gpkg}` |
+| Year-effect check | `18_year_effect_pcs.R` | confirms 2018 spectra drift; clustering uses 2025 only |
+| Class descriptions | `19_label_descriptions.R` | IndVal + abundant species tables |
+| Narrative drafts | `20_label_narratives.R` | `data/small_reference/label_community_names.csv` |
+| Inference QC | `21_inference_quality.R` | confidence tier per 2018 site |
+| Size distribution | `22_size_distribution.R` | class sizes for review |
+| **Target pixel selection** | `23_target_pixels.R` | `target_pixels.{csv,gpkg}` (6,000 stratified meadow pixels) |
 | Classifier-feature export | `24_export_classifier_model.R` | `aop_classifier_*.{csv,json}` — R → Python handoff |
 
-### Phase 2 — Shrub classes (30 → 35)
+### Phase 2 — Shrub classes (`code/shrub/`)
 
 | Step | Script | Output |
 |---|---|---|
-| Load shrub records | `30_shrub_load.R` | 2025 from `chess_shrub_site_cleaned.csv`; 2018 from `fractional_cover` filtered to shrub-dominated genera at 100 % cover |
-| Reconcile shrub taxonomy | `31_shrub_taxonomy.R` | `shrub_taxonomy_crosswalk.csv` (Pentaphylloides → Dasiphora; Distegia → Lonicera; …) |
-| Join AOP spectra | `32_shrub_join_spectra.R` | `shrub_veg_spectra.rds` (site_type=Shrub for 2025) |
-| Separability + dendrogram | `33_shrub_separability.R` | RF CV recall, centroid Ward dendrogram → identifies the Salix complex |
-| Final shrub label set | `34_shrub_label_set.R` | 16 classes: Salix split 4-way, Ribes / Juniperus collapsed, small-N classes dropped or aggregated |
-| Pixel-level shrub RF | `35_shrub_pixel_training.R` | Pixel-level training with NDVI ≥ 0.20 filter + DOY covariate; site-level fold CV. 72 % accuracy on 16 classes |
+| Load shrub records | `01_load.R` | 2025 from `chess_shrub_site_cleaned.csv`; 2018 from `fractional_cover` filtered to shrub-dominated genera at 100 % cover |
+| Reconcile shrub taxonomy | `02_taxonomy.R` | `shrub_taxonomy_crosswalk.csv` (Pentaphylloides → Dasiphora; Distegia → Lonicera; …) |
+| Join AOP spectra | `03_join_spectra.R` | `shrub_veg_spectra.rds` (site_type=Shrub for 2025) |
+| Separability + dendrogram | `04_separability.R` | RF CV recall, centroid Ward dendrogram → identifies the Salix complex |
+| Final shrub label set | `05_label_set.R` | 16 classes: Salix split 4-way, Ribes / Juniperus collapsed, small-N classes dropped or aggregated |
+| Pixel-level shrub RF | `06_pixel_training.R` | Pixel-level training with NDVI ≥ 0.20 filter + DOY covariate; site-level fold CV. 72 % accuracy on 16 classes |
 
-### Phase 3 — Joint classifier + leverage analysis (36 → 43)
+### Phase 3 — Joint classifier + leverage analysis (`code/joint/`)
 
 | Step | Script | Output |
 |---|---|---|
-| Canopy height extraction | `36_canopy_height.R` | `canopy_height.rds` — 1 m NEON CHM at every crown centroid (single-point extract, all three domains in < 1 s) |
-| **Joint training set + RF** | `37_joint_training.R` | `joint_training_set.{rds,csv}`, `punch_list.csv`. 858 sites × 47 classes; 28 features; balanced 5-fold CV ~ 64 % |
-| Inference on basin pixels | `38_predict_inference_pixels.R` | `inference_predictions.csv` — unweighted RF predictions on the 5,354 extracted meadow pixels; refreshes the punch list with `predicted_n_pixels` |
-| Landscape novelty | `39_landscape_distance.R` | Mahalanobis distance from every inference pixel to every class centroid (pooled within-class covariance). `inference_pixel_distances.csv`, `novelty_by_class.csv`, `novelty_by_hex.gpkg` |
-| **Per-pixel sampling priority** | `40_sampling_priority.R` | `sampling_priority.gpkg` — leverage = `nearest_d / sqrt(n_training_for_predicted_class)` per pixel + per-class top-10 candidate sites |
-| Class summary table | `41_class_summary_table.R` | `class_summary_table.csv` — one row per class with N (2018, 2025, total), basin prevalence, recall, indicator + abundant taxa (full IndVal cov/freq/IV strings for meadows), description, median leverage |
-| Joint training GeoPackage | `42_joint_training_gpkg.R` | `joint_training.gpkg` — two layers (`training_sites_crowns`, `training_sites_points`) with class metadata for QGIS review |
-| Joint figures | `43_joint_figures.R` | `docs/figures/joint_*.pdf` — recall + leverage scatter + feature space + confusion matrix |
+| Canopy height extraction | `01_canopy_height.R` | `canopy_height.rds` — 1 m NEON CHM at every crown centroid (single-point extract, all three domains in < 1 s) |
+| **Joint training set + RF** | `02_training.R` | `joint_training_set.{rds,csv}`, `punch_list.csv`. 858 sites × 47 classes; 28 features; balanced 5-fold CV ~ 64 % |
+| Inference on basin pixels | `03_predict_inference_pixels.R` | `inference_predictions.csv` — unweighted RF predictions on the 5,354 extracted meadow pixels; refreshes the punch list with `predicted_n_pixels` |
+| Landscape novelty | `04_landscape_distance.R` | Mahalanobis distance from every inference pixel to every class centroid (pooled within-class covariance). `inference_pixel_distances.csv`, `novelty_by_class.csv`, `novelty_by_hex.gpkg` |
+| **Per-pixel sampling priority** | `05_sampling_priority.R` | `sampling_priority.gpkg` — leverage = `nearest_d / sqrt(n_training_for_predicted_class)` per pixel + per-class top-10 candidate sites |
+| Class summary table | `06_class_summary_table.R` | `class_summary_table.csv` — one row per class with N (2018, 2025, total), basin prevalence, recall, indicator + abundant taxa (full IndVal cov/freq/IV strings for meadows), description, median leverage |
+| Joint training GeoPackage | `07_training_gpkg.R` | `joint_training.gpkg` — two layers (`training_sites_crowns`, `training_sites_points`) with class metadata for QGIS review |
+| Joint figures | `08_figures.R` | `docs/figures/joint_*.pdf` — recall + leverage scatter + feature space + confusion matrix |
 
 ### Python tools (`code/python/`)
 
@@ -125,7 +125,12 @@ After running the Python tools on a cloud server:
 ## Layout
 
 ```
-code/                  Numbered R scripts (01 → 43) + python/ + examples/
+code/
+  meadow/              Phase 1 — meadow classes (01_load.R → 24_export_classifier_model.R)
+  shrub/               Phase 2 — shrub classes (01_load.R → 06_pixel_training.R)
+  joint/               Phase 3 — joint training + leverage (01_canopy_height.R → 08_figures.R)
+  python/              Cloud-side feature extraction + COG generation + mosaic
+  examples/            Reference notebooks
 data/raw/              ESS-DIVE working copies (gitignored, fetch from ESS-DIVE)
 data/derived/          Pipeline outputs (gitignored except force-included handoffs)
 data/small_reference/  Small canonical inputs (committed)
@@ -153,16 +158,14 @@ R -e 'renv::restore()'
 # at the top of those scripts; edit as needed for your environment.
 
 # Phase 1: meadow classes + target pixels + R-side feature export
-for f in code/0[0-9]*.R code/1[0-9]*.R code/22_target_pixels.R code/24_export_classifier_model.R; do
-  Rscript "$f"
-done
+for f in code/meadow/*.R; do Rscript "$f"; done
 
 # Phase 2: shrub classes
-for f in code/3[0-5]_*.R; do Rscript "$f"; done
+for f in code/shrub/*.R; do Rscript "$f"; done
 
 # Phase 3: joint classifier + leverage analysis
-#   (36 runs in < 1 s; 37 takes ~ 1 min; 38-43 each < 30 s)
-for f in code/3[6-9]_*.R code/4[0-3]_*.R; do Rscript "$f"; done
+#   (01 runs in < 1 s; 02 takes ~ 1 min; 03-08 each < 30 s)
+for f in code/joint/*.R; do Rscript "$f"; done
 ```
 
 Python pipeline (designed for a cloud server with AOP S3 access):

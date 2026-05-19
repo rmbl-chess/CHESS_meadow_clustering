@@ -87,10 +87,10 @@ Multiplying these two signals captures the kind of pixel a new field plot helps 
 
 | File | Role |
 |---|---|
-| `code/01_load.R` → `code/22_target_pixels.R` | Meadow class pipeline + inference target selection |
-| `code/30_shrub_load.R` → `code/35_shrub_pixel_training.R` | Shrub class pipeline |
-| `code/36_canopy_height.R` | NEON 1 m CHM extracted at crown centroids |
-| `code/37_joint_training.R` | Joint training set + 47-class RF |
-| `code/38_predict_inference_pixels.R` | RF predictions on the 5,354 inference pixels |
-| `code/39_landscape_distance.R` | Per-pixel Mahalanobis distance to class centroids |
-| `code/40_sampling_priority.R` | The leverage score that drives this gpkg |
+| `code/meadow/01_load.R` → `code/meadow/23_target_pixels.R` | Meadow class pipeline + inference target selection |
+| `code/shrub/01_load.R` → `code/shrub/06_pixel_training.R` | Shrub class pipeline |
+| `code/joint/01_canopy_height.R` | NEON 1 m CHM extracted at crown centroids |
+| `code/joint/02_training.R` | Joint training set + 47-class RF |
+| `code/joint/03_predict_inference_pixels.R` | RF predictions on the 5,354 inference pixels |
+| `code/joint/04_landscape_distance.R` | Per-pixel Mahalanobis distance to class centroids |
+| `code/joint/05_sampling_priority.R` | The leverage score that drives this gpkg |
