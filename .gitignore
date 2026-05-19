@@ -98,6 +98,8 @@ data/cache/
 !data/derived/inference_pixel_distances.csv
 !data/derived/novelty_by_class.csv
 !data/derived/novelty_by_hex.gpkg
+!data/derived/sampling_priority.gpkg
+!data/derived/sampling_priority_top.csv
 data/*.parquet
 data/*.feather
 *.h5
