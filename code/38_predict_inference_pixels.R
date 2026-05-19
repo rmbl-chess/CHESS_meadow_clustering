@@ -86,13 +86,17 @@ y_tr <- factor(train$final_label)
 cat(sprintf("\nFitting joint RF on %d training sites, %d features, %d classes\n",
             nrow(X_tr), ncol(X_tr), nlevels(y_tr)))
 
-tab <- table(y_tr)
-cw  <- as.numeric(sum(tab) / (length(tab) * tab)); names(cw) <- names(tab)
+# Important: fit UNWEIGHTED for inference. Balanced class weights
+# (1/freq) inflate small classes ~20x; in CV that buys per-class recall
+# but in inference it turns the smallest classes into catch-all
+# predictions for any pixel the model is unsure about. The balanced
+# recall metric is still tracked in 37 (the punch list); 38 is only
+# for the realistic class-proportion map.
 fit_joint <- ranger::ranger(
   x = X_tr, y = y_tr, num.trees = 1000,
-  classification = TRUE, class.weights = cw, seed = 42
+  classification = TRUE, seed = 42
 )
-cat(sprintf("RF OOB prediction error: %.1f%%\n",
+cat(sprintf("RF OOB prediction error (unweighted): %.1f%%\n",
             100 * fit_joint$prediction.error))
 
 # --- 4. Predict for inference pixels ------------------------------------
@@ -115,6 +119,12 @@ if (!file.exists("data/derived/punch_list_v1.csv")) {
 pred_counts <- pix_full |>
   dplyr::count(predicted_label, name = "predicted_n_pixels") |>
   dplyr::rename(final_label = predicted_label)
+
+# Drop any old prediction columns so a re-run doesn't create
+# predicted_n_pixels.x / .y after the join. The new column comes from
+# pred_counts below.
+punch_old <- punch_old |>
+  dplyr::select(-dplyr::any_of(c("predicted_n_pixels", "pixels_per_site")))
 
 # Pixels per training site = a rough proxy for how much real-estate each
 # new field sample would buy in the predicted map.
