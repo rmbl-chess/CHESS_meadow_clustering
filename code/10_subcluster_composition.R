@@ -123,61 +123,109 @@ asg <- asg |>
   },
   source = "clustered_2025")  # all rows here are 2025 (G clusters 2025 only)
 
-# --- Infer 2018 labels via Hellinger nearest-cluster-centroid ---------------
+# --- Infer 2018 labels via Hellinger + DOY nearest-cluster-centroid --------
 # 2018 spectra are corrupted by atmospheric correction artifacts (per
-# 17_year_effect_pcs.R), so they're excluded from clustering. We assign
-# each 2018 site to its closest cluster in COMPOSITION space (named
-# species only; the non-species categories are nearly universal and would
-# dilute the distance metric).
+# 17_year_effect_pcs.R), so they're excluded from clustering. Each 2018
+# site is assigned to its closest cluster in a JOINT space:
+#   - full-species Hellinger (NOT the rare-trimmed comp_species — that
+#     would zero out alpine sites whose indicators are rare species like
+#     Sibbaldia procumbens or Mertensia lanceolata, letting them match
+#     any cluster with a sparse trimmed centroid at distance ~0)
+#   - snow-free DOY, z-scaled and weighted by `doy_weight` (default 1.0)
+#     so a 1-SD (~21 day) DOY mismatch contributes the same as a 1-unit
+#     Hellinger mismatch.
+doy_weight <- 1.0   # raise to be stricter about DOY agreement
+cover_combined <- readRDS("data/derived/cover_combined.rds")
 nonsp_cover <- c("Other_Forb_cover", "Other_Graminoid_cover", "NPV_cover",
                  "Bare_cover", "Other_Moss_Lichen_cover",
                  "Other_Deciduous_Shrub_cover")
-hell <- comp_species$hellinger
-named_cols <- setdiff(names(hell), c("site_number", "Year", nonsp_cover))
 
-hell_2025 <- hell |>
+# Build full-species Hellinger for ALL sites (no rare-trim).
+cov_cols     <- grep("_cover$", names(cover_combined), value = TRUE)
+species_cols <- setdiff(cov_cols, nonsp_cover)
+cov_mat <- as.matrix(cover_combined[, species_cols])
+totals  <- rowSums(cov_mat)
+hell_mat <- sqrt(cov_mat / pmax(totals, 1e-9))
+keep <- totals > 0   # drop sites with no named-species cover
+
+hell_full <- dplyr::bind_cols(
+  cover_combined[keep, c("site_number", "Year")],
+  tibble::as_tibble(hell_mat[keep, , drop = FALSE])
+) |>
+  dplyr::inner_join(env, by = c("site_number", "Year"))
+
+doy_sd_global <- sd(hell_full$snow_free_doy)
+
+hell_2025_full <- hell_full |>
   dplyr::filter(Year == 2025L) |>
   dplyr::inner_join(asg |> dplyr::select(site_number, Year, spec_cluster),
                     by = c("site_number", "Year"))
-clusters_present <- sort(unique(hell_2025$spec_cluster))
+clusters_present <- sort(unique(hell_2025_full$spec_cluster))
 
 centroid_mat <- vapply(clusters_present, function(cl) {
-  rows <- hell_2025 |> dplyr::filter(spec_cluster == cl)
-  colMeans(as.matrix(rows[, named_cols]))
-}, numeric(length(named_cols)))
+  rows <- hell_2025_full |> dplyr::filter(spec_cluster == cl)
+  colMeans(as.matrix(rows[, species_cols]))
+}, numeric(length(species_cols)))
 centroid_mat <- t(centroid_mat); rownames(centroid_mat) <- clusters_present
 
-hell_2018 <- hell |> dplyr::filter(Year == 2018L)
-H_2018 <- as.matrix(hell_2018[, named_cols])
+centroid_doy <- hell_2025_full |>
+  dplyr::group_by(spec_cluster) |>
+  dplyr::summarise(mean_doy = mean(snow_free_doy), .groups = "drop") |>
+  dplyr::arrange(match(spec_cluster, clusters_present))
+centroid_doy_vec <- centroid_doy$mean_doy
+names(centroid_doy_vec) <- centroid_doy$spec_cluster
 
-sq_2018      <- rowSums(H_2018^2)
-sq_centroids <- rowSums(centroid_mat^2)
-cross_d2 <- outer(sq_2018, sq_centroids, "+") - 2 * H_2018 %*% t(centroid_mat)
-cross_d2[cross_d2 < 0] <- 0
-cross_d <- sqrt(cross_d2)
-rownames(cross_d) <- paste(hell_2018$site_number, hell_2018$Year, sep = "_")
+hell_2018_full <- hell_full |> dplyr::filter(Year == 2018L)
+H_2018   <- as.matrix(hell_2018_full[, species_cols])
+doy_2018 <- hell_2018_full$snow_free_doy
 
-best_idx     <- apply(cross_d, 1, which.min)
-dist_to_best <- cross_d[cbind(seq_along(best_idx), best_idx)]
-sorted_d     <- t(apply(cross_d, 1, sort))
+# Hellinger Euclidean squared (n_2018 x n_clusters)
+sq_2018   <- rowSums(H_2018^2)
+sq_cent   <- rowSums(centroid_mat^2)
+hell_d2   <- outer(sq_2018, sq_cent, "+") - 2 * H_2018 %*% t(centroid_mat)
+hell_d2[hell_d2 < 0] <- 0
+hell_d    <- sqrt(hell_d2)
+
+# DOY z-difference squared
+doy_diff   <- outer(doy_2018, centroid_doy_vec, "-")
+doy_z_diff <- doy_diff / doy_sd_global
+doy_d2     <- (doy_z_diff * doy_weight)^2
+
+combined_d <- sqrt(hell_d2 + doy_d2)
+rownames(combined_d) <- paste(hell_2018_full$site_number,
+                              hell_2018_full$Year, sep = "_")
+
+best_idx     <- apply(combined_d, 1, which.min)
+dist_to_best <- combined_d[cbind(seq_along(best_idx), best_idx)]
+sorted_d     <- t(apply(combined_d, 1, sort))
 dist_gap     <- sorted_d[, 2] - sorted_d[, 1]
 
 asg_2018 <- tibble::tibble(
-  site_number        = hell_2018$site_number,
-  Year               = hell_2018$Year,
-  spec_cluster       = clusters_present[best_idx],
-  sub_cluster        = NA_character_,
-  final_label        = clusters_present[best_idx],
-  source             = "inferred_2018",
-  inference_distance = dist_to_best,
-  inference_gap      = dist_gap
+  site_number             = hell_2018_full$site_number,
+  Year                    = hell_2018_full$Year,
+  spec_cluster            = clusters_present[best_idx],
+  sub_cluster             = NA_character_,
+  final_label             = clusters_present[best_idx],
+  source                  = "inferred_2018",
+  inference_distance      = dist_to_best,
+  inference_gap           = dist_gap,
+  inference_hell_distance = hell_d[cbind(seq_along(best_idx), best_idx)],
+  inference_doy_diff_days = doy_diff[cbind(seq_along(best_idx), best_idx)]
 )
 
-cat(sprintf("Inferred 2018 labels for %d sites (median Hellinger dist = %.3f, IQR %.3f-%.3f)\n",
-            nrow(asg_2018),
+cat(sprintf("Inferred 2018 labels for %d sites\n", nrow(asg_2018)))
+cat(sprintf("  combined inference distance: median=%.3f, IQR %.3f-%.3f\n",
             stats::median(asg_2018$inference_distance),
             stats::quantile(asg_2018$inference_distance, 0.25),
             stats::quantile(asg_2018$inference_distance, 0.75)))
+cat(sprintf("  Hellinger-only distance:     median=%.3f, IQR %.3f-%.3f\n",
+            stats::median(asg_2018$inference_hell_distance),
+            stats::quantile(asg_2018$inference_hell_distance, 0.25),
+            stats::quantile(asg_2018$inference_hell_distance, 0.75)))
+cat(sprintf("  DOY mismatch (days):         median=%.1f, IQR %.1f-%.1f\n",
+            stats::median(abs(asg_2018$inference_doy_diff_days)),
+            stats::quantile(abs(asg_2018$inference_doy_diff_days), 0.25),
+            stats::quantile(abs(asg_2018$inference_doy_diff_days), 0.75)))
 
 # Add the inference columns to asg (NA for clustered_2025 rows) and stack.
 asg <- asg |>
