@@ -83,21 +83,25 @@ out <- auto |>
   dplyr::select(final_label, n_sites, n_2018, n_2025, recall, tier,
                 snow_free_doy_mean, top_indicator, top_abundant,
                 bare_pct, npv_pct, narrative_draft) |>
-  dplyr::left_join(existing, by = "final_label") |>
+  dplyr::left_join(existing, by = "final_label")
+# Ensure the _existing columns are present (left_join doesn't add them if
+# `existing` is empty).
+for (col in c("narrative_draft_existing", "narrative_curated_existing",
+              "notes_existing")) {
+  if (!col %in% names(out)) out[[col]] <- NA_character_
+}
+out <- out |>
   dplyr::mutate(
-    # Keep existing hand-tuned narrative_draft unless told to regenerate.
     narrative_draft = if (force_regen) {
       narrative_draft
     } else {
-      dplyr::coalesce(.data$narrative_draft_existing %||% NA_character_,
-                      narrative_draft)
+      dplyr::coalesce(narrative_draft_existing, narrative_draft)
     },
-    narrative_curated = .data$narrative_curated_existing %||% NA_character_,
-    notes             = .data$notes_existing %||% NA_character_
+    narrative_curated = narrative_curated_existing,
+    notes             = notes_existing
   ) |>
-  dplyr::select(-dplyr::any_of(c("narrative_draft_existing",
-                                 "narrative_curated_existing",
-                                 "notes_existing"))) |>
+  dplyr::select(-narrative_draft_existing, -narrative_curated_existing,
+                -notes_existing) |>
   dplyr::arrange(snow_free_doy_mean)
 
 dir.create("data/small_reference", showWarnings = FALSE, recursive = TRUE)

@@ -85,8 +85,12 @@ label_meta <- fc$final_summary |>
   ) |>
   dplyr::left_join(narratives, by = "final_label")
 
+asg_cols <- intersect(c("site_number", "Year", "spec_cluster", "sub_cluster",
+                        "final_label", "source",
+                        "inference_distance", "inference_gap"),
+                      names(fc$assignments))
 sites <- fc$assignments |>
-  dplyr::select(site_number, Year, spec_cluster, sub_cluster, final_label) |>
+  dplyr::select(dplyr::all_of(asg_cols)) |>
   dplyr::left_join(label_meta, by = "final_label") |>
   dplyr::inner_join(spec_feat |>
                       dplyr::select(site_number, Year,

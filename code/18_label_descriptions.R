@@ -34,7 +34,12 @@ cover_long <- vs |>
     feature  = stringr::str_replace(feature, "_cover$", ""),
     is_named = !feature %in% nonsp
   ) |>
+  # Use only clustered (2025) sites for cluster characterization. Inferred
+  # 2018 sites should not feed the definition of what a cluster IS, since
+  # they were assigned by composition similarity to that cluster's
+  # centroid — that's circular.
   dplyr::inner_join(fc$assignments |>
+                      dplyr::filter(is.na(source) | source == "clustered_2025") |>
                       dplyr::select(site_number, Year, final_label),
                     by = c("site_number", "Year"))
 

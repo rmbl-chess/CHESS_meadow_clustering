@@ -130,16 +130,16 @@ if (file.exists(env_path)) {
   cat(sprintf("Variant F: %d sites, %d features (PCs 2-12 z-scaled + DOY z-scaled).\n",
               nrow(variant_F$assignments), ncol(mat_F)))
 
-  # --- Variant G: drop PC1 AND PC3 (year-shift PC) -----------------------
-  # Matched-pair analysis (17_year_effect_pcs.R) flagged PC3 as the single
-  # spectral feature with the strongest year-vs-composition shift
-  # (effect = 1.60 SD). Variant G removes both PC1 (brightness, too
-  # dominant) and PC3 (year-biased), keeping PC2, 4-12 + DOY (10 features,
-  # all z-scaled). Tests whether removing PC3 sharpens the cluster set or
-  # leaves it essentially unchanged.
-  pc_cols_G <- sprintf("spec_PC%02d", c(2, 4:12))
-  mat_G <- cbind(scale(as.matrix(feat_env[, pc_cols_G])),
-                 snow_free_doy_z = as.numeric(scale(feat_env$snow_free_doy)))
+  # --- Variant G: 2025-only clustering, drop PC1 brightness ----------------
+  # 2018 spectra show systematic atmospheric correction artifacts (see
+  # 17_year_effect_pcs.R). Restricting clustering to 2025 sites only
+  # eliminates the year-shift concern, so PC3 can return to the feature
+  # set. 2018 site labels are inferred downstream via Hellinger nearest-
+  # centroid in composition space (in 10_subcluster_composition.R).
+  feat_env_G <- feat_env |> dplyr::filter(Year == 2025L)
+  pc_cols_G <- sprintf("spec_PC%02d", 2:12)
+  mat_G <- cbind(scale(as.matrix(feat_env_G[, pc_cols_G])),
+                 snow_free_doy_z = as.numeric(scale(feat_env_G$snow_free_doy)))
   d_G  <- dist(mat_G, method = "euclidean")
   hc_G <- hclust(d_G, method = "ward.D2")
   cuts_G <- as_tibble(setNames(
@@ -148,10 +148,11 @@ if (file.exists(env_path)) {
   ))
   variant_G <- list(
     hclust = hc_G, dist = d_G,
-    assignments = bind_cols(feat_env |> dplyr::select(site_number, Year), cuts_G),
-    pc_cols = c(pc_cols_G, "snow_free_doy_z"), label = "PCs_2,4-12_z+SF_z"
+    assignments = bind_cols(feat_env_G |> dplyr::select(site_number, Year), cuts_G),
+    pc_cols = c(pc_cols_G, "snow_free_doy_z"),
+    label = "PCs_2-12_z+SF_z_2025only"
   )
-  cat(sprintf("Variant G: %d sites, %d features (drop PC1 + PC3).\n",
+  cat(sprintf("Variant G: %d sites (2025 only), %d features.\n",
               nrow(variant_G$assignments), ncol(mat_G)))
 } else {
   cat("Variants D-G skipped: data/derived/environment.rds not found.\n")

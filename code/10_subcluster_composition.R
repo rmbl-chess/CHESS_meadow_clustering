@@ -119,22 +119,80 @@ asg <- asg |>
             spec_cluster,
             paste0(spec_cluster, ".", sub_cluster))
   } else {
-    # No sub-clustering: spec_cluster IS the training label. sub_cluster
-    # remains in the assignments tibble as ecological metadata.
     spec_cluster
-  })
+  },
+  source = "clustered_2025")  # all rows here are 2025 (G clusters 2025 only)
 
-# --- RF eval on final labels (5-fold CV) ------------------------------------
+# --- Infer 2018 labels via Hellinger nearest-cluster-centroid ---------------
+# 2018 spectra are corrupted by atmospheric correction artifacts (per
+# 17_year_effect_pcs.R), so they're excluded from clustering. We assign
+# each 2018 site to its closest cluster in COMPOSITION space (named
+# species only; the non-species categories are nearly universal and would
+# dilute the distance metric).
+nonsp_cover <- c("Other_Forb_cover", "Other_Graminoid_cover", "NPV_cover",
+                 "Bare_cover", "Other_Moss_Lichen_cover",
+                 "Other_Deciduous_Shrub_cover")
+hell <- comp_species$hellinger
+named_cols <- setdiff(names(hell), c("site_number", "Year", nonsp_cover))
+
+hell_2025 <- hell |>
+  dplyr::filter(Year == 2025L) |>
+  dplyr::inner_join(asg |> dplyr::select(site_number, Year, spec_cluster),
+                    by = c("site_number", "Year"))
+clusters_present <- sort(unique(hell_2025$spec_cluster))
+
+centroid_mat <- vapply(clusters_present, function(cl) {
+  rows <- hell_2025 |> dplyr::filter(spec_cluster == cl)
+  colMeans(as.matrix(rows[, named_cols]))
+}, numeric(length(named_cols)))
+centroid_mat <- t(centroid_mat); rownames(centroid_mat) <- clusters_present
+
+hell_2018 <- hell |> dplyr::filter(Year == 2018L)
+H_2018 <- as.matrix(hell_2018[, named_cols])
+
+sq_2018      <- rowSums(H_2018^2)
+sq_centroids <- rowSums(centroid_mat^2)
+cross_d2 <- outer(sq_2018, sq_centroids, "+") - 2 * H_2018 %*% t(centroid_mat)
+cross_d2[cross_d2 < 0] <- 0
+cross_d <- sqrt(cross_d2)
+rownames(cross_d) <- paste(hell_2018$site_number, hell_2018$Year, sep = "_")
+
+best_idx     <- apply(cross_d, 1, which.min)
+dist_to_best <- cross_d[cbind(seq_along(best_idx), best_idx)]
+sorted_d     <- t(apply(cross_d, 1, sort))
+dist_gap     <- sorted_d[, 2] - sorted_d[, 1]
+
+asg_2018 <- tibble::tibble(
+  site_number        = hell_2018$site_number,
+  Year               = hell_2018$Year,
+  spec_cluster       = clusters_present[best_idx],
+  sub_cluster        = NA_character_,
+  final_label        = clusters_present[best_idx],
+  source             = "inferred_2018",
+  inference_distance = dist_to_best,
+  inference_gap      = dist_gap
+)
+
+cat(sprintf("Inferred 2018 labels for %d sites (median Hellinger dist = %.3f, IQR %.3f-%.3f)\n",
+            nrow(asg_2018),
+            stats::median(asg_2018$inference_distance),
+            stats::quantile(asg_2018$inference_distance, 0.25),
+            stats::quantile(asg_2018$inference_distance, 0.75)))
+
+# Add the inference columns to asg (NA for clustered_2025 rows) and stack.
+asg <- asg |>
+  dplyr::mutate(inference_distance = NA_real_, inference_gap = NA_real_) |>
+  dplyr::bind_rows(asg_2018)
+
+# --- RF eval on the CLUSTERED 2025 set only (NOT the inferred 2018) -------
+# Including inferred labels in CV would be circular -- they were assigned
+# by composition similarity, not learned from spectra.
 spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
                   names(spec_feat), value = TRUE)
-# Drop the two features that 17_year_effect_pcs.R flagged as carrying the
-# strongest year-vs-composition shift: spec_PC03 (effect = 1.60 SD) and
-# pri (effect = 1.26 SD). Keeping them risks the classifier learning year
-# rather than vegetation type.
-spec_cols <- setdiff(spec_cols, c("spec_PC03", "pri"))
-# At deployment, the classifier will have spectra (per pixel) + env rasters
-# (per pixel). Use both here so CV accuracy reflects the deployment setup.
-joined <- asg |>
+# Full feature set is fine now -- 2025-only clustering means the cross-year
+# shift in PC3 and PRI is no longer a concern.
+asg_clustered <- asg |> dplyr::filter(source == "clustered_2025")
+joined <- asg_clustered |>
   inner_join(spec_feat, by = c("site_number", "Year")) |>
   inner_join(env,       by = c("site_number", "Year"))
 rf_feature_cols <- c(spec_cols, "snow_free_doy")
@@ -167,10 +225,15 @@ eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
 final_eval <- eval_rf_cv(joined$final_label, X)
 
 # --- Per-final-label characterization ---------------------------------------
+# Characterization uses CLUSTERED (2025) sites only: the cluster is defined
+# by 2025 composition + spectra, so its description should reflect that.
+# Inferred 2018 assignments are observational; including them here would
+# mix what defines the cluster with what was assigned to it.
 hell_long <- comp_species$hellinger |>
   pivot_longer(-c(site_number, Year), names_to = "feature", values_to = "h") |>
   mutate(feature = stringr::str_replace(feature, "_cover$", "")) |>
-  inner_join(asg |> dplyr::select(site_number, Year, final_label),
+  inner_join(asg |> dplyr::filter(source == "clustered_2025") |>
+                    dplyr::select(site_number, Year, final_label),
              by = c("site_number", "Year"))
 
 nonsp_short <- stringr::str_replace(nonsp_cover, "_cover$", "")
