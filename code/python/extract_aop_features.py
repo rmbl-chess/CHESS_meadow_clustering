@@ -41,6 +41,7 @@ from __future__ import annotations
 import argparse
 import json
 import logging
+import os
 import sys
 import time
 from dataclasses import dataclass
@@ -198,6 +199,28 @@ def feature_row(
     return out
 
 
+def _pixel_key(x_utm: float, y_utm: float) -> tuple[int, int]:
+    """Stable dedup key for a target pixel. Target pixels lie on a 3 m grid
+    with .5 m offsets (cell centers), so doubling and rounding gives a
+    clean integer pair safe to use as a set member across runs."""
+    return (int(round(x_utm * 2)), int(round(y_utm * 2)))
+
+
+def flush_checkpoint(
+    done_rows: list[dict],
+    new_rows: list[dict],
+    output: Path,
+) -> None:
+    """Write the union of previously-saved rows + new rows to `output`
+    atomically (write to .tmp then rename). Safe to interrupt — the
+    existing output file is never partially overwritten."""
+    df = pd.DataFrame(done_rows + new_rows)
+    tmp = output.with_suffix(output.suffix + ".tmp")
+    tmp.parent.mkdir(parents=True, exist_ok=True)
+    df.to_parquet(tmp, index=False)
+    os.replace(tmp, output)
+
+
 def run(args: argparse.Namespace) -> None:
     cfg_meta = json.loads(Path(args.meta).read_text())["preprocessing"]
     cfg = PreprocConfig(
@@ -218,6 +241,29 @@ def run(args: argparse.Namespace) -> None:
         targets = targets.head(args.max_pixels).copy()
         logger.info("Restricted to first %d pixels for local testing",
                     len(targets))
+
+    # Resume: if the output parquet already exists, load completed rows
+    # and skip target pixels whose coords are already in there.
+    done_rows: list[dict] = []
+    done_keys: set[tuple[int, int]] = set()
+    if args.output.exists() and not args.no_resume:
+        prev = pd.read_parquet(args.output)
+        done_rows = prev.to_dict(orient="records")
+        done_keys = {_pixel_key(r["x_utm"], r["y_utm"]) for r in done_rows}
+        before = len(targets)
+        targets = targets[
+            ~targets.apply(lambda r: _pixel_key(r.x_utm, r.y_utm) in done_keys,
+                           axis=1)
+        ].copy()
+        logger.info(
+            "Resuming from %s: %d rows already saved; %d / %d targets remain",
+            args.output, len(done_rows), len(targets), before,
+        )
+
+    if len(targets) == 0:
+        logger.info("Nothing to do — all targets already processed.")
+        return
+
     logger.info("Targets: %d pixels across %d domains",
                 len(targets), targets["domain"].nunique())
 
@@ -280,17 +326,23 @@ def run(args: argparse.Namespace) -> None:
             if ok % 200 == 0:
                 logger.info("  %s: %d ok / %d fail (%.1fs)",
                             domain, ok, fail, time.time() - t_dom)
+            if args.checkpoint_every and \
+                    (len(results) % args.checkpoint_every == 0):
+                flush_checkpoint(done_rows, results, args.output)
+                logger.info("  Checkpoint: %d total rows -> %s",
+                            len(done_rows) + len(results), args.output)
 
-        logger.info("Finished %s: %d ok / %d fail in %.1fs",
+        # End-of-domain checkpoint regardless of cadence.
+        flush_checkpoint(done_rows, results, args.output)
+        logger.info("Finished %s: %d ok / %d fail in %.1fs (checkpointed)",
                     domain, ok, fail, time.time() - t_dom)
 
     elapsed = time.time() - t_start
-    logger.info("Total: %d feature rows in %.1fs", len(results), elapsed)
-
-    out_df = pd.DataFrame(results)
-    out_df.to_parquet(args.output, index=False)
-    logger.info("Wrote %s (%d rows, %d cols)",
-                args.output, len(out_df), out_df.shape[1])
+    flush_checkpoint(done_rows, results, args.output)
+    total_rows = len(done_rows) + len(results)
+    logger.info("Total: %d new + %d resumed = %d rows in %.1fs",
+                len(results), len(done_rows), total_rows, elapsed)
+    logger.info("Wrote %s", args.output)
 
     if client is not None:
         client.close()
@@ -316,6 +368,12 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--memory-limit", default="4GB")
     p.add_argument("--max-pixels",  type=int, default=None,
                    help="Limit to first N pixels (local testing).")
+    p.add_argument("--checkpoint-every", type=int, default=200,
+                   help="Flush parquet every N successful pixels; also "
+                        "at end of each domain. Set 0 to disable.")
+    p.add_argument("--no-resume",   action="store_true",
+                   help="Ignore an existing output parquet (re-process "
+                        "from scratch).")
     p.add_argument("--log-level",   default="INFO")
     return p
 
