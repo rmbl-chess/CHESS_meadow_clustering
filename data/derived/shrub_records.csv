@@ -1,0 +1,328 @@
+site_number,Year,sampling_area,raw_species,family,genus,species,binomial,vegetation_height_cm
+21,2018,RM,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+22,2018,RM,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+23,2018,RM,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+24,2018,RM,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+25,2018,RM,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+26,2018,RM,ArtTri,Asteraceae,Artemisia,tridentata,Artemisia tridentata,NA
+27,2018,RM,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+28,2018,RM,brachy,Salicaceae,Salix,brachycarpa,Salix brachycarpa,NA
+29,2018,RM,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+30,2018,RM,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+55,2018,PH,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+56,2018,PH,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+57,2018,PH,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+58,2018,PH,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+59,2018,PH,DisInv,Caprifoliaceae,Distegia,involucrata,Distegia involucrata,NA
+60,2018,PH,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+61,2018,PH,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+62,2018,PH,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+63,2018,PH,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+64,2018,PH,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+85,2018,SG,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+86,2018,SG,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+87,2018,SG,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+88,2018,SG,glauca,Salicaceae,Salix,glauca,Salix glauca,NA
+89,2018,SG,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+90,2018,SG,glauca,Salicaceae,Salix,glauca,Salix glauca,NA
+91,2018,SG,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+92,2018,SG,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+93,2018,SG,brachy,Salicaceae,Salix,brachycarpa,Salix brachycarpa,NA
+94,2018,SG,Juniper,Cupressaceae,Juniperus,communis,Juniperus communis,NA
+104,2018,BD,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+105,2018,BD,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+106,2018,BD,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+107,2018,BD,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+108,2018,BD,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+109,2018,BD,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+110,2018,BD,brachy,Salicaceae,Salix,brachycarpa,Salix brachycarpa,NA
+111,2018,BD,drumm,Salicaceae,Salix,drummondiana,Salix drummondiana,NA
+112,2018,BD,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+113,2018,BD,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+134,2018,WGM,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+135,2018,WGM,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+136,2018,WGM,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+137,2018,WGM,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+138,2018,WGM,ArtTri,Asteraceae,Artemisia,tridentata,Artemisia tridentata,NA
+139,2018,WGM,ArtTri,Asteraceae,Artemisia,tridentata,Artemisia tridentata,NA
+140,2018,WGM,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+141,2018,WGM,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+142,2018,WGM,Willow,Salicaceae,Salix,spp,Salix spp,NA
+143,2018,WGM,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+189,2018,UC,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+190,2018,UC,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+191,2018,UC,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+192,2018,UC,drumm,Salicaceae,Salix,drummondiana,Salix drummondiana,NA
+193,2018,UC,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+194,2018,UC,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+195,2018,UC,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+196,2018,UC,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+197,2018,UC,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+198,2018,UC,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+239,2018,WGU,Gooseberry,Grossulariaceae,Ribes,montigenum,Ribes montigenum,NA
+240,2018,WGU,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+242,2018,WGU,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+243,2018,WGU,glauca,Salicaceae,Salix,glauca,Salix glauca,NA
+245,2018,WGU,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+246,2018,WGU,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+248,2018,WGU,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+279,2018,RCK,Gooseberry,Grossulariaceae,Ribes,montigenum,Ribes montigenum,NA
+280,2018,RCK,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+281,2018,RCK,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+283,2018,RCK,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+284,2018,RCK,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+286,2018,RCK,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+288,2018,RCK,DisInv,Caprifoliaceae,Distegia,involucrata,Distegia involucrata,NA
+309,2018,LS,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+310,2018,LS,brachy,Salicaceae,Salix,brachycarpa,Salix brachycarpa,NA
+311,2018,LS,Willow,Salicaceae,Salix,spp,Salix spp,NA
+312,2018,LS,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+313,2018,LS,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+314,2018,LS,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+315,2018,LS,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+316,2018,LS,Willow,Salicaceae,Salix,spp,Salix spp,NA
+317,2018,LS,Willow,Salicaceae,Salix,spp,Salix spp,NA
+318,2018,LS,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+354,2018,PG,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+355,2018,PG,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+356,2018,PG,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+357,2018,PG,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+358,2018,PG,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+359,2018,PG,Juniper,Cupressaceae,Juniperus,communis,Juniperus communis,NA
+360,2018,PG,Snowberry,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,NA
+361,2018,PG,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+362,2018,PG,Elderberry,Caprifoliaceae,Sambucus,microbotrys,Sambucus microbotrys,NA
+363,2018,PG,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+384,2018,MtC,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+385,2018,MtC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+386,2018,MtC,Gooseberry,Grossulariaceae,Ribes,montigenum,Ribes montigenum,NA
+387,2018,MtC,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+388,2018,MtC,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+389,2018,MtC,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+390,2018,MtC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+391,2018,MtC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+392,2018,MtC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+393,2018,MtC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+424,2018,US,PenFlo,Rosaceae,Pentaphylloides,floribunda,Pentaphylloides floribunda,NA
+425,2018,US,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+426,2018,US,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+427,2018,US,Gooseberry,Grossulariaceae,Ribes,montigenum,Ribes montigenum,NA
+428,2018,US,Raspberry,Rosaceae,Rubus,idaeus,Rubus idaeus,NA
+429,2018,US,Juniper,Cupressaceae,Juniperus,communis,Juniperus communis,NA
+430,2018,US,SorSco,Rosaceae,Sorbus,scopulina,Sorbus scopulina,NA
+431,2018,US,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+432,2018,US,DisInv,Caprifoliaceae,Distegia,involucrata,Distegia involucrata,NA
+433,2018,US,Gooseberry,Grossulariaceae,Ribes,montigenum,Ribes montigenum,NA
+439,2018,US,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+440,2018,US,Alder,Betulaceae,Alnus,incana,Alnus incana,NA
+441,2018,US,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+442,2018,US,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+443,2018,US,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+444,2018,PH,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+445,2018,PH,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+446,2018,PH,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+447,2018,RW,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+448,2018,RW,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+450,2018,RW,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+451,2018,RW,planifolia,Salicaceae,Salix,planifolia,Salix planifolia,NA
+454,2018,LS,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+455,2018,LS,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+456,2018,LS,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+458,2018,LC,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+459,2018,LC,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+460,2018,LC,drumm,Salicaceae,Salix,drummondiana,Salix drummondiana,NA
+461,2018,RW,Bog Birch,Betulaceae,Betula,glandulosa,Betula glandulosa,NA
+463,2018,LC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+465,2018,LC,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+466,2018,LC,drumm,Salicaceae,Salix,drummondiana,Salix drummondiana,NA
+467,2018,LC,drumm,Salicaceae,Salix,drummondiana,Salix drummondiana,NA
+469,2018,LC,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+470,2018,LC,wolfii,Salicaceae,Salix,wolfii,Salix wolfii,NA
+471,2018,LC,boothii,Salicaceae,Salix,boothii,Salix boothii,NA
+472,2018,LC,geyer,Salicaceae,Salix,geyeriana,Salix geyeriana,NA
+1407,2025,ALMO: Almont Triangle South (AS),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,102
+1408,2025,ALMO: Almont Triangle South (AS),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,220
+1409,2025,ALMO: Almont Triangle South (AS),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,225
+1410,2025,ALMO: Almont Triangle South (AS),Cupressaceae-Juniperus scopulorum,Cupressaceae,Juniperus,scopulorum,Juniperus scopulorum,182
+1411,2025,ALMO: Almont Triangle South (AS),Cupressaceae-Juniperus scopulorum,Cupressaceae,Juniperus,scopulorum,Juniperus scopulorum,212
+1412,2025,ALMO: Almont Triangle South (AS),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,183
+1413,2025,ALMO: Almont Triangle South (AS),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,108
+1414,2025,ALMO: Almont Triangle South (AS),Grossulariaceae-Ribes cereum,Grossulariaceae,Ribes,cereum,Ribes cereum,123
+1415,2025,ALMO: Almont Triangle South (AS),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,125
+1416,2025,ALMO: Almont Triangle South (AS),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,189
+1417,2025,ALMO: Almont Triangle North (AN),Cupressaceae-Juniperus scopulorum,Cupressaceae,Juniperus,scopulorum,Juniperus scopulorum,510
+1418,2025,ALMO: Almont Triangle North (AN),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,154
+1419,2025,ALMO: Almont Triangle North (AN),Rosaceae-Purshia tridentata,Rosaceae,Purshia,tridentata,Purshia tridentata,78
+1420,2025,ALMO: Almont Triangle North (AN),Sapindaceae-Acer glabrum,Sapindaceae,Acer,glabrum,Acer glabrum,172
+1421,2025,ALMO: Almont Triangle North (AN),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,187
+1422,2025,ALMO: Almont Triangle North (AN),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,80
+1423,2025,ALMO: Almont Triangle North (AN),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,240
+1424,2025,ALMO: Almont Triangle North (AN),Grossulariaceae-Ribes cereum,Grossulariaceae,Ribes,cereum,Ribes cereum,196
+1425,2025,ALMO: Almont Triangle North (AN),Cupressaceae-Juniperus scopulorum,Cupressaceae,Juniperus,scopulorum,Juniperus scopulorum,460
+1426,2025,ALMO: Almont Triangle North (AN),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,340
+1427,2025,ALMO: Spring Creek (SC),Rosaceae-Holodiscus discolor,Rosaceae,Holodiscus,discolor,Holodiscus discolor,163
+1428,2025,ALMO: Spring Creek (SC),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,66
+1429,2025,ALMO: Spring Creek (SC),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,107
+1430,2025,ALMO: Spring Creek (SC),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,75
+1431,2025,ALMO: Spring Creek (SC),Rosaceae-Purshia tridentata,Rosaceae,Purshia,tridentata,Purshia tridentata,71
+1432,2025,ALMO: Spring Creek (SC),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,80
+1433,2025,ALMO: Spring Creek (SC),Rosaceae-Purshia tridentata,Rosaceae,Purshia,tridentata,Purshia tridentata,60
+1434,2025,ALMO: Spring Creek (SC),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,83
+1435,2025,ALMO: Spring Creek (SC),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,105
+1436,2025,ALMO: Spring Creek (SC),Rosaceae-Purshia tridentata,Rosaceae,Purshia,tridentata,Purshia tridentata,73
+1437,2025,ALMO: One Mile Upper (OU),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,260
+1438,2025,ALMO: One Mile Upper (OU),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,92
+1439,2025,ALMO: One Mile Upper (OU),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,120
+1440,2025,ALMO: One Mile Upper (OU),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,133
+1441,2025,ALMO: One Mile Upper (OU),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,139
+1442,2025,ALMO: One Mile Upper (OU),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,245
+1443,2025,ALMO: One Mile Upper (OU),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,116
+1444,2025,ALMO: One Mile Upper (OU),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,107
+1445,2025,ALMO: One Mile Upper (OU),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,242
+1446,2025,ALMO: One Mile Upper (OU),Caprifoliaceae-Lonicera involucrata,Caprifoliaceae,Lonicera,involucrata,Lonicera involucrata,101
+1447,2025,CRBU: Upper Upper (UU),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,112
+1448,2025,CRBU: Upper Upper (UU),Caprifoliaceae-Symphoricarpos rotundifolius,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,97
+1449,2025,CRBU: Upper Upper (UU),Rosaceae-Prunus virginiana,Rosaceae,Prunus,virginiana,Prunus virginiana,247
+1450,2025,CRBU: Upper Upper (UU),Salicaceae-Salix scouleriana,Salicaceae,Salix,scouleriana,Salix scouleriana,445
+1451,2025,CRBU: Upper Upper (UU),Rosaceae-Prunus virginiana,Rosaceae,Prunus,virginiana,Prunus virginiana,143
+1452,2025,CRBU: Upper Upper (UU),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,112
+1453,2025,CRBU: Upper Upper (UU),Caprifoliaceae-Symphoricarpos rotundifolius,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,141
+1454,2025,CRBU: Upper Upper (UU),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,169
+1455,2025,CRBU: Upper Upper (UU),Rosaceae-Prunus virginiana,Rosaceae,Prunus,virginiana,Prunus virginiana,166
+1456,2025,CRBU: Upper Upper (UU),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,103
+1457,2025,CRBU: Snodgrass (SN),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,114
+1458,2025,CRBU: Snodgrass (SN),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,124
+1459,2025,CRBU: Snodgrass (SN),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,133
+1460,2025,CRBU: Snodgrass (SN),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,300
+1461,2025,CRBU: Snodgrass (SN),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,210
+1462,2025,CRBU: Snodgrass (SN),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,95
+1463,2025,CRBU: Snodgrass (SN),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,176
+1464,2025,CRBU: Snodgrass (SN),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,107
+1465,2025,CRBU: Snodgrass (SN),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,104
+1466,2025,CRBU: Snodgrass (SN),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,107
+1467,2025,CRBU: Gothic Townsite Dry Meadow (GO),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,42
+1468,2025,CRBU: Gothic Townsite Dry Meadow (GO),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,137
+1469,2025,CRBU: Gothic Townsite Dry Meadow (GO),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,72
+1470,2025,CRBU: Gothic Townsite Dry Meadow (GO),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,53
+1471,2025,CRBU: Gothic Townsite Dry Meadow (GO),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,84
+1472,2025,CRBU: Gothic Townsite Dry Meadow (GO),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,95
+1473,2025,CRBU: Gothic Townsite Dry Meadow (GO),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,275
+1474,2025,CRBU: Gothic Townsite Dry Meadow (GO),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,251
+1475,2025,CRBU: Gothic Townsite Dry Meadow (GO),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,86
+1476,2025,CRBU: Gothic Townsite Dry Meadow (GO),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,360
+1477,2025,CRBU: Trail 403 (TL),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,280
+1478,2025,CRBU: Trail 403 (TL),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,118
+1479,2025,CRBU: Trail 403 (TL),Rosaceae-Amelanchier alnifolia,Rosaceae,Amelanchier,alnifolia,Amelanchier alnifolia,84
+1480,2025,CRBU: Trail 403 (TL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,54
+1481,2025,CRBU: Trail 403 (TL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,60
+1482,2025,CRBU: Trail 403 (TL),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,85
+1483,2025,CRBU: Trail 403 (TL),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,101
+1484,2025,CRBU: Trail 403 (TL),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,72
+1485,2025,CRBU: Trail 403 (TL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,51
+1486,2025,CRBU: Trail 403 (TL),Grossulariaceae-Ribes inerme,Grossulariaceae,Ribes,inerme,Ribes inerme,82
+1487,2025,CRBU: Slide Rock Road (SL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,88
+1488,2025,CRBU: Slide Rock Road (SL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,108
+1489,2025,CRBU: Slide Rock Road (SL),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,196
+1490,2025,CRBU: Slide Rock Road (SL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,81
+1491,2025,CRBU: Slide Rock Road (SL),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,97
+1492,2025,CRBU: Slide Rock Road (SL),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,123
+1493,2025,CRBU: Slide Rock Road (SL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,67
+1494,2025,CRBU: Slide Rock Road (SL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,65
+1495,2025,CRBU: Slide Rock Road (SL),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,172
+1496,2025,CRBU: Slide Rock Road (SL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,128
+1497,2025,CRBU: South Baldy (SB),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,86
+1498,2025,CRBU: South Baldy (SB),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,167
+1499,2025,CRBU: South Baldy (SB),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,177
+1500,2025,CRBU: South Baldy (SB),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,73
+1501,2025,CRBU: South Baldy (SB),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,108
+1502,2025,CRBU: South Baldy (SB),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,128
+1503,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,126
+1504,2025,CRBU: Paradise Basin (PB),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,94
+1505,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,108
+1506,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,139
+1507,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,93
+1508,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,192
+1509,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,139
+1510,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,69
+1511,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,69
+1512,2025,CRBU: Paradise Basin (PB),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,169
+1513,2025,CRBU: Carbon Creek (CR),Rosaceae-Rubus idaeus,Rosaceae,Rubus,idaeus,Rubus idaeus,113
+1514,2025,CRBU: Carbon Creek (CR),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,132
+1515,2025,CRBU: Carbon Creek (CR),Betulaceae-Alnus incana,Betulaceae,Alnus,incana,Alnus incana,400
+1516,2025,CRBU: Carbon Creek (CR),Betulaceae-Alnus incana,Betulaceae,Alnus,incana,Alnus incana,427
+1517,2025,CRBU: Carbon Creek (CR),Caprifoliaceae-Symphoricarpos rotundifolius,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,119
+1518,2025,CRBU: Carbon Creek (CR),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,159
+1519,2025,CRBU: Carbon Creek (CR),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,103
+1520,2025,CRBU: Carbon Creek (CR),Caprifoliaceae-Symphoricarpos rotundifolius,Caprifoliaceae,Symphoricarpos,rotundifolius,Symphoricarpos rotundifolius,105
+1521,2025,CRBU: Carbon Creek (CR),Betulaceae-Alnus incana,Betulaceae,Alnus,incana,Alnus incana,350
+1522,2025,CRBU: Carbon Creek (CR),Salicaceae-Salix boothii,Salicaceae,Salix,boothii,Salix boothii,250
+1523,2025,CRBU: North Pole Basin (NB),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,232
+1524,2025,CRBU: North Pole Basin (NB),Caprifoliaceae-Lonicera involucrata,Caprifoliaceae,Lonicera,involucrata,Lonicera involucrata,67
+1525,2025,CRBU: North Pole Basin (NB),Grossulariaceae-Ribes wolfii,Grossulariaceae,Ribes,wolfii,Ribes wolfii,109
+1526,2025,CRBU: North Pole Basin (NB),Grossulariaceae-Ribes wolfii,Grossulariaceae,Ribes,wolfii,Ribes wolfii,140
+1527,2025,CRBU: North Pole Basin (NB),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,147
+1528,2025,CRBU: North Pole Basin (NB),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,78
+1529,2025,CRBU: North Pole Basin (NB),Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,121
+1530,2025,CRBU: North Pole Basin (NB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,91
+1531,2025,CRBU: North Pole Basin (NB),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,196
+1532,2025,CRBU: Schofield Park (SP),Caprifoliaceae-Lonicera involucrata,Caprifoliaceae,Lonicera,involucrata,Lonicera involucrata,82
+1533,2025,CRBU: Schofield Park (SP),Betulaceae-Betula glandulosa,Betulaceae,Betula,glandulosa,Betula glandulosa,159
+1534,2025,CRBU: Schofield Park (SP),Betulaceae-Betula glandulosa,Betulaceae,Betula,glandulosa,Betula glandulosa,233
+1535,2025,CRBU: Schofield Park (SP),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,52
+1536,2025,CRBU: Schofield Park (SP),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,70
+1537,2025,CRBU: Schofield Park (SP),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,67
+1538,2025,CRBU: Schofield Park (SP),Betulaceae-Betula glandulosa,Betulaceae,Betula,glandulosa,Betula glandulosa,121
+1539,2025,CRBU: Schofield Park (SP),Salicaceae-Salix monticola,Salicaceae,Salix,monticola,Salix monticola,147
+1540,2025,CRBU: Schofield Park (SP),Betulaceae-Betula glandulosa,Betulaceae,Betula,glandulosa,Betula glandulosa,267
+1541,2025,CRBU: Schofield Park (SP),Grossulariaceae-Ribes montigenum,Grossulariaceae,Ribes,montigenum,Ribes montigenum,84
+1542,2025,CRBU: Schofield Park (SP),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,103
+1543,2025,UPTA: Trail Creek (TK),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,59
+1544,2025,UPTA: Trail Creek (TK),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,54
+1545,2025,UPTA: Trail Creek (TK),Asteraceae-Artemisia cana,Asteraceae,Artemisia,cana,Artemisia cana,57
+1546,2025,UPTA: Trail Creek (TK),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,67
+1547,2025,UPTA: Trail Creek (TK),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,99
+1548,2025,UPTA: Trail Creek (TK),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,116
+1549,2025,UPTA: Trail Creek (TK),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,97
+1550,2025,UPTA: Trail Creek (TK),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,56
+1551,2025,UPTA: Trail Creek (TK),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,112
+1552,2025,UPTA: Trail Creek (TK),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,82
+1553,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,120
+1554,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,119
+1555,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,115
+1556,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,154
+1557,2025,UPTA: Taylor River Road Lower (RL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,74
+1558,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,143
+1559,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,114
+1560,2025,UPTA: Taylor River Road Lower (RL),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,104
+1561,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,132
+1562,2025,UPTA: Taylor River Road Lower (RL),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,89
+1563,2025,UPTA: Taylor River Road Lower (RL),Asteraceae-Artemisia cana,Asteraceae,Artemisia,cana,Artemisia cana,82
+1564,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,314
+1565,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,242
+1566,2025,UPTA: Taylor River Road Lower (RL),Asteraceae-Artemisia tridentata,Asteraceae,Artemisia,tridentata,Artemisia tridentata,94
+1567,2025,UPTA: Taylor River Road Lower (RL),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,95
+1568,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix planifolia,Salicaceae,Salix,planifolia,Salix planifolia,99
+1569,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,86
+1570,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,82
+1571,2025,UPTA: Rocky Brook (RB),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,90
+1572,2025,UPTA: Rocky Brook (RB),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,88
+1573,2025,UPTA: Rocky Brook (RB),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,62
+1574,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,113
+1575,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,76
+1576,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,139
+1577,2025,UPTA: Rocky Brook (RB),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,96
+1578,2025,UPTA: Taylor River Road Upper (RU),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,62
+1579,2025,UPTA: Taylor River Road Upper (RU),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,81
+1580,2025,UPTA: Taylor River Road Upper (RU),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,175
+1581,2025,UPTA: Taylor River Road Upper (RU),Salicaceae-Salix glauca,Salicaceae,Salix,glauca,Salix glauca,118
+1582,2025,UPTA: Taylor River Road Upper (RU),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,85
+1583,2025,UPTA: Taylor River Road Upper (RU),Betulaceae-Betula glandulosa,Betulaceae,Betula,glandulosa,Betula glandulosa,79
+1584,2025,UPTA: Taylor River Road Upper (RU),Salicaceae-Salix wolfii,Salicaceae,Salix,wolfii,Salix wolfii,141
+1585,2025,UPTA: Taylor River Road Upper (RU),Salicaceae-Salix drummondiana,Salicaceae,Salix,drummondiana,Salix drummondiana,295
+1586,2025,UPTA: Taylor River Road Upper (RU),Cupressaceae-Juniperus communis,Cupressaceae,Juniperus,communis,Juniperus communis,94
+1587,2025,UPTA: Taylor River Road Upper (RU),Rosaceae-Dasiphora fruticosa,Rosaceae,Dasiphora,fruticosa,Dasiphora fruticosa,68
+1588,2025,Ad Hoc Site,Grossulariaceae-Ribes cereum,Grossulariaceae,Ribes,cereum,Ribes cereum,128
+1589,2025,Ad Hoc Site,Rosaceae-Holodiscus discolor,Rosaceae,Holodiscus,discolor,Holodiscus discolor,105
+1590,2025,Ad Hoc Site,Viburnaceae-Sambucus racemosa,Viburnaceae,Sambucus,racemosa,Sambucus racemosa,137
+1591,2025,Ad Hoc Site,Cornaceae-Cornus sericea,Cornaceae,Cornus,sericea,Cornus sericea,117
+1592,2025,Ad Hoc Site,Sapindaceae-Acer glabrum,Sapindaceae,Acer,glabrum,Acer glabrum,215
