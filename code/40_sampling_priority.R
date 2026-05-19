@@ -39,6 +39,14 @@ punch <- readr::read_csv("data/derived/punch_list.csv",
 pred  <- readr::read_csv("data/derived/inference_predictions.csv",
                          show_col_types = FALSE)
 
+# Meadow class narratives (S01..S26, M01..M05) live in small_reference.
+# Shrub labels are species binomials and need no extra description.
+narrs <- readr::read_csv("data/small_reference/label_community_names.csv",
+                         show_col_types = FALSE) |>
+  dplyr::transmute(predicted_label = final_label,
+                   class_description = dplyr::coalesce(narrative_curated,
+                                                       narrative_draft))
+
 # nearest_class from 39 and predicted_label from 38 don't have to match
 # (39 uses centroid distance; 38 uses RF). Use the RF prediction as the
 # canonical "predicted class" for leverage scoring — that's the class
@@ -53,6 +61,12 @@ joined <- dist |>
     punch |> dplyr::select(final_label, n_total, predicted_n_pixels,
                             balanced_recall, augmentation_priority),
     by = c("predicted_label" = "final_label")
+  ) |>
+  dplyr::left_join(narrs, by = "predicted_label") |>
+  dplyr::mutate(
+    # For shrub labels (species binomials), use the label itself as the
+    # description so every row has a human-readable name.
+    class_description = dplyr::coalesce(class_description, predicted_label)
   )
 
 # --- Leverage score ------------------------------------------------------
