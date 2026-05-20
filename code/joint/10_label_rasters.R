@@ -148,5 +148,52 @@ for (dom in domains) {
 # --- 4. Persist the categories + colors as a sidecar CSV ----------------
 readr::write_csv(rat, "data/derived/aop_classified/class_lookup_labeled.csv")
 cat(sprintf("\nWrote data/derived/aop_classified/class_lookup_labeled.csv\n"))
-cat("Load *_labeled.tif in QGIS — it renders with the category colors\n")
-cat("and shows `short_label` as the symbol label by default.\n")
+
+# --- 5. Write a QGIS QML sidecar per domain so QGIS auto-applies the
+#       paletted renderer + labels regardless of how it reads the
+#       embedded color table.
+write_qml <- function(rat, qml_path) {
+  entries <- paste(
+    sprintf(
+      '        <paletteEntry color="%s" value="%d" alpha="255" label="%s"/>',
+      rat$color_hex, rat$value,
+      # Encode any XML-unsafe chars in labels.
+      gsub("\"", "&quot;",
+        gsub("'", "&apos;",
+          gsub("<", "&lt;",
+            gsub(">", "&gt;",
+              gsub("&", "&amp;", rat$short_label)))))
+    ),
+    collapse = "\n"
+  )
+  qml <- sprintf(
+'<!DOCTYPE qgis PUBLIC \'http://mrcc.com/qgis.dtd\' \'SYSTEM\'>
+<qgis version="3.x" styleCategories="AllStyleCategories">
+  <pipe>
+    <rasterrenderer band="1" type="paletted" nodataColor="" opacity="1" alphaBand="-1">
+      <rasterTransparency/>
+      <colorPalette>
+%s
+      </colorPalette>
+    </rasterrenderer>
+    <brightnesscontrast brightness="0" contrast="0" gamma="1"/>
+    <huesaturation colorizeOn="0" saturation="0"/>
+    <rasterresampler/>
+    <resamplingStage>resamplingFilter</resamplingStage>
+  </pipe>
+  <blendMode>0</blendMode>
+</qgis>
+', entries)
+  writeLines(qml, qml_path)
+}
+
+for (dom in domains) {
+  tif <- file.path(in_dir, sprintf("%s_class_3m_v1_labeled.tif", dom))
+  if (!file.exists(tif)) next
+  qml <- sub("\\.tif$", ".qml", tif)
+  write_qml(rat, qml)
+  cat(sprintf("Wrote %s\n", basename(qml)))
+}
+
+cat("\nLoad *_labeled.tif in QGIS — the sibling .qml auto-applies the\n",
+    "paletted renderer with `short_label` labels per class.\n", sep = "")
