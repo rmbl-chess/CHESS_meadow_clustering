@@ -1,0 +1,52 @@
+final_label,category
+Alnus incana,shrub_riparian
+Amelanchier alnifolia,shrub_mesic
+Artemisia cana,shrub_dry
+Artemisia tridentata,shrub_dry
+Betula glandulosa,shrub_riparian
+Cornus sericea,shrub_riparian
+Dasiphora fruticosa,shrub_riparian
+Holodiscus discolor,shrub_mesic
+Juniperus sp.,shrub_dry
+Lonicera involucrata,shrub_mesic
+Prunus virginiana,shrub_mesic
+Purshia tridentata,shrub_dry
+Ribes sp.,shrub_mesic
+Salix boothii,shrub_riparian
+Salix planifolia,shrub_riparian
+Salix wolfii,shrub_riparian
+Salix other,shrub_riparian
+Salix sp.,shrub_riparian
+Sambucus racemosa,shrub_mesic
+Symphoricarpos rotundifolius,shrub_mesic
+S01,bunchgrass_meadow
+S02,dry_shrub_steppe
+S03,dry_shrub_steppe
+S04,bunchgrass_meadow
+S05,bunchgrass_meadow
+S06,dry_shrub_steppe
+S07,dry_shrub_steppe
+S08,dry_shrub_steppe
+S09,dry_shrub_steppe
+S10,sparse_rocky
+S11,bunchgrass_meadow
+S12,dwarf_subshrub
+S13,tall_forb
+S14,wet_meadow
+S15,sparse_rocky
+S16,wet_meadow
+S17,wet_meadow
+S18,sparse_rocky
+S19,dwarf_subshrub
+S20,disturbed
+S21,wet_meadow
+S22,wet_meadow
+S23,sparse_rocky
+S24,wet_meadow
+S25,dry_shrub_steppe
+S26,wet_meadow
+M01_Veratrum_tenuipetalum,tall_forb
+M02_Ligusticum_porteri,tall_forb
+M03_Caltha_leptosepala,wet_meadow
+M04_Corydalis_caseana,tall_forb
+M05_Osmorhiza_occidentalis,tall_forb

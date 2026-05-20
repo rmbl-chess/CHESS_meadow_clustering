@@ -36,7 +36,8 @@ narrs <- readr::read_csv("data/small_reference/label_community_names.csv",
                          show_col_types = FALSE) |>
   dplyr::transmute(final_label,
                    description = dplyr::coalesce(narrative_curated,
-                                                 narrative_draft))
+                                                 narrative_draft),
+                   short_label)
 
 # Meadow side: full IndVal indicator + abundant + physiognomy strings.
 meadow_desc <- readr::read_csv("data/derived/label_descriptions.csv",
@@ -64,7 +65,16 @@ shrub_desc <- shrub_train |>
 
 class_extra <- dplyr::bind_rows(meadow_desc, shrub_desc) |>
   dplyr::left_join(narrs, by = "final_label") |>
-  dplyr::mutate(description = dplyr::coalesce(description, final_label))
+  dplyr::mutate(
+    description = dplyr::coalesce(description, final_label),
+    # Shrub classes don't go through label_community_names.csv, so build
+    # their short label here. Format: "Shrub - {binomial}"; convert the
+    # collapsed-genus labels (e.g., "Salix sp.") to the same shape.
+    short_label = dplyr::case_when(
+      !is.na(short_label)              ~ short_label,
+      TRUE                              ~ paste("Shrub -", final_label)
+    )
+  )
 
 med_lev <- spri |>
   dplyr::group_by(predicted_label) |>
@@ -83,7 +93,7 @@ summary_tbl <- punch |>
   ) |>
   dplyr::left_join(med_lev,     by = "final_label") |>
   dplyr::left_join(class_extra, by = "final_label") |>
-  dplyr::select(final_label, class_type, description,
+  dplyr::select(final_label, short_label, class_type, description,
                 indicator_taxa, abundant_taxa, physiognomy,
                 n_2018, n_2025, n_total,
                 predicted_n_pixels, pct_of_inference,
