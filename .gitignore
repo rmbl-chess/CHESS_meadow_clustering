@@ -105,6 +105,10 @@ data/cache/
 !data/derived/sampling_priority_top.csv
 !data/derived/class_summary_table.csv
 !data/derived/joint_training.gpkg
+!data/derived/aop_classified/
+!data/derived/aop_classified/class_lookup.csv
+# Large per-domain rasters stay out of git (~340 MB total).
+data/derived/aop_classified/*.tif
 data/*.parquet
 data/*.feather
 *.h5
