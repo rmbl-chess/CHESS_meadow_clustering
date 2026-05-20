@@ -72,7 +72,7 @@ hex_grid <- matrix(
   c(
     # montane     subalpine    alpine
     "#8a6f3e",   "#b5915f",   "#d4b89e",   # dry   (warm brown -> tan)
-    "#6b7e4e",   "#94a872",   "#b8c9a2",   # mesic (olive -> sage -> light green)
+    "#4f7a3f",   "#79a663",   "#b6cea3",   # mesic (forest green -> medium -> light green)
     "#4a6a85",   "#7095ae",   "#a0bbd0"    # wet   (slate -> steel -> light blue)
   ),
   nrow = 3, byrow = TRUE,

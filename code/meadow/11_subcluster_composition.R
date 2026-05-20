@@ -249,11 +249,11 @@ asg <- asg |>
 monotypic_threshold <- 70
 monotypic_table <- tibble::tribble(
   ~species_col,                 ~label,
-  "Veratrum_tenuipetalum_cover", "M01_Veratrum_tenuipetalum",
-  "Ligusticum_porteri_cover",     "M02_Ligusticum_porteri",
-  "Caltha_leptosepala_cover",     "M03_Caltha_leptosepala",
-  "Corydalis_caseana_cover",      "M04_Corydalis_caseana",
-  "Osmorhiza_occidentalis_cover", "M05_Osmorhiza_occidentalis"
+  "Veratrum_tenuipetalum_cover",  "Veratrum tenuipetalum",
+  "Ligusticum_porteri_cover",     "Ligusticum porteri",
+  "Caltha_leptosepala_cover",     "Caltha leptosepala",
+  "Corydalis_caseana_cover",      "Corydalis caseana",
+  "Osmorhiza_occidentalis_cover", "Osmorhiza occidentalis"
 )
 
 # Pull just the candidate cover columns from the joined veg+spectra table.

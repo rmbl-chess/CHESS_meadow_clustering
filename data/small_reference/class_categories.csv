@@ -45,8 +45,8 @@ S23,mesic,alpine
 S24,wet,alpine
 S25,dry,subalpine
 S26,wet,subalpine
-M01_Veratrum_tenuipetalum,wet,subalpine
-M02_Ligusticum_porteri,mesic,subalpine
-M03_Caltha_leptosepala,wet,subalpine
-M04_Corydalis_caseana,mesic,alpine
-M05_Osmorhiza_occidentalis,mesic,subalpine
+Veratrum tenuipetalum,wet,subalpine
+Ligusticum porteri,mesic,subalpine
+Caltha leptosepala,wet,subalpine
+Corydalis caseana,mesic,alpine
+Osmorhiza occidentalis,mesic,subalpine

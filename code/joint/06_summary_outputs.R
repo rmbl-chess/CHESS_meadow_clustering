@@ -63,18 +63,36 @@ shrub_desc <- shrub_train |>
   dplyr::mutate(abundant_taxa = indicator_taxa,
                 physiognomy   = "shrub crown")
 
-class_extra <- dplyr::bind_rows(meadow_desc, shrub_desc) |>
-  dplyr::left_join(narrs, by = "final_label") |>
+# Union of all meadow + shrub final_labels so we don't drop any class
+# whose indicator/abundant didn't make it into label_descriptions.csv
+# (e.g., monotypic M-classes with zero clustered_2025 sites).
+all_meadow_labels <- narrs$final_label
+all_shrub_labels  <- shrub_desc$final_label
+class_extra <- tibble::tibble(
+  final_label = c(all_meadow_labels, all_shrub_labels)
+) |>
+  dplyr::distinct() |>
+  dplyr::left_join(narrs,        by = "final_label") |>
+  dplyr::left_join(meadow_desc,  by = "final_label") |>
+  dplyr::left_join(shrub_desc,   by = "final_label",
+                   suffix = c("", ".shrub")) |>
   dplyr::mutate(
-    description = dplyr::coalesce(description, final_label),
+    # Prefer meadow indicators where present, fall back to shrub ones.
+    indicator_taxa = dplyr::coalesce(indicator_taxa, indicator_taxa.shrub),
+    abundant_taxa  = dplyr::coalesce(abundant_taxa,  abundant_taxa.shrub),
+    physiognomy    = dplyr::coalesce(physiognomy,    physiognomy.shrub),
+    description    = dplyr::coalesce(description, final_label),
     # Shrub classes don't go through label_community_names.csv, so build
     # their short label here. Format: "Shrub - {binomial}"; convert the
     # collapsed-genus labels (e.g., "Salix sp.") to the same shape.
     short_label = dplyr::case_when(
       !is.na(short_label)              ~ short_label,
-      TRUE                              ~ paste("Shrub -", final_label)
+      final_label %in% all_shrub_labels ~ paste("Shrub -", final_label),
+      TRUE                              ~ final_label
     )
-  )
+  ) |>
+  dplyr::select(final_label, indicator_taxa, abundant_taxa, physiognomy,
+                description, short_label)
 
 med_lev <- spri |>
   dplyr::group_by(predicted_label) |>
