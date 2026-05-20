@@ -1,52 +1,52 @@
-final_label,category
-Alnus incana,shrub_riparian
-Amelanchier alnifolia,shrub_mesic
-Artemisia cana,shrub_dry
-Artemisia tridentata,shrub_dry
-Betula glandulosa,shrub_riparian
-Cornus sericea,shrub_riparian
-Dasiphora fruticosa,shrub_riparian
-Holodiscus discolor,shrub_mesic
-Juniperus sp.,shrub_dry
-Lonicera involucrata,shrub_mesic
-Prunus virginiana,shrub_mesic
-Purshia tridentata,shrub_dry
-Ribes sp.,shrub_mesic
-Salix boothii,shrub_riparian
-Salix planifolia,shrub_riparian
-Salix wolfii,shrub_riparian
-Salix other,shrub_riparian
-Salix sp.,shrub_riparian
-Sambucus racemosa,shrub_mesic
-Symphoricarpos rotundifolius,shrub_mesic
-S01,bunchgrass_meadow
-S02,dry_shrub_steppe
-S03,dry_shrub_steppe
-S04,bunchgrass_meadow
-S05,bunchgrass_meadow
-S06,dry_shrub_steppe
-S07,dry_shrub_steppe
-S08,dry_shrub_steppe
-S09,dry_shrub_steppe
-S10,sparse_rocky
-S11,bunchgrass_meadow
-S12,dwarf_subshrub
-S13,tall_forb
-S14,wet_meadow
-S15,sparse_rocky
-S16,wet_meadow
-S17,wet_meadow
-S18,sparse_rocky
-S19,dwarf_subshrub
-S20,disturbed
-S21,wet_meadow
-S22,wet_meadow
-S23,sparse_rocky
-S24,wet_meadow
-S25,dry_shrub_steppe
-S26,wet_meadow
-M01_Veratrum_tenuipetalum,tall_forb
-M02_Ligusticum_porteri,tall_forb
-M03_Caltha_leptosepala,wet_meadow
-M04_Corydalis_caseana,tall_forb
-M05_Osmorhiza_occidentalis,tall_forb
+final_label,moisture,elevation
+Alnus incana,wet,subalpine
+Amelanchier alnifolia,mesic,montane
+Artemisia cana,dry,subalpine
+Artemisia tridentata,dry,montane
+Betula glandulosa,wet,subalpine
+Cornus sericea,wet,montane
+Dasiphora fruticosa,wet,subalpine
+Holodiscus discolor,mesic,montane
+Juniperus sp.,dry,montane
+Lonicera involucrata,mesic,subalpine
+Prunus virginiana,mesic,montane
+Purshia tridentata,dry,montane
+Ribes sp.,mesic,subalpine
+Salix boothii,wet,subalpine
+Salix planifolia,wet,alpine
+Salix wolfii,wet,subalpine
+Salix other,wet,subalpine
+Salix sp.,wet,subalpine
+Sambucus racemosa,mesic,subalpine
+Symphoricarpos rotundifolius,mesic,subalpine
+S01,mesic,montane
+S02,dry,montane
+S03,dry,montane
+S04,mesic,subalpine
+S05,mesic,montane
+S06,dry,montane
+S07,dry,montane
+S08,dry,montane
+S09,dry,montane
+S10,dry,subalpine
+S11,mesic,subalpine
+S12,mesic,subalpine
+S13,mesic,subalpine
+S14,wet,subalpine
+S15,dry,subalpine
+S16,wet,subalpine
+S17,wet,subalpine
+S18,dry,alpine
+S19,mesic,alpine
+S20,disturbed,disturbed
+S21,wet,alpine
+S22,wet,subalpine
+S23,mesic,alpine
+S24,wet,alpine
+S25,dry,subalpine
+S26,wet,subalpine
+M01_Veratrum_tenuipetalum,wet,subalpine
+M02_Ligusticum_porteri,mesic,subalpine
+M03_Caltha_leptosepala,wet,subalpine
+M04_Corydalis_caseana,mesic,alpine
+M05_Osmorhiza_occidentalis,mesic,subalpine

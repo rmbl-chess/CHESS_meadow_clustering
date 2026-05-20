@@ -1,48 +1,48 @@
-value,short_label,description,final_label,class_type,category,color_hex
-1,Shrub - Alnus incana,Alnus incana,Alnus incana,shrub,shrub_riparian,#1F5981
-2,Shrub - Amelanchier alnifolia,Amelanchier alnifolia,Amelanchier alnifolia,shrub,shrub_mesic,#4A2B6C
-3,Shrub - Artemisia tridentata,Artemisia tridentata,Artemisia tridentata,shrub,shrub_dry,#7C3E1C
-4,Shrub - Betula glandulosa,Betula glandulosa,Betula glandulosa,shrub,shrub_riparian,#236593
-5,Shrub - Dasiphora fruticosa,Dasiphora fruticosa,Dasiphora fruticosa,shrub,shrub_riparian,#2772A5
-6,Shrub - Juniperus sp.,Juniperus sp.,Juniperus sp.,shrub,shrub_dry,#B15928
-7,Shrub - Lonicera involucrata,Lonicera involucrata,Lonicera involucrata,shrub,shrub_mesic,#56327E
-8,Meadow - Veratrum tenuipetalum,Subalpine Veratrum tenuipetalum monotypic tall-forb stand,M01_Veratrum_tenuipetalum,meadow,tall_forb,#9F1214
-9,Meadow - Ligusticum porteri,Subalpine Ligusticum porteri monotypic forb stand,M02_Ligusticum_porteri,meadow,tall_forb,#C11618
-10,Meadow - Caltha leptosepala,Subalpine Caltha leptosepala monotypic snowmelt-wetland patch,M03_Caltha_leptosepala,meadow,wet_meadow,#034E7B
-11,M04_Corydalis_caseana,M04_Corydalis_caseana,M04_Corydalis_caseana,meadow,tall_forb,#E31A1C
-12,M05_Osmorhiza_occidentalis,M05_Osmorhiza_occidentalis,M05_Osmorhiza_occidentalis,meadow,tall_forb,#F11C1F
-13,Shrub - Prunus virginiana,Prunus virginiana,Prunus virginiana,shrub,shrub_mesic,#633990
-14,Shrub - Purshia tridentata,Purshia tridentata,Purshia tridentata,shrub,shrub_dry,#D46B30
-15,Shrub - Ribes sp.,Ribes sp.,Ribes sp.,shrub,shrub_mesic,#6E3FA0
-16,Meadow - Balsamorhiza mule-ear flower-field,Low-elevation Balsamorhiza sagittata-Wyethia amplexicaulis mule-ear flower-field,S01,meadow,bunchgrass_meadow,#59842D
-17,Meadow - Chrysothamnus depressus rabbitbrush steppe,Low-elevation Chrysothamnus depressus-Balsamorhiza sagittata dwarf rabbitbrush steppe,S02,meadow,dry_shrub_steppe,#947010
-18,Meadow - Artemisia tridentata sage-rabbitbrush,Low-elevation Artemisia tridentata-Ericameria nauseosa sage-rabbitbrush shrubland,S03,meadow,dry_shrub_steppe,#A98012
-19,Meadow - Festuca thurberi bunchgrass,Mid-elevation Festuca thurberi-Erigeron speciosus montane bunchgrass meadow,S04,meadow,bunchgrass_meadow,#72A93A
-20,Meadow - Oxytropis deflexa short-forb,Mid-elevation Oxytropis deflexa-Geum triflorum short-stature forb meadow,S05,meadow,bunchgrass_meadow,#87C845
-21,Meadow - Artemisia tridentata sage-bearberry mosaic,Mid-elevation Artemisia tridentata-Arctostaphylos uva-ursi sage-bearberry shrub-grass mosaic,S06,meadow,dry_shrub_steppe,#BE9014
-22,Meadow - Chrysothamnus viscidiflorus rabbitbrush steppe,Low-elevation Chrysothamnus viscidiflorus-Achnatherum hymenoides dwarf rabbitbrush steppe,S07,meadow,dry_shrub_steppe,#D4A017
-23,Meadow - Purshia tridentata evergreen shrubland,Low-elevation Purshia tridentata-Mahonia repens evergreen shrubland,S08,meadow,dry_shrub_steppe,#E2AA18
-24,Meadow - Arctostaphylos uva-ursi dryland scrub,Low-elevation Arctostaphylos uva-ursi-Purshia tridentata dryland scrub,S09,meadow,dry_shrub_steppe,#F0B51A
-25,Meadow - Heterotheca villosa rocky shrub-bench,Subalpine Heterotheca villosa-Eriogonum umbellatum rocky shrub-bench,S10,meadow,sparse_rocky,#696969
-26,Meadow - Festuca thurberi mesic grass-forb,Upper subalpine Festuca thurberi-Arnica mollis-Ligusticum porteri mesic grass-forb meadow,S11,meadow,bunchgrass_meadow,#98E24E
-27,Meadow - Vaccinium cespitosum dwarf-shrub forb,Subalpine Vaccinium cespitosum-Heliomeris multiflora dwarf-shrub forb meadow,S12,meadow,dwarf_subshrub,#AB745B
-28,Meadow - Ligusticum porteri mesic tall-forb,Upper subalpine Ligusticum porteri-Eucephalus engelmannii mesic tall-forb meadow,S13,meadow,tall_forb,#FF1F22
-29,Meadow - Veratrum tenuipetalum tall-forb wet meadow,Subalpine Veratrum tenuipetalum-Delphinium barbeyi tall-forb wet meadow,S14,meadow,wet_meadow,#03578A
-30,Meadow - Heterotheca villosa sparse rocky,Subalpine Heterotheca villosa-Heliomeris multiflora sparse rocky meadow,S15,meadow,sparse_rocky,#878787
-31,Meadow - Carex aquatilis wet sedge-grass,Subalpine Carex aquatilis-Deschampsia cespitosa wet sedge-grass meadow,S16,meadow,wet_meadow,#046199
-32,Meadow - Caltha leptosepala snowmelt wetland,Subalpine Caltha leptosepala-Carex aquatilis snowmelt wetland,S17,meadow,wet_meadow,#046BA8
-33,Meadow - Heterotheca villosa dry rocky,Upper subalpine Heterotheca villosa-Hymenoxys hoopesii dry rocky meadow,S18,meadow,sparse_rocky,#A0A0A0
-34,Meadow - Vaccinium cespitosum dwarf-shrub,Upper subalpine Vaccinium cespitosum-Bistorta bistortoides dwarf-shrub meadow,S19,meadow,dwarf_subshrub,#FFC69C
-35,Meadow - Taraxacum officinale disturbed,Subalpine Taraxacum officinale-Achillea millefolium disturbed herbland,S20,meadow,disturbed,#fee08b
-36,Meadow - Mertensia ciliata tall-forb wet drainage,Upper subalpine Mertensia ciliata-Heracleum maximum-Veratrum tenuipetalum tall-forb wet drainage,S21,meadow,wet_meadow,#0573B4
-37,Meadow - Antennaria corymbosa willow-margin,Subalpine Antennaria corymbosa-Salix wolfii moist willow-margin meadow,S22,meadow,wet_meadow,#0579BF
-38,Meadow - Deschampsia cespitosa sparse rocky,Upper subalpine Deschampsia cespitosa-Vaccinium cespitosum sparse rocky meadow,S23,meadow,sparse_rocky,#B4B4B4
-39,Meadow - Carex saxatilis sedge wetland,Upper subalpine Carex saxatilis-Arnica mollis sedge wetland,S24,meadow,wet_meadow,#057FC9
-40,Meadow - Artemisia cana low sage-forb,Mid-elevation Artemisia cana-Potentilla hippiana low sage-forb meadow,S25,meadow,dry_shrub_steppe,#FEC01C
-41,Meadow - Carex sedge wet meadow,Subalpine Carex-Caltha leptosepala sedge wet meadow,S26,meadow,wet_meadow,#0686D3
-42,Shrub - Salix boothii,Salix boothii,Salix boothii,shrub,shrub_riparian,#2C7FB8
-43,Shrub - Salix other,Salix other,Salix other,shrub,shrub_riparian,#2F87C4
-44,Shrub - Salix planifolia,Salix planifolia,Salix planifolia,shrub,shrub_riparian,#328FD0
-45,Shrub - Salix wolfii,Salix wolfii,Salix wolfii,shrub,shrub_riparian,#3598DD
-46,Shrub - Sambucus racemosa,Sambucus racemosa,Sambucus racemosa,shrub,shrub_mesic,#7644AC
-47,Shrub - Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,shrub,shrub_mesic,#7F49B9
+value,short_label,description,final_label,class_type,moisture,elevation,color_hex
+1,Shrub - Alnus incana,Alnus incana,Alnus incana,shrub,wet,subalpine,#7095ae
+2,Shrub - Amelanchier alnifolia,Amelanchier alnifolia,Amelanchier alnifolia,shrub,mesic,montane,#6b7e4e
+3,Shrub - Artemisia tridentata,Artemisia tridentata,Artemisia tridentata,shrub,dry,montane,#8a6f3e
+4,Shrub - Betula glandulosa,Betula glandulosa,Betula glandulosa,shrub,wet,subalpine,#7095ae
+5,Shrub - Dasiphora fruticosa,Dasiphora fruticosa,Dasiphora fruticosa,shrub,wet,subalpine,#7095ae
+6,Shrub - Juniperus sp.,Juniperus sp.,Juniperus sp.,shrub,dry,montane,#8a6f3e
+7,Shrub - Lonicera involucrata,Lonicera involucrata,Lonicera involucrata,shrub,mesic,subalpine,#94a872
+8,Meadow - Veratrum tenuipetalum,Subalpine Veratrum tenuipetalum monotypic tall-forb stand,M01_Veratrum_tenuipetalum,meadow,wet,subalpine,#7095ae
+9,Meadow - Ligusticum porteri,Subalpine Ligusticum porteri monotypic forb stand,M02_Ligusticum_porteri,meadow,mesic,subalpine,#94a872
+10,Meadow - Caltha leptosepala,Subalpine Caltha leptosepala monotypic snowmelt-wetland patch,M03_Caltha_leptosepala,meadow,wet,subalpine,#7095ae
+11,M04_Corydalis_caseana,M04_Corydalis_caseana,M04_Corydalis_caseana,meadow,mesic,alpine,#b8c9a2
+12,M05_Osmorhiza_occidentalis,M05_Osmorhiza_occidentalis,M05_Osmorhiza_occidentalis,meadow,mesic,subalpine,#94a872
+13,Shrub - Prunus virginiana,Prunus virginiana,Prunus virginiana,shrub,mesic,montane,#6b7e4e
+14,Shrub - Purshia tridentata,Purshia tridentata,Purshia tridentata,shrub,dry,montane,#8a6f3e
+15,Shrub - Ribes sp.,Ribes sp.,Ribes sp.,shrub,mesic,subalpine,#94a872
+16,Meadow - Balsamorhiza mule-ear flower-field,Low-elevation Balsamorhiza sagittata-Wyethia amplexicaulis mule-ear flower-field,S01,meadow,mesic,montane,#6b7e4e
+17,Meadow - Chrysothamnus depressus rabbitbrush steppe,Low-elevation Chrysothamnus depressus-Balsamorhiza sagittata dwarf rabbitbrush steppe,S02,meadow,dry,montane,#8a6f3e
+18,Meadow - Artemisia tridentata sage-rabbitbrush,Low-elevation Artemisia tridentata-Ericameria nauseosa sage-rabbitbrush shrubland,S03,meadow,dry,montane,#8a6f3e
+19,Meadow - Festuca thurberi bunchgrass,Mid-elevation Festuca thurberi-Erigeron speciosus montane bunchgrass meadow,S04,meadow,mesic,subalpine,#94a872
+20,Meadow - Oxytropis deflexa short-forb,Mid-elevation Oxytropis deflexa-Geum triflorum short-stature forb meadow,S05,meadow,mesic,montane,#6b7e4e
+21,Meadow - Artemisia tridentata sage-bearberry mosaic,Mid-elevation Artemisia tridentata-Arctostaphylos uva-ursi sage-bearberry shrub-grass mosaic,S06,meadow,dry,montane,#8a6f3e
+22,Meadow - Chrysothamnus viscidiflorus rabbitbrush steppe,Low-elevation Chrysothamnus viscidiflorus-Achnatherum hymenoides dwarf rabbitbrush steppe,S07,meadow,dry,montane,#8a6f3e
+23,Meadow - Purshia tridentata evergreen shrubland,Low-elevation Purshia tridentata-Mahonia repens evergreen shrubland,S08,meadow,dry,montane,#8a6f3e
+24,Meadow - Arctostaphylos uva-ursi dryland scrub,Low-elevation Arctostaphylos uva-ursi-Purshia tridentata dryland scrub,S09,meadow,dry,montane,#8a6f3e
+25,Meadow - Heterotheca villosa rocky shrub-bench,Subalpine Heterotheca villosa-Eriogonum umbellatum rocky shrub-bench,S10,meadow,dry,subalpine,#b5915f
+26,Meadow - Festuca thurberi mesic grass-forb,Upper subalpine Festuca thurberi-Arnica mollis-Ligusticum porteri mesic grass-forb meadow,S11,meadow,mesic,subalpine,#94a872
+27,Meadow - Vaccinium cespitosum dwarf-shrub forb,Subalpine Vaccinium cespitosum-Heliomeris multiflora dwarf-shrub forb meadow,S12,meadow,mesic,subalpine,#94a872
+28,Meadow - Ligusticum porteri mesic tall-forb,Upper subalpine Ligusticum porteri-Eucephalus engelmannii mesic tall-forb meadow,S13,meadow,mesic,subalpine,#94a872
+29,Meadow - Veratrum tenuipetalum tall-forb wet meadow,Subalpine Veratrum tenuipetalum-Delphinium barbeyi tall-forb wet meadow,S14,meadow,wet,subalpine,#7095ae
+30,Meadow - Heterotheca villosa sparse rocky,Subalpine Heterotheca villosa-Heliomeris multiflora sparse rocky meadow,S15,meadow,dry,subalpine,#b5915f
+31,Meadow - Carex aquatilis wet sedge-grass,Subalpine Carex aquatilis-Deschampsia cespitosa wet sedge-grass meadow,S16,meadow,wet,subalpine,#7095ae
+32,Meadow - Caltha leptosepala snowmelt wetland,Subalpine Caltha leptosepala-Carex aquatilis snowmelt wetland,S17,meadow,wet,subalpine,#7095ae
+33,Meadow - Heterotheca villosa dry rocky,Upper subalpine Heterotheca villosa-Hymenoxys hoopesii dry rocky meadow,S18,meadow,dry,alpine,#d4b89e
+34,Meadow - Vaccinium cespitosum dwarf-shrub,Upper subalpine Vaccinium cespitosum-Bistorta bistortoides dwarf-shrub meadow,S19,meadow,mesic,alpine,#b8c9a2
+35,Meadow - Taraxacum officinale disturbed,Subalpine Taraxacum officinale-Achillea millefolium disturbed herbland,S20,meadow,disturbed,disturbed,#c5b83d
+36,Meadow - Mertensia ciliata tall-forb wet drainage,Upper subalpine Mertensia ciliata-Heracleum maximum-Veratrum tenuipetalum tall-forb wet drainage,S21,meadow,wet,alpine,#a0bbd0
+37,Meadow - Antennaria corymbosa willow-margin,Subalpine Antennaria corymbosa-Salix wolfii moist willow-margin meadow,S22,meadow,wet,subalpine,#7095ae
+38,Meadow - Deschampsia cespitosa sparse rocky,Upper subalpine Deschampsia cespitosa-Vaccinium cespitosum sparse rocky meadow,S23,meadow,mesic,alpine,#b8c9a2
+39,Meadow - Carex saxatilis sedge wetland,Upper subalpine Carex saxatilis-Arnica mollis sedge wetland,S24,meadow,wet,alpine,#a0bbd0
+40,Meadow - Artemisia cana low sage-forb,Mid-elevation Artemisia cana-Potentilla hippiana low sage-forb meadow,S25,meadow,dry,subalpine,#b5915f
+41,Meadow - Carex sedge wet meadow,Subalpine Carex-Caltha leptosepala sedge wet meadow,S26,meadow,wet,subalpine,#7095ae
+42,Shrub - Salix boothii,Salix boothii,Salix boothii,shrub,wet,subalpine,#7095ae
+43,Shrub - Salix other,Salix other,Salix other,shrub,wet,subalpine,#7095ae
+44,Shrub - Salix planifolia,Salix planifolia,Salix planifolia,shrub,wet,alpine,#a0bbd0
+45,Shrub - Salix wolfii,Salix wolfii,Salix wolfii,shrub,wet,subalpine,#7095ae
+46,Shrub - Sambucus racemosa,Sambucus racemosa,Sambucus racemosa,shrub,mesic,subalpine,#94a872
+47,Shrub - Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,shrub,mesic,subalpine,#94a872

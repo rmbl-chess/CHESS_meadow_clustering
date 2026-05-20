@@ -6,21 +6,19 @@
 # colortable in memory, writes a sister "_labeled.tif" COG. The original
 # numeric uint8 raster is left in place.
 #
-# Color scheme: each class gets a base hue from its ecological category,
-# with within-category lightness variation so adjacent same-category
-# classes are still visually distinguishable. Categories (10):
+# Color scheme: 3x3 grid on (moisture, elevation) with muted earth tones.
 #
-#   shrub_riparian      Salix complex, Alnus, Betula, Dasiphora, Cornus
-#   shrub_mesic         Amelanchier, Sambucus, Symphoricarpos, Lonicera,
-#                       Ribes, Prunus, Holodiscus
-#   shrub_dry           Artemisia tridentata, Juniperus, Purshia, A. cana
-#   wet_meadow          sedge / Caltha / Veratrum / Mertensia wetlands
-#   tall_forb           Ligusticum / Veratrum / Corydalis tall forb stands
-#   dwarf_subshrub      Vaccinium cespitosum dwarf-shrub meadows
-#   sparse_rocky        Heterotheca / Deschampsia sparse rocky meadows
-#   bunchgrass_meadow   Festuca / Oxytropis / Balsamorhiza grass-forb
-#   dry_shrub_steppe    Chrysothamnus / Artemisia / Purshia low-elev steppe
-#   disturbed           Taraxacum disturbed herbland
+#   hue        = moisture     dry -> mesic -> wet
+#                              warm brown -> olive -> slate blue
+#   lightness  = elevation    montane -> subalpine -> alpine
+#                              dark -> medium -> light
+#   chroma     = constant     ~moderate, avoids vivid colors
+#
+# Disturbed (Taraxacum-dominated, S20) gets a single distinct earth-tone
+# (muted mustard) so it stands out without breaking the saturation budget.
+#
+# Within a cell, classes share the same color — within-cell distinction
+# comes from short_label rather than hue.
 #
 # Inputs:
 #   data/derived/aop_classified/{DOMAIN}_class_3m_v1.tif
@@ -55,52 +53,46 @@ rat <- lookup |>
     description = dplyr::coalesce(description, final_label),
     final_label = final_label,
     class_type  = class_type,
-    category    = category
+    moisture    = moisture,
+    elevation   = elevation
   )
-stopifnot(all(!is.na(rat$category)))   # every class must be categorized
-cat(sprintf("RAT: %d classes across %d categories\n",
-            nrow(rat), dplyr::n_distinct(rat$category)))
+stopifnot(all(!is.na(rat$moisture)),
+          all(!is.na(rat$elevation)))
+cat(sprintf("RAT: %d classes\n  moisture x elevation cell counts:\n",
+            nrow(rat)))
+print(rat |> dplyr::count(moisture, elevation, name = "n") |>
+        tidyr::pivot_wider(names_from = elevation, values_from = n,
+                           values_fill = 0L) |>
+        as.data.frame())
 
-# --- 2. Per-category base colors + within-category lightness variation ---
-# Hand-picked hues with enough hue-spacing that ecologically distinct
-# categories are unambiguous.
-category_hex <- c(
-  shrub_riparian    = "#2c7fb8",   # blue (water-edge)
-  shrub_mesic       = "#6a3d9a",   # purple
-  shrub_dry         = "#b15928",   # warm brown
-  wet_meadow        = "#0570b0",   # deep blue
-  tall_forb         = "#e31a1c",   # red-magenta (showy)
-  dwarf_subshrub    = "#f4a582",   # salmon
-  sparse_rocky      = "#969696",   # gray
-  bunchgrass_meadow = "#7fbc41",   # yellow-green
-  dry_shrub_steppe  = "#d4a017",   # gold-tan
-  disturbed         = "#fee08b"    # pale yellow (anomaly)
+# --- 2. 3x3 (moisture x elevation) muted earth-tone grid -----------------
+# Equal-chroma, lightness varies along the elevation axis, hue along
+# the moisture axis. Disturbed gets one off-grid color.
+hex_grid <- matrix(
+  c(
+    # montane     subalpine    alpine
+    "#8a6f3e",   "#b5915f",   "#d4b89e",   # dry   (warm brown -> tan)
+    "#6b7e4e",   "#94a872",   "#b8c9a2",   # mesic (olive -> sage -> light green)
+    "#4a6a85",   "#7095ae",   "#a0bbd0"    # wet   (slate -> steel -> light blue)
+  ),
+  nrow = 3, byrow = TRUE,
+  dimnames = list(moisture  = c("dry", "mesic", "wet"),
+                  elevation = c("montane", "subalpine", "alpine"))
 )
-stopifnot(all(unique(rat$category) %in% names(category_hex)))
+disturbed_hex <- "#c5b83d"   # muted mustard
 
-# Within each category, fan the base color slightly through HCL lightness
-# so adjacent same-category classes are still distinguishable in QGIS.
-hue_fan <- function(base_hex, n) {
-  if (n <= 1) return(base_hex)
-  base_hcl <- as.numeric(grDevices::convertColor(
-    t(grDevices::col2rgb(base_hex) / 255),
-    from = "sRGB", to = "Lab"))      # placeholder; we use HSL via colorspace
-  # Simpler: use grDevices::adjustcolor with varied alpha-blend-toward-white
-  # for distinct but related shades.
-  bases <- colorRampPalette(c(
-    grDevices::adjustcolor(base_hex, red.f = 0.7, green.f = 0.7, blue.f = 0.7),
-    base_hex,
-    grDevices::adjustcolor(base_hex, red.f = 1.2, green.f = 1.2, blue.f = 1.2)
-  ))(n)
-  bases
+assign_color <- function(moisture, elevation) {
+  out <- rep(NA_character_, length(moisture))
+  is_dist <- moisture == "disturbed"
+  out[is_dist] <- disturbed_hex
+  if (any(!is_dist)) {
+    out[!is_dist] <- hex_grid[cbind(moisture[!is_dist],
+                                    elevation[!is_dist])]
+  }
+  out
 }
-
-rat <- rat |>
-  dplyr::arrange(category, final_label) |>
-  dplyr::group_by(category) |>
-  dplyr::mutate(color_hex = hue_fan(category_hex[category[1]], dplyr::n())) |>
-  dplyr::ungroup() |>
-  dplyr::arrange(value)
+rat$color_hex <- assign_color(rat$moisture, rat$elevation)
+stopifnot(all(!is.na(rat$color_hex)))
 
 # --- 3. Apply to each domain raster -------------------------------------
 domains <- c("ALMO", "CRBU", "UPTA")
