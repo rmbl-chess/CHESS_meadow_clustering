@@ -105,6 +105,8 @@ data/cache/
 !data/derived/sampling_priority_top.csv
 !data/derived/year_effect_points.csv
 !data/derived/year_effect_points.gpkg
+!data/derived/year_effect_summary.csv
+!data/derived/year_effect_per_point.csv
 !data/derived/class_summary_table.csv
 !data/derived/joint_training.gpkg
 !data/derived/aop_classified/
