@@ -15,7 +15,7 @@
 #   6  rock, bare soil, sparse veg        drop
 #   7  building or structure              drop
 #   8  paved or impervious                drop
-#   9  irrigated pasture / cultivated     drop
+#   9  irrigated pasture / cultivated     KEEP
 #   10 deciduous shrubs <= 2 m            KEEP
 #   11 evergreen forest understory        drop
 #   12 deciduous forest understory        drop
@@ -42,7 +42,7 @@ suppressPackageStartupMessages({
 })
 terra::terraOptions(progress = 0)
 
-keep_classes <- c(3L, 10L)
+keep_classes <- c(3L, 9L, 10L)
 domains <- c("ALMO", "CRBU", "UPTA")
 in_dir  <- "data/derived/aop_classified"
 mask_dir <- "data/derived/aop_chm_3m"
@@ -76,11 +76,10 @@ for (dom in domains) {
   # Binary reclass: keep_classes -> 1, everything else -> 0 (NA stays NA).
   cat("  reclassifying to keep / drop ... ")
   t0 <- Sys.time()
-  rcl <- matrix(c(1, 1, 0,
-                  2, 2, 0,
+  rcl <- matrix(c(1, 2, 0,
                   3, 3, 1,
-                  4, 9, 0,
-                  10, 10, 1,
+                  4, 8, 0,
+                  9, 10, 1,
                   11, 12, 0),
                 ncol = 3, byrow = TRUE)
   mask_1m <- terra::classify(lc_dom, rcl,

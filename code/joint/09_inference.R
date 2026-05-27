@@ -37,11 +37,17 @@ terra::terraOptions(progress = 0)
 
 TREE_THRESHOLD_M <- 4.0
 N_PC <- 20
+# R3D018 landcover classes to keep after the mode-aggregation to 3 m:
+#   3 = meadow/grassland/subshrub, 9 = irrigated pasture, 10 = deciduous
+# shrubs (<=2 m). Everything else (trees, water, snow, rock, paved,
+# buildings, forest understory) is masked out.
+LANDCOVER_KEEP <- c(3L, 9L, 10L)
 
 domains <- c("ALMO", "CRBU", "UPTA")
 pc_dir  <- "/Users/ian/Library/CloudStorage/GoogleDrive-ibreckhe@gmail.com/My Drive/BreckheimerLab2025/Projects/CHESS/Data/AOP_mosaics/JPL_delivered/PrincipalComponents"
 chm_dir <- "data/derived/aop_chm_3m"
 out_dir <- "data/derived/aop_classified"
+landcover_1m_path <- "data/raw/SDP/UG_landcover_1m_v4.tif"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
 pc_paths  <- setNames(file.path(pc_dir,  sprintf("%s_pc_mosaic_3m_v1.tif", domains)), domains)
@@ -150,11 +156,54 @@ run_domain <- function(dom) {
   cat(sprintf("done (%.1fs)\n",
               as.numeric(Sys.time() - t0, units = "secs")))
 
-  # Tree mask AND write final COGs (class as uint8, confidence as float32).
-  cat(sprintf("  Tree-masking (CHM_max > %.1f m -> NA) + writing COGs ... ",
-              TREE_THRESHOLD_M))
+  # Build a 3 m landcover keep-mask from R3D018, then combine it with
+  # the CHM tree-mask.  Pixels are kept iff CHM_max <= TREE_THRESHOLD_M
+  # AND the modal R3D018 class within the 3 m cell is in LANDCOVER_KEEP.
+  cat("  Building landcover keep-mask (R3D018 -> 3 m modal) ... ")
   t0 <- Sys.time()
-  pass <- chm <= TREE_THRESHOLD_M    # TRUE = keep, FALSE/NA = mask
+  lc_dom <- terra::crop(terra::rast(landcover_1m_path),
+                        terra::ext(pred_2band))
+  rcl <- matrix(c(1, 2, 0,
+                  3, 3, 1,
+                  4, 8, 0,
+                  9, 10, 1,
+                  11, 12, 0),
+                ncol = 3, byrow = TRUE)
+  lc_bin <- terra::classify(lc_dom, rcl,
+                             include.lowest = TRUE, right = NA,
+                             others = 0L, datatype = "INT1U")
+  lc_3m <- terra::aggregate(lc_bin, fact = 3, fun = "modal", na.rm = TRUE)
+  lc_3m <- terra::resample(lc_3m, pred_2band, method = "near")
+  lc_mask_path <- file.path(chm_dir,
+                            sprintf("%s_landcover_mask_3m.tif", dom))
+  terra::writeRaster(
+    lc_3m, lc_mask_path, overwrite = TRUE,
+    datatype = "INT1U", NAflag = 255,
+    filetype = "COG",
+    gdal = c("COMPRESS=DEFLATE", "LEVEL=6", "BLOCKSIZE=512",
+             "OVERVIEW_RESAMPLING=NEAREST")
+  )
+  cat(sprintf("done (%.1fs)\n",
+              as.numeric(Sys.time() - t0, units = "secs")))
+
+  cat(sprintf("  Masking (CHM_max <= %.1fm AND landcover in {%s}) ... ",
+              TREE_THRESHOLD_M,
+              paste(LANDCOVER_KEEP, collapse = ", ")))
+  t0 <- Sys.time()
+  # Materialize the keep-mask to an int tempfile so terra::mask doesn't
+  # try to write an intermediate float COG with PREDICTOR=YES (which the
+  # COG driver rejects for an in-memory chained expression).
+  pass_tmp <- tempfile(pattern = sprintf("%s_pass_", dom), fileext = ".tif")
+  pass <- terra::lapp(
+    c(chm, lc_3m),
+    fun = function(ch, lc) as.integer(!is.na(ch) & ch <= TREE_THRESHOLD_M &
+                                       !is.na(lc) & lc == 1L),
+    filename = pass_tmp, overwrite = TRUE,
+    wopt = list(datatype = "INT1U",
+                filetype = "GTiff",
+                gdal = c("COMPRESS=DEFLATE", "TILED=YES",
+                         "BLOCKXSIZE=512", "BLOCKYSIZE=512"))
+  )
 
   cls_r  <- terra::mask(pred_2band[[1]], pass, maskvalues = c(0, NA),
                         filename = out_class, overwrite = TRUE,
@@ -168,11 +217,12 @@ run_domain <- function(dom) {
                         wopt = list(datatype = "FLT4S",
                                     filetype = "COG",
                                     gdal = c("COMPRESS=DEFLATE", "LEVEL=6",
-                                             "PREDICTOR=YES", "BLOCKSIZE=512",
+                                             "PREDICTOR=3", "BLOCKSIZE=512",
                                              "OVERVIEW_RESAMPLING=AVERAGE")))
   cat(sprintf("done (%.1fs)\n",
               as.numeric(Sys.time() - t0, units = "secs")))
   unlink(tmp_2band)
+  unlink(pass_tmp)
 
   cat(sprintf("  Wrote %s (%.1f MB)\n", basename(out_class),
               file.size(out_class) / 1e6))
