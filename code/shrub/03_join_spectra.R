@@ -71,27 +71,49 @@ cat(sprintf("2018 spectra rows: %d total (no site_type column)\n",
 spectra_2025 <- agg_spectra(sp_2025_shrub, 2025L)
 spectra_2018 <- agg_spectra(sp_2018_shrub, 2018L)
 
-# 2018 -> 2025 radiometric correction (per-band delta on L2-normalized
-# spectra). Same correction file the meadow pipeline applies in
-# code/meadow/04_join_spectra.R; see code/joint/13_year_effect_analysis.R
-# for the validation.
-apply_year_correction <- function(df, correction_path) {
+# 2018 -> 2025 NDVI-stratified correction (mirror of meadow 04 logic;
+# see code/joint/15_stratified_year_correction.R for fit + validation).
+NDVI_BREAKS <- c(-Inf, 0.20, 0.40, 0.60, 0.80, Inf)
+NDVI_LABELS <- c("ndvi_lt_0.20", "ndvi_0.20_0.40",
+                 "ndvi_0.40_0.60", "ndvi_0.60_0.80", "ndvi_ge_0.80")
+apply_year_correction <- function(df, correction_path, wavelengths) {
   if (!file.exists(correction_path)) return(df)
   cor <- readr::read_csv(correction_path, show_col_types = FALSE)
-  rfl_cols <- sprintf("rfl_band_%d", cor$band_number)
+  bands <- sort(unique(cor$band_number))
+  rfl_cols <- sprintf("rfl_band_%d", bands)
   stopifnot(all(rfl_cols %in% names(df)))
-  delta_mat <- matrix(cor$delta, nrow = nrow(df),
-                      ncol = length(rfl_cols), byrow = TRUE)
-  df[, rfl_cols] <- as.matrix(df[, rfl_cols]) + delta_mat
+  band_at <- function(nm) which.min(abs(wavelengths$center_wavelength_nm - nm))
+  bn_red <- wavelengths$band_number[band_at(660)]
+  bn_nir <- wavelengths$band_number[band_at(860)]
+  red <- df[[sprintf("rfl_band_%d", bn_red)]]
+  nir <- df[[sprintf("rfl_band_%d", bn_nir)]]
+  ndvi_site <- (nir - red) / (nir + red)
+  bin_site  <- as.character(cut(ndvi_site, breaks = NDVI_BREAKS,
+                                 labels = NDVI_LABELS, right = FALSE,
+                                 include.lowest = TRUE))
+  wide <- cor |>
+    dplyr::select(band_number, ndvi_bin, delta) |>
+    tidyr::pivot_wider(names_from = ndvi_bin, values_from = delta)
+  band_order <- match(bands, wide$band_number)
+  delta_mat <- matrix(NA_real_, nrow = nrow(df), ncol = length(bands))
+  for (i in seq_len(nrow(df))) {
+    b <- bin_site[i]
+    if (is.na(b) || !(b %in% names(wide))) next
+    delta_mat[i, ] <- wide[[b]][band_order]
+  }
+  df[, rfl_cols] <- as.matrix(df[, rfl_cols]) +
+                    ifelse(is.na(delta_mat), 0, delta_mat)
+  n_corr <- sum(!is.na(rowSums(delta_mat)))
   message(sprintf(
-    "Applied 2018->2025 radiometric correction to %d shrub sites x %d bands.",
-    nrow(df), length(rfl_cols)
+    "Applied NDVI-stratified 2018->2025 correction to %d / %d shrub sites.",
+    n_corr, nrow(df)
   ))
   df
 }
 spectra_2018 <- apply_year_correction(
   spectra_2018,
-  "data/small_reference/year_effect_correction_2018_to_2025.csv"
+  "data/small_reference/year_effect_correction_2018_to_2025_by_ndvi.csv",
+  wavelengths
 )
 
 spectra_combined <- dplyr::bind_rows(spectra_2018, spectra_2025)

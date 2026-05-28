@@ -77,13 +77,18 @@ agg_spectra <- function(df, year, keep_sunlit = TRUE) {
     dplyr::mutate(Year = year)
 }
 
-# 2018 -> 2025 radiometric correction. Per-band delta measured on 1057
-# non-vegetated paired CRBU points (see code/joint/13_year_effect_analysis.R
-# + docs/figures/year_effect_correction_validation.pdf: a 50/50 fit/held-
-# out split confirms ~75% reduction in residual on the held-out half).
-# Applied to L2-normalized + mean-per-site spectra (the form `agg_spectra`
-# produces), matching the space the delta was estimated in.
-apply_year_correction <- function(df, year, correction_path) {
+# 2018 -> 2025 NDVI-stratified correction. Per-band delta fit separately
+# for 5 NDVI bins on the 2115 paired CRBU points from script 13's
+# extraction (see code/joint/15_stratified_year_correction.R for the
+# fit + held-out validation: mean |Cohen's d| dropped from 0.36 -> 0.06
+# for vegetated points). Each per-site spectrum gets its own bin by
+# computing NDVI on the L2-normalized + mean-per-site reflectance, then
+# the bin's per-band delta is added.
+NDVI_BREAKS <- c(-Inf, 0.20, 0.40, 0.60, 0.80, Inf)
+NDVI_LABELS <- c("ndvi_lt_0.20", "ndvi_0.20_0.40",
+                 "ndvi_0.40_0.60", "ndvi_0.60_0.80", "ndvi_ge_0.80")
+
+apply_year_correction <- function(df, year, correction_path, wavelengths) {
   if (year != 2018L) return(df)
   if (!file.exists(correction_path)) {
     message(sprintf("No correction CSV at %s; skipping year correction.",
@@ -91,22 +96,53 @@ apply_year_correction <- function(df, year, correction_path) {
     return(df)
   }
   cor <- readr::read_csv(correction_path, show_col_types = FALSE)
-  rfl_cols <- sprintf("rfl_band_%d", cor$band_number)
+  bands <- sort(unique(cor$band_number))
+  rfl_cols <- sprintf("rfl_band_%d", bands)
   stopifnot(all(rfl_cols %in% names(df)))
-  delta_mat <- matrix(cor$delta, nrow = nrow(df),
-                      ncol = length(rfl_cols), byrow = TRUE)
-  df[, rfl_cols] <- as.matrix(df[, rfl_cols]) + delta_mat
+
+  # NDVI per site on the L2-normalized averaged spectrum (NIR ~860,
+  # RED ~660). wavelengths is the per-band centers in nm.
+  band_at <- function(nm) which.min(abs(wavelengths$center_wavelength_nm - nm))
+  bn_red <- wavelengths$band_number[band_at(660)]
+  bn_nir <- wavelengths$band_number[band_at(860)]
+  red <- df[[sprintf("rfl_band_%d", bn_red)]]
+  nir <- df[[sprintf("rfl_band_%d", bn_nir)]]
+  ndvi_site <- (nir - red) / (nir + red)
+  bin_site  <- as.character(cut(ndvi_site, breaks = NDVI_BREAKS,
+                                 labels = NDVI_LABELS, right = FALSE,
+                                 include.lowest = TRUE))
+
+  # Wide: rows = bands, columns = ndvi bins
+  wide <- cor |>
+    dplyr::select(band_number, ndvi_bin, delta) |>
+    tidyr::pivot_wider(names_from = ndvi_bin, values_from = delta)
+  band_order <- match(bands, wide$band_number)
+
+  delta_mat <- matrix(NA_real_, nrow = nrow(df), ncol = length(bands))
+  n_per_bin <- integer(length(NDVI_LABELS))
+  names(n_per_bin) <- NDVI_LABELS
+  for (i in seq_len(nrow(df))) {
+    b <- bin_site[i]
+    if (is.na(b) || !(b %in% names(wide))) next
+    delta_mat[i, ] <- wide[[b]][band_order]
+    n_per_bin[b] <- n_per_bin[b] + 1L
+  }
+  df[, rfl_cols] <- as.matrix(df[, rfl_cols]) +
+                    ifelse(is.na(delta_mat), 0, delta_mat)
+  n_corr <- sum(!is.na(rowSums(delta_mat)))
   message(sprintf(
-    "Applied 2018->2025 radiometric correction to %d sites x %d bands.",
-    nrow(df), length(rfl_cols)
+    "Applied NDVI-stratified 2018->2025 correction to %d / %d sites; per-bin n:",
+    n_corr, nrow(df)
   ))
+  message(paste(sprintf("  %s: %d", names(n_per_bin), n_per_bin),
+                collapse = "\n"))
   df
 }
 
-correction_path <- "data/small_reference/year_effect_correction_2018_to_2025.csv"
+correction_path <- "data/small_reference/year_effect_correction_2018_to_2025_by_ndvi.csv"
 spectra_combined <- dplyr::bind_rows(
   apply_year_correction(agg_spectra(sp_2018$spectra, 2018L),
-                         2018L, correction_path),
+                         2018L, correction_path, wavelengths),
   agg_spectra(sp_2025$spectra, 2025L)
 )
 
