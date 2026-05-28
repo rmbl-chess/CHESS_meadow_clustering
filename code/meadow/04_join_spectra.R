@@ -77,8 +77,36 @@ agg_spectra <- function(df, year, keep_sunlit = TRUE) {
     dplyr::mutate(Year = year)
 }
 
+# 2018 -> 2025 radiometric correction. Per-band delta measured on 1057
+# non-vegetated paired CRBU points (see code/joint/13_year_effect_analysis.R
+# + docs/figures/year_effect_correction_validation.pdf: a 50/50 fit/held-
+# out split confirms ~75% reduction in residual on the held-out half).
+# Applied to L2-normalized + mean-per-site spectra (the form `agg_spectra`
+# produces), matching the space the delta was estimated in.
+apply_year_correction <- function(df, year, correction_path) {
+  if (year != 2018L) return(df)
+  if (!file.exists(correction_path)) {
+    message(sprintf("No correction CSV at %s; skipping year correction.",
+                    correction_path))
+    return(df)
+  }
+  cor <- readr::read_csv(correction_path, show_col_types = FALSE)
+  rfl_cols <- sprintf("rfl_band_%d", cor$band_number)
+  stopifnot(all(rfl_cols %in% names(df)))
+  delta_mat <- matrix(cor$delta, nrow = nrow(df),
+                      ncol = length(rfl_cols), byrow = TRUE)
+  df[, rfl_cols] <- as.matrix(df[, rfl_cols]) + delta_mat
+  message(sprintf(
+    "Applied 2018->2025 radiometric correction to %d sites x %d bands.",
+    nrow(df), length(rfl_cols)
+  ))
+  df
+}
+
+correction_path <- "data/small_reference/year_effect_correction_2018_to_2025.csv"
 spectra_combined <- dplyr::bind_rows(
-  agg_spectra(sp_2018$spectra, 2018L),
+  apply_year_correction(agg_spectra(sp_2018$spectra, 2018L),
+                         2018L, correction_path),
   agg_spectra(sp_2025$spectra, 2025L)
 )
 

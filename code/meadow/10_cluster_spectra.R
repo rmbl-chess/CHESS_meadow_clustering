@@ -130,13 +130,14 @@ if (file.exists(env_path)) {
   cat(sprintf("Variant F: %d sites, %d features (PCs 2-12 z-scaled + DOY z-scaled).\n",
               nrow(variant_F$assignments), ncol(mat_F)))
 
-  # --- Variant G: 2025-only clustering, drop PC1 brightness ----------------
-  # 2018 spectra show systematic atmospheric correction artifacts (see
-  # 17_year_effect_pcs.R). Restricting clustering to 2025 sites only
-  # eliminates the year-shift concern, so PC3 can return to the feature
-  # set. 2018 site labels are inferred downstream via Hellinger nearest-
-  # centroid in composition space (in 10_subcluster_composition.R).
-  feat_env_G <- feat_env |> dplyr::filter(Year == 2025L)
+  # --- Variant G: 2018+2025 clustering, drop PC1 brightness ---------------
+  # Originally 2025-only because 2018 AOP spectra carried systematic
+  # atmospheric-correction drift (see code/joint/13_year_effect_analysis.R
+  # for the diagnosis). That drift is now removed at the spectra-join
+  # step by applying a per-band non-vegetated correction (see
+  # data/small_reference/year_effect_correction_2018_to_2025.csv), so
+  # 2018 sites contribute directly to the spectral clustering here.
+  feat_env_G <- feat_env
   pc_cols_G <- sprintf("spec_PC%02d", 2:12)
   mat_G <- cbind(scale(as.matrix(feat_env_G[, pc_cols_G])),
                  snow_free_doy_z = as.numeric(scale(feat_env_G$snow_free_doy)))
@@ -150,10 +151,13 @@ if (file.exists(env_path)) {
     hclust = hc_G, dist = d_G,
     assignments = bind_cols(feat_env_G |> dplyr::select(site_number, Year), cuts_G),
     pc_cols = c(pc_cols_G, "snow_free_doy_z"),
-    label = "PCs_2-12_z+SF_z_2025only"
+    label = "PCs_2-12_z+SF_z"
   )
-  cat(sprintf("Variant G: %d sites (2025 only), %d features.\n",
-              nrow(variant_G$assignments), ncol(mat_G)))
+  cat(sprintf("Variant G: %d sites (%d 2018 + %d 2025), %d features.\n",
+              nrow(variant_G$assignments),
+              sum(variant_G$assignments$Year == 2018L),
+              sum(variant_G$assignments$Year == 2025L),
+              ncol(mat_G)))
 } else {
   cat("Variants D-G skipped: data/derived/environment.rds not found.\n")
 }

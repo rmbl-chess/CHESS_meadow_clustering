@@ -43,7 +43,7 @@ cover_long <- vs |>
   # circular for defining the cluster.
   dplyr::inner_join(
     fc$assignments |>
-      dplyr::filter(is.na(source) | source == "clustered_2025") |>
+      dplyr::filter(is.na(source) | source == "clustered") |>
       dplyr::select(site_number, Year, final_label),
     by = c("site_number", "Year")
   )
@@ -203,7 +203,8 @@ out_path <- "data/small_reference/label_community_names.csv"
 existing <- if (file.exists(out_path)) {
   readr::read_csv(out_path, show_col_types = FALSE) |>
     dplyr::select(final_label,
-                  dplyr::any_of(c("narrative_draft", "narrative_curated", "notes"))) |>
+                  dplyr::any_of(c("narrative_draft", "narrative_curated",
+                                   "notes", "short_label"))) |>
     dplyr::rename_with(~ paste0(.x, "_existing"), -final_label)
 } else {
   tibble::tibble(final_label = character())
@@ -216,7 +217,7 @@ out <- auto |>
                 bare_pct, npv_pct, narrative_draft) |>
   dplyr::left_join(existing, by = "final_label")
 for (col in c("narrative_draft_existing", "narrative_curated_existing",
-              "notes_existing")) {
+              "notes_existing", "short_label_existing")) {
   if (!col %in% names(out)) out[[col]] <- NA_character_
 }
 out <- out |>
@@ -225,10 +226,11 @@ out <- out |>
                        else dplyr::coalesce(narrative_draft_existing,
                                             narrative_draft),
     narrative_curated = narrative_curated_existing,
-    notes             = notes_existing
+    notes             = notes_existing,
+    short_label       = short_label_existing
   ) |>
   dplyr::select(-narrative_draft_existing, -narrative_curated_existing,
-                -notes_existing) |>
+                -notes_existing, -short_label_existing) |>
   dplyr::arrange(snow_free_doy_mean)
 
 dir.create("data/small_reference", showWarnings = FALSE, recursive = TRUE)

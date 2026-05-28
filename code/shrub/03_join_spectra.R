@@ -71,6 +71,29 @@ cat(sprintf("2018 spectra rows: %d total (no site_type column)\n",
 spectra_2025 <- agg_spectra(sp_2025_shrub, 2025L)
 spectra_2018 <- agg_spectra(sp_2018_shrub, 2018L)
 
+# 2018 -> 2025 radiometric correction (per-band delta on L2-normalized
+# spectra). Same correction file the meadow pipeline applies in
+# code/meadow/04_join_spectra.R; see code/joint/13_year_effect_analysis.R
+# for the validation.
+apply_year_correction <- function(df, correction_path) {
+  if (!file.exists(correction_path)) return(df)
+  cor <- readr::read_csv(correction_path, show_col_types = FALSE)
+  rfl_cols <- sprintf("rfl_band_%d", cor$band_number)
+  stopifnot(all(rfl_cols %in% names(df)))
+  delta_mat <- matrix(cor$delta, nrow = nrow(df),
+                      ncol = length(rfl_cols), byrow = TRUE)
+  df[, rfl_cols] <- as.matrix(df[, rfl_cols]) + delta_mat
+  message(sprintf(
+    "Applied 2018->2025 radiometric correction to %d shrub sites x %d bands.",
+    nrow(df), length(rfl_cols)
+  ))
+  df
+}
+spectra_2018 <- apply_year_correction(
+  spectra_2018,
+  "data/small_reference/year_effect_correction_2018_to_2025.csv"
+)
+
 spectra_combined <- dplyr::bind_rows(spectra_2018, spectra_2025)
 
 # --- Join to records ------------------------------------------------------

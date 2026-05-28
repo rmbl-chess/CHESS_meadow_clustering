@@ -1,48 +1,48 @@
 final_label,class_type,n_total,n_2018,n_2025,n_sampling_areas,n,unweighted_recall,balanced_recall,top_confusions,augmentation_priority,predicted_n_pixels,pixels_per_site
-S09,meadow,4,0,4,NA,4,0.25,0.5,S03 (1); S08 (1),critical,2,0.5
-Lonicera involucrata,shrub,6,3,3,6,6,0,0,Dasiphora fruticosa (1); Ribes sp. (1),critical,2,0.3333333333333333
-Osmorhiza occidentalis,meadow,5,5,0,NA,5,0,0,S13 (2); S12 (1),critical,0,0
-Alnus incana,shrub,4,1,3,2,4,0.75,0.75,Salix boothii (1),critical,0,0
-Purshia tridentata,shrub,4,0,4,2,4,1,0.75,Artemisia tridentata (1),critical,0,0
-Prunus virginiana,shrub,3,0,3,1,3,0.3333333333333333,0.3333333333333333,Amelanchier alnifolia (1); Salix other (1),critical,0,0
-S25,meadow,17,7,10,NA,17,0.7647058823529411,0.7647058823529411,Veratrum tenuipetalum (1); S04 (1),high,686,40.35294117647059
-S07,meadow,9,0,9,NA,9,0.8888888888888888,0.7777777777777778,S08 (1); S10 (1),high,129,14.333333333333334
-S18,meadow,8,1,7,NA,8,0.625,0.75,S11 (1); S13 (1),high,87,10.875
-S26,meadow,7,0,7,NA,7,1,1,NA,high,74,10.571428571428571
-S02,meadow,6,0,6,NA,6,0.8333333333333334,0.8333333333333334,S08 (1),high,59,9.833333333333334
-S14,meadow,26,18,8,NA,26,0.38461538461538464,0.38461538461538464,Veratrum tenuipetalum (8); S12 (3),high,111,4.269230769230769
-S17,meadow,6,1,5,NA,6,0.5,0.5,S13 (1); S14 (1),high,9,1.5
-Caltha leptosepala,meadow,5,3,2,NA,5,0,0.2,S14 (1); S19 (1),high,1,0.2
-Corydalis caseana,meadow,5,5,0,NA,5,0,0.2,S14 (2); S24 (2),high,1,0.2
-Ligusticum porteri,meadow,12,10,2,NA,12,0,0.16666666666666666,S13 (6); S14 (2),high,0,0
-Symphoricarpos rotundifolius,shrub,11,7,4,4,11,0.18181818181818185,0.09090909090909093,Salix other (4); Dasiphora fruticosa (3),high,0,0
-Betula glandulosa,shrub,6,1,5,3,6,0.3333333333333333,0.3333333333333333,Salix wolfii (2); Salix other (1),high,0,0
-S15,meadow,25,10,15,NA,25,0.4,0.48,S12 (8); S11 (2),medium,515,20.6
-S03,meadow,14,0,14,NA,14,0.7142857142857143,0.7857142857142857,S06 (3),medium,190,13.571428571428571
-S10,meadow,18,2,16,NA,18,0.8888888888888888,0.8888888888888888,S12 (1); S13 (1),medium,162,9
-S08,meadow,12,0,12,NA,12,0.8333333333333334,0.9166666666666666,S03 (1),medium,75,6.25
-S13,meadow,44,29,15,NA,44,0.5681818181818182,0.5681818181818182,S12 (8); S14 (6),medium,214,4.863636363636363
-S24,meadow,19,11,8,NA,19,0.5263157894736842,0.5789473684210527,S19 (5); S11 (1),medium,77,4.052631578947368
-Artemisia tridentata,shrub,14,3,11,7,14,0.9285714285714286,1,NA,medium,44,3.142857142857143
-S11,meadow,35,11,24,NA,35,0.5714285714285714,0.5714285714285714,S12 (7); S13 (4),medium,104,2.9714285714285715
-Veratrum tenuipetalum,meadow,17,12,5,NA,17,0.4705882352941176,0.4705882352941176,S14 (5); S25 (2),medium,47,2.764705882352941
-S04,meadow,17,2,15,NA,17,0.7647058823529411,0.7647058823529411,S05 (2); S06 (1),medium,47,2.764705882352941
-S22,meadow,16,2,14,NA,16,0.6875,0.75,S12 (2); S20 (1),medium,39,2.4375
-S16,meadow,13,1,12,NA,13,0.6923076923076923,0.6153846153846154,S13 (2); S06 (1),medium,30,2.3076923076923075
-S23,meadow,10,6,4,NA,10,0.2,0.4,S11 (3); S19 (3),medium,18,1.8
-Salix boothii,shrub,30,29,1,13,30,0.43333333333333335,0.43333333333333335,Salix other (11); Juniperus sp. (2),medium,33,1.1
-Ribes sp.,shrub,18,5,13,13,18,0.6111111111111112,0.6111111111111112,Amelanchier alnifolia (2); Salix other (2),medium,11,0.6111111111111112
-S21,meadow,10,4,6,NA,10,0.8,0.7,Veratrum tenuipetalum (1); S14 (1),medium,6,0.6
-Sambucus racemosa,shrub,19,7,12,9,19,0.5789473684210527,0.5789473684210527,Salix other (3); Dasiphora fruticosa (2),medium,6,0.3157894736842105
-S01,meadow,10,0,10,NA,10,1,1,NA,medium,2,0.2
-Salix planifolia,shrub,28,18,10,13,28,0.5357142857142857,0.5714285714285714,Salix boothii (4); Salix other (4),medium,5,0.17857142857142858
-Amelanchier alnifolia,shrub,12,0,12,4,12,0.5833333333333334,0.75,Artemisia tridentata (1); Dasiphora fruticosa (1),medium,0,0
-S19,meadow,31,20,11,NA,31,0.6774193548387096,0.6129032258064516,S24 (4); S11 (2),ok,462,14.903225806451612
-S06,meadow,38,0,38,NA,38,0.9210526315789472,0.868421052631579,S04 (1); S05 (1),ok,528,13.894736842105264
-S12,meadow,52,22,30,NA,52,0.7115384615384616,0.6923076923076923,S13 (9); S15 (4),ok,703,13.51923076923077
-S20,meadow,31,13,18,NA,31,0.7741935483870968,0.8064516129032258,S13 (2); S25 (2),ok,146,4.709677419354839
-Juniperus sp.,shrub,22,3,19,13,22,0.8181818181818182,0.8181818181818182,Salix wolfii (3); Artemisia tridentata (1),ok,86,3.909090909090909
-Salix wolfii,shrub,46,20,26,13,46,0.6956521739130435,0.717391304347826,Salix other (5); Dasiphora fruticosa (3),ok,158,3.4347826086956523
-Dasiphora fruticosa,shrub,34,13,21,18,34,0.7941176470588235,0.8529411764705882,Artemisia tridentata (2); Salix planifolia (2),ok,100,2.9411764705882355
-S05,meadow,26,4,22,NA,26,0.8461538461538461,0.8076923076923077,S04 (2); S06 (1),ok,68,2.6153846153846154
-Salix other,shrub,53,22,31,22,53,0.660377358490566,0.6226415094339622,Salix wolfii (8); Salix boothii (6),ok,27,0.5094339622641509
+Symphoricarpos rotundifolius,shrub,11,7,4,4,11,0.09090909090909093,0,Salix other (6); Dasiphora fruticosa (4),critical,0,0
+Lonicera involucrata,shrub,6,3,3,6,6,0,0,Ribes sp. (2); Salix other (2),critical,0,0
+Caltha leptosepala,meadow,5,3,2,NA,5,0,0,S04 (2); S20 (2),critical,0,0
+Osmorhiza occidentalis,meadow,5,5,0,NA,5,0,0,S06 (3); S01 (1),critical,0,0
+Alnus incana,shrub,4,1,3,2,4,0.75,0.5,Salix other (1); Sambucus racemosa (1),critical,0,0
+Purshia tridentata,shrub,4,0,4,2,4,0.75,0.5,Artemisia tridentata (1); Ribes sp. (1),critical,0,0
+Prunus virginiana,shrub,3,0,3,1,3,0.6666666666666666,0.6666666666666666,Salix other (1),critical,0,0
+S12,meadow,1,1,0,NA,1,0,0,S25 (1),critical,0,0
+S25,meadow,10,0,10,NA,10,0.6,0.9,S23 (1),high,914,91.4
+S03,meadow,18,2,16,NA,18,0.8333333333333334,0.7777777777777778,S25 (2); S09 (1),high,267,14.833333333333334
+Ligusticum porteri,meadow,12,10,2,NA,12,0.16666666666666666,0.16666666666666666,S06 (3); S07 (3),high,2,0.16666666666666666
+S14,meadow,6,0,6,NA,6,1,0.8333333333333334,S15 (1),high,1,0.16666666666666666
+Betula glandulosa,shrub,6,1,5,3,6,0,0.16666666666666666,Dasiphora fruticosa (2); Salix other (2),high,0,0
+Corydalis caseana,meadow,5,5,0,NA,5,0.2,0.2,S02 (2); S04 (2),high,0,0
+S26,meadow,10,0,10,NA,10,0.9,0.9,S15 (1),medium,112,11.2
+S21,meadow,16,0,16,NA,16,1,1,NA,medium,171,10.6875
+S08,meadow,12,2,10,NA,12,0.6666666666666666,0.6666666666666666,S09 (2); S07 (1),medium,19,1.5833333333333333
+S24,meadow,15,0,15,NA,15,0.9333333333333332,1,NA,medium,20,1.3333333333333333
+Sambucus racemosa,shrub,19,7,12,9,19,0.5263157894736842,0.5263157894736842,Dasiphora fruticosa (2); Ribes sp. (2),medium,23,1.2105263157894737
+S11,meadow,14,4,10,NA,14,0.7857142857142857,0.7857142857142857,S19 (2); S09 (1),medium,15,1.0714285714285714
+S09,meadow,14,12,2,NA,14,0.7857142857142857,0.8571428571428571,S05 (1); S06 (1),medium,12,0.8571428571428571
+Artemisia tridentata,shrub,14,3,11,7,14,0.8571428571428571,0.8571428571428571,Dasiphora fruticosa (1); Salix wolfii (1),medium,9,0.6428571428571429
+S13,meadow,10,0,10,NA,10,1,1,NA,medium,6,0.6
+S20,meadow,13,0,13,NA,13,0.5384615384615384,0.6153846153846154,S19 (4); S22 (1),medium,6,0.46153846153846156
+S18,meadow,12,0,12,NA,12,0.6666666666666666,0.8333333333333334,S15 (1); S16 (1),medium,5,0.4166666666666667
+S04,meadow,18,18,0,NA,18,0.6666666666666666,0.7222222222222222,S09 (2); Veratrum tenuipetalum (2),medium,5,0.2777777777777778
+S22,meadow,10,0,10,NA,10,0.8,0.8,S20 (1); Veratrum tenuipetalum (1),medium,2,0.2
+Salix planifolia,shrub,28,18,10,13,28,0.35714285714285715,0.42857142857142855,Salix other (8); Salix boothii (3),medium,5,0.17857142857142858
+Veratrum tenuipetalum,meadow,17,12,5,NA,17,0.4705882352941176,0.4117647058823529,S02 (4); S01 (2),medium,3,0.17647058823529413
+Ribes sp.,shrub,18,5,13,13,18,0.6666666666666666,0.6111111111111112,Amelanchier alnifolia (2); Salix other (2),medium,2,0.1111111111111111
+Salix other,shrub,53,22,31,22,53,0.5660377358490566,0.5283018867924528,Salix wolfii (12); Salix boothii (6),medium,4,0.07547169811320754
+Salix boothii,shrub,30,29,1,13,30,0.43333333333333335,0.5333333333333333,Salix other (8); Salix wolfii (2),medium,0,0
+Amelanchier alnifolia,shrub,12,0,12,4,12,0.6666666666666666,0.6666666666666666,Dasiphora fruticosa (1); Prunus virginiana (1),medium,0,0
+S02,meadow,11,11,0,NA,11,0.5454545454545454,0.6363636363636364,Veratrum tenuipetalum (2); Corydalis caseana (1),medium,0,0
+S05,meadow,10,5,5,NA,10,0.7,0.8,S01 (1); S21 (1),medium,0,0
+S10,meadow,29,3,26,NA,29,0.6551724137931034,0.6206896551724138,S19 (7); S09 (2),ok,717,24.724137931034484
+S15,meadow,32,0,32,NA,32,0.9375,0.96875,S01 (1),ok,668,20.875
+S23,meadow,21,0,21,NA,21,0.7619047619047619,0.7619047619047619,S19 (3); S15 (1),ok,348,16.571428571428573
+S01,meadow,37,30,7,NA,37,0.8378378378378378,0.8108108108108109,Ligusticum porteri (1); S06 (1),ok,523,14.135135135135135
+S17,meadow,25,0,25,NA,25,0.92,0.8,S16 (2); S24 (2),ok,346,13.84
+S16,meadow,32,0,32,NA,32,0.84375,0.875,S17 (2); S15 (1),ok,419,13.09375
+S19,meadow,52,0,52,NA,52,0.9615384615384616,0.9423076923076924,Ligusticum porteri (1); S16 (1),ok,240,4.615384615384615
+Dasiphora fruticosa,shrub,34,13,21,18,34,0.7647058823529411,0.8529411764705882,Salix planifolia (2); Juniperus sp. (1),ok,79,2.323529411764706
+Juniperus sp.,shrub,22,3,19,13,22,0.8181818181818182,0.8181818181818182,Salix wolfii (3); Dasiphora fruticosa (1),ok,34,1.5454545454545454
+S06,meadow,52,52,0,NA,52,0.903846153846154,0.9230769230769232,S07 (2); Ligusticum porteri (1),ok,63,1.2115384615384615
+Salix wolfii,shrub,46,20,26,13,46,0.6739130434782609,0.717391304347826,Salix other (5); Dasiphora fruticosa (3),ok,20,0.43478260869565216
+S07,meadow,24,24,0,NA,24,0.75,0.7916666666666666,S06 (3); S02 (1),ok,4,0.16666666666666666

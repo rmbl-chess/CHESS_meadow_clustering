@@ -362,7 +362,7 @@ clusters_with_inf <- asg_env |>
 
 per_cluster_inf <- purrr::map_dfr(clusters_with_inf, function(cl) {
   rows <- asg_env |> dplyr::filter(final_label == cl)
-  a <- rows |> dplyr::filter(source == "clustered_2025")
+  a <- rows |> dplyr::filter(source == "clustered")
   i <- rows |> dplyr::filter(source == "inferred_2018")
   tibble::tibble(
     label = cl, n_anch = nrow(a), n_inf = nrow(i),
@@ -405,7 +405,15 @@ desc <- readr::read_csv("data/small_reference/label_community_names.csv",
 sizes <- fc$assignments |>
   dplyr::count(final_label, source) |>
   tidyr::pivot_wider(names_from = source, values_from = n, values_fill = 0L) |>
-  dplyr::rename(n_anchor = clustered_2025, n_inferred = inferred_2018) |>
+  # Ensure both columns exist even if a source is empty after the year-
+  # correction (e.g., no `inferred_2018` rows when all 2018 sites cluster
+  # directly).
+  (\(df) {
+    if (!"clustered"     %in% names(df)) df$clustered     <- 0L
+    if (!"inferred_2018" %in% names(df)) df$inferred_2018 <- 0L
+    df
+  })() |>
+  dplyr::rename(n_anchor = clustered, n_inferred = inferred_2018) |>
   dplyr::mutate(n_total = n_anchor + n_inferred)
 
 size_joined <- desc |>

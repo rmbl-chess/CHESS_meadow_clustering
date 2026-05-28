@@ -121,12 +121,18 @@ asg <- asg |>
   } else {
     spec_cluster
   },
-  source = "clustered_2025")  # all rows here are 2025 (G clusters 2025 only)
+  source = "clustered")  # both 2018 + 2025 cluster directly after the
+                          # year-effect radiometric correction (see
+                          # code/joint/13_year_effect_analysis.R).
 
-# --- Infer 2018 labels via Hellinger + DOY nearest-cluster-centroid --------
-# 2018 spectra are corrupted by atmospheric correction artifacts (per
-# 17_year_effect_pcs.R), so they're excluded from clustering. Each 2018
-# site is assigned to its closest cluster in a JOINT space:
+# --- Hellinger + DOY nearest-cluster fallback for 2018 sites without ------
+# spectra ------------------------------------------------------------------
+# Once 2018 AOP spectra have the per-band radiometric correction applied
+# in code/meadow/04_join_spectra.R, 2018 sites cluster directly alongside
+# 2025 (variant G in 10_cluster_spectra.R is no longer 2025-only). This
+# block now ONLY handles the rare 2018 sites that lack spectra or env
+# coverage and therefore drop out of feat_env_G. Each such site is
+# assigned to its closest direct-clustered cluster in a JOINT space:
 #   - full-species Hellinger (NOT the rare-trimmed comp_species — that
 #     would zero out alpine sites whose indicators are rare species like
 #     Sibbaldia procumbens or Mertensia lanceolata, letting them match
@@ -175,68 +181,88 @@ centroid_doy <- hell_2025_full |>
 centroid_doy_vec <- centroid_doy$mean_doy
 names(centroid_doy_vec) <- centroid_doy$spec_cluster
 
-hell_2018_full <- hell_full |> dplyr::filter(Year == 2018L)
-H_2018   <- as.matrix(hell_2018_full[, species_cols])
-doy_2018 <- hell_2018_full$snow_free_doy
+# Skip 2018 sites that already got a direct cluster assignment.
+already_clustered_2018 <- asg |>
+  dplyr::filter(Year == 2018L) |>
+  dplyr::pull(site_number) |> unique()
+hell_2018_full <- hell_full |>
+  dplyr::filter(Year == 2018L, !site_number %in% already_clustered_2018)
+cat(sprintf("Hellinger fallback: %d 2018 sites without direct cluster (of %d total 2018 in cover)\n",
+            nrow(hell_2018_full),
+            sum(hell_full$Year == 2018L)))
+if (nrow(hell_2018_full) > 0) {
+  H_2018   <- as.matrix(hell_2018_full[, species_cols])
+  doy_2018 <- hell_2018_full$snow_free_doy
 
-# Hellinger Euclidean squared (n_2018 x n_clusters)
-sq_2018   <- rowSums(H_2018^2)
-sq_cent   <- rowSums(centroid_mat^2)
-hell_d2   <- outer(sq_2018, sq_cent, "+") - 2 * H_2018 %*% t(centroid_mat)
-hell_d2[hell_d2 < 0] <- 0
-hell_d    <- sqrt(hell_d2)
+  # Hellinger Euclidean squared (n_2018 x n_clusters)
+  sq_2018   <- rowSums(H_2018^2)
+  sq_cent   <- rowSums(centroid_mat^2)
+  hell_d2   <- outer(sq_2018, sq_cent, "+") - 2 * H_2018 %*% t(centroid_mat)
+  hell_d2[hell_d2 < 0] <- 0
+  hell_d    <- sqrt(hell_d2)
 
-# DOY z-difference squared
-doy_diff   <- outer(doy_2018, centroid_doy_vec, "-")
-doy_z_diff <- doy_diff / doy_sd_global
-doy_d2     <- (doy_z_diff * doy_weight)^2
+  # DOY z-difference squared
+  doy_diff   <- outer(doy_2018, centroid_doy_vec, "-")
+  doy_z_diff <- doy_diff / doy_sd_global
+  doy_d2     <- (doy_z_diff * doy_weight)^2
 
-combined_d <- sqrt(hell_d2 + doy_d2)
-rownames(combined_d) <- paste(hell_2018_full$site_number,
-                              hell_2018_full$Year, sep = "_")
+  combined_d <- sqrt(hell_d2 + doy_d2)
+  rownames(combined_d) <- paste(hell_2018_full$site_number,
+                                hell_2018_full$Year, sep = "_")
 
-best_idx     <- apply(combined_d, 1, which.min)
-dist_to_best <- combined_d[cbind(seq_along(best_idx), best_idx)]
-sorted_d     <- t(apply(combined_d, 1, sort))
-dist_gap     <- sorted_d[, 2] - sorted_d[, 1]
+  best_idx     <- apply(combined_d, 1, which.min)
+  dist_to_best <- combined_d[cbind(seq_along(best_idx), best_idx)]
+  sorted_d     <- t(apply(combined_d, 1, sort))
+  dist_gap     <- sorted_d[, 2] - sorted_d[, 1]
 
-asg_2018 <- tibble::tibble(
-  site_number             = hell_2018_full$site_number,
-  Year                    = hell_2018_full$Year,
-  spec_cluster            = clusters_present[best_idx],
-  sub_cluster             = NA_character_,
-  final_label             = clusters_present[best_idx],
-  source                  = "inferred_2018",
-  inference_distance      = dist_to_best,
-  inference_gap           = dist_gap,
-  inference_hell_distance = hell_d[cbind(seq_along(best_idx), best_idx)],
-  inference_doy_diff_days = doy_diff[cbind(seq_along(best_idx), best_idx)]
-) |>
-  # Confidence tier: high = close match in both composition and DOY;
-  # low = composition very different from any 2025 cluster (likely a 2018-
-  # only ecological niche such as Sibbaldia-Acomastylis alpine cushion that
-  # the 2025 sampling didn't capture).
-  dplyr::mutate(inference_confidence = dplyr::case_when(
-    inference_distance < 0.90 ~ "high",
-    inference_distance < 1.05 ~ "medium",
-    TRUE                      ~ "low"
-  ))
-
-cat(sprintf("Inferred 2018 labels for %d sites\n", nrow(asg_2018)))
+  asg_2018 <- tibble::tibble(
+    site_number             = hell_2018_full$site_number,
+    Year                    = hell_2018_full$Year,
+    spec_cluster            = clusters_present[best_idx],
+    sub_cluster             = NA_character_,
+    final_label             = clusters_present[best_idx],
+    source                  = "inferred_2018",
+    inference_distance      = dist_to_best,
+    inference_gap           = dist_gap,
+    inference_hell_distance = hell_d[cbind(seq_along(best_idx), best_idx)],
+    inference_doy_diff_days = doy_diff[cbind(seq_along(best_idx), best_idx)]
+  ) |>
+    dplyr::mutate(inference_confidence = dplyr::case_when(
+      inference_distance < 0.90 ~ "high",
+      inference_distance < 1.05 ~ "medium",
+      TRUE                      ~ "low"
+    ))
+  cat(sprintf("Inferred 2018 labels for %d fallback sites\n",
+              nrow(asg_2018)))
+} else {
+  asg_2018 <- tibble::tibble(
+    site_number = integer(0), Year = integer(0),
+    spec_cluster = character(0), sub_cluster = character(0),
+    final_label = character(0), source = character(0),
+    inference_distance = double(0), inference_gap = double(0),
+    inference_hell_distance = double(0),
+    inference_doy_diff_days = double(0),
+    inference_confidence    = character(0)
+  )
+  cat("All 2018 sites in cover already have direct cluster assignments; ",
+      "no Hellinger fallback needed.\n", sep = "")
+}
+if (nrow(asg_2018) > 0) {
 cat(sprintf("  combined inference distance: median=%.3f, IQR %.3f-%.3f\n",
-            stats::median(asg_2018$inference_distance),
-            stats::quantile(asg_2018$inference_distance, 0.25),
-            stats::quantile(asg_2018$inference_distance, 0.75)))
-cat(sprintf("  Hellinger-only distance:     median=%.3f, IQR %.3f-%.3f\n",
-            stats::median(asg_2018$inference_hell_distance),
-            stats::quantile(asg_2018$inference_hell_distance, 0.25),
-            stats::quantile(asg_2018$inference_hell_distance, 0.75)))
-cat(sprintf("  DOY mismatch (days):         median=%.1f, IQR %.1f-%.1f\n",
-            stats::median(abs(asg_2018$inference_doy_diff_days)),
-            stats::quantile(abs(asg_2018$inference_doy_diff_days), 0.25),
-            stats::quantile(abs(asg_2018$inference_doy_diff_days), 0.75)))
+              stats::median(asg_2018$inference_distance),
+              stats::quantile(asg_2018$inference_distance, 0.25),
+              stats::quantile(asg_2018$inference_distance, 0.75)))
+  cat(sprintf("  Hellinger-only distance:     median=%.3f, IQR %.3f-%.3f\n",
+              stats::median(asg_2018$inference_hell_distance),
+              stats::quantile(asg_2018$inference_hell_distance, 0.25),
+              stats::quantile(asg_2018$inference_hell_distance, 0.75)))
+  cat(sprintf("  DOY mismatch (days):         median=%.1f, IQR %.1f-%.1f\n",
+              stats::median(abs(asg_2018$inference_doy_diff_days)),
+              stats::quantile(abs(asg_2018$inference_doy_diff_days), 0.25),
+              stats::quantile(abs(asg_2018$inference_doy_diff_days), 0.75)))
+}  # close `if (nrow(asg_2018) > 0)`
 
-# Add the inference columns to asg (NA for clustered_2025 rows) and stack.
+# Add the inference columns to asg (NA for clustered rows) and stack.
 asg <- asg |>
   dplyr::mutate(inference_distance = NA_real_, inference_gap = NA_real_) |>
   dplyr::bind_rows(asg_2018)
@@ -292,7 +318,7 @@ spec_cols <- grep("^(spec_PC|ndvi|ndwi|pri|red_edge|cai|ndli)",
                   names(spec_feat), value = TRUE)
 # Full feature set is fine now -- 2025-only clustering means the cross-year
 # shift in PC3 and PRI is no longer a concern.
-asg_clustered <- asg |> dplyr::filter(source == "clustered_2025")
+asg_clustered <- asg |> dplyr::filter(source == "clustered")
 joined <- asg_clustered |>
   inner_join(spec_feat, by = c("site_number", "Year")) |>
   inner_join(env,       by = c("site_number", "Year"))
@@ -333,7 +359,7 @@ final_eval <- eval_rf_cv(joined$final_label, X)
 hell_long <- comp_species$hellinger |>
   pivot_longer(-c(site_number, Year), names_to = "feature", values_to = "h") |>
   mutate(feature = stringr::str_replace(feature, "_cover$", "")) |>
-  inner_join(asg |> dplyr::filter(source == "clustered_2025") |>
+  inner_join(asg |> dplyr::filter(source == "clustered") |>
                     dplyr::select(site_number, Year, final_label),
              by = c("site_number", "Year"))
 
