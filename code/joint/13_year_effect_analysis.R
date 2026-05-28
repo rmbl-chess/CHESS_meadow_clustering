@@ -285,3 +285,89 @@ print(summary_band |>
         dplyr::mutate(dplyr::across(where(is.numeric), ~ signif(.x, 3))) |>
         dplyr::arrange(point_type, dplyr::desc(abs(cohens_d))) |>
         as.data.frame())
+
+# ============================================================================
+# Validation: does the non-vegetated per-band delta generalize?
+#   - 50/50 random split of the non-vegetated pairs
+#   - fit per-band mean delta on the fit half
+#   - apply to the validation half: corrected_25 - 18 = (raw_25 - raw_18) - delta_fit
+#   - compare |mean residual| (corrected) against |mean residual| (raw)
+# If the correction generalizes the corrected residual should be ~zero.
+# ============================================================================
+nv_idx <- which(paired$point_type == "non_vegetated")
+set.seed(42)
+fold <- sample(c("fit", "val"), length(nv_idx),
+                replace = TRUE, prob = c(0.5, 0.5))
+fit_rows <- nv_idx[fold == "fit"]
+val_rows <- nv_idx[fold == "val"]
+
+fit_diff <- mat_25[fit_rows, , drop = FALSE] - mat_18[fit_rows, , drop = FALSE]
+val_diff <- mat_25[val_rows, , drop = FALSE] - mat_18[val_rows, , drop = FALSE]
+
+delta_fit          <- colMeans(fit_diff, na.rm = TRUE)
+val_diff_corrected <- sweep(val_diff, 2, delta_fit, FUN = "-")
+
+raw_mean       <- colMeans(val_diff,           na.rm = TRUE)
+corrected_mean <- colMeans(val_diff_corrected, na.rm = TRUE)
+val_pooled_sd  <- apply(rbind(mat_18[val_rows, ], mat_25[val_rows, ]),
+                        2, sd, na.rm = TRUE)
+cohens_d_raw       <- raw_mean       / pmax(val_pooled_sd, 1e-9)
+cohens_d_corrected <- corrected_mean / pmax(val_pooled_sd, 1e-9)
+
+cat(sprintf("\n=== Validation: %d fit + %d val non-vegetated points ===\n",
+            length(fit_rows), length(val_rows)))
+cat(sprintf("  Mean |raw       per-band residual|: %.5f  (|Cohen's d|: %.3f)\n",
+            mean(abs(raw_mean)),       mean(abs(cohens_d_raw))))
+cat(sprintf("  Mean |corrected per-band residual|: %.5f  (|Cohen's d|: %.3f)\n",
+            mean(abs(corrected_mean)), mean(abs(cohens_d_corrected))))
+cat(sprintf("  Residual reduction: %.1f%% in mean-abs, %.1f%% in mean-|d|\n",
+            100 * (1 - mean(abs(corrected_mean)) / mean(abs(raw_mean))),
+            100 * (1 - mean(abs(cohens_d_corrected)) / mean(abs(cohens_d_raw)))))
+
+val_long <- tibble::tibble(
+  wavelength_nm = wls$wavelength_nm,
+  raw           = raw_mean,
+  corrected     = corrected_mean
+) |>
+  tidyr::pivot_longer(c(raw, corrected), names_to = "version",
+                      values_to = "mean_diff")
+
+p_val <- ggplot(val_long,
+                aes(x = wavelength_nm, y = mean_diff, colour = version)) +
+  geom_rect(data = water_bands, inherit.aes = FALSE,
+            aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf),
+            fill = "grey90", alpha = 0.6) +
+  geom_hline(yintercept = 0, colour = "grey50", linetype = "dashed") +
+  geom_line(linewidth = 0.7) +
+  scale_colour_manual(values = c(raw = "#d6604d", corrected = "#4393c3"),
+                      labels = c(raw = "raw (no correction)",
+                                 corrected = "after subtracting fit-half delta")) +
+  labs(x = "Wavelength (nm)",
+       y = "Mean per-band residual (2025 − 2018), validation half",
+       title = "Held-out validation of the non-vegetated radiometric correction",
+       subtitle = sprintf("%d fit / %d validation non-vegetated points; lines flat at 0 = correction generalizes",
+                          length(fit_rows), length(val_rows))) +
+  theme_minimal(base_size = 11) +
+  theme(legend.position = "top",
+        plot.title.position = "plot")
+ggsave("docs/figures/year_effect_correction_validation.pdf", p_val,
+       width = 11, height = 5, device = cairo_pdf)
+cat("Wrote docs/figures/year_effect_correction_validation.pdf\n")
+
+# ============================================================================
+# Save the full-sample correction for use by 04_join_spectra and the shrub
+# equivalent. Uses ALL 1057 non-vegetated pairs (not the validation split).
+# Sign convention: corrected_2018 = raw_l2_2018 + delta, so this delta is
+# the same `mean_diff = mean(2025 - 2018)` we already have in summary_band.
+# ============================================================================
+correction <- summary_band |>
+  dplyr::filter(point_type == "non_vegetated") |>
+  dplyr::transmute(band_number, wavelength_nm,
+                   delta   = mean_diff,
+                   sd_diff = sd_diff,
+                   n_pairs = n_pairs)
+dir.create("data/small_reference", showWarnings = FALSE, recursive = TRUE)
+readr::write_csv(correction,
+                 "data/small_reference/year_effect_correction_2018_to_2025.csv")
+cat(sprintf("Wrote data/small_reference/year_effect_correction_2018_to_2025.csv (%d bands)\n",
+            nrow(correction)))
