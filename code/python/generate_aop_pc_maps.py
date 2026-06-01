@@ -2,15 +2,24 @@
 """
 generate_aop_pc_maps.py — write 20-band PC COGs for AOP tiles.
 
-For each 2025 AOP tile (1 km x 1 km), compute PC01..PC20 using the field-
+For each AOP tile (1 km x 1 km), compute PC01..PC20 using the field-
 plot-derived PCA model exported by 24_export_classifier_model.R, and write
 a 20-band Cloud-Optimized GeoTIFF (one band per PC) at 3 m resolution. The
 preprocessing recipe matches the classifier feature pipeline exactly:
 
     1. Per-1 m-pixel L2 normalize each spectrum.
     2. 3x3 block mean -> 3 m resolution.
+    2b. (--year 2018 only) Add the NDVI-stratified 2018->2025 radiometric
+        correction in the L2-normalized space, mirroring R's
+        04_join_spectra.R::apply_year_correction so 2018 PCs land on the
+        2025-fit basis. Per 3 m cell: NDVI (660/860 nm) -> NDVI bin ->
+        add that bin's per-band delta. NaN delta or NaN NDVI -> no change.
     3. Apply the water-band mask (drop ~1340-1450, ~1800-1950, >2400 nm).
     4. Subtract PCA center, project through saved PCA loadings -> PC01..PC20.
+
+Year coverage: 2025 AOP exists for ALMO/CRBU/UPTA; 2018 AOP is CRBU-only
+(matching the field campaign). The 2018->2025 correction is applied only
+for --year 2018; pass --no-year-correction to disable it.
 
 Output layout:
     data/derived/aop_pc_maps/
@@ -42,6 +51,10 @@ Usage:
         --output-dir     data/derived/aop_pc_maps \\
         --year           2025 \\
         --tile-limit     2          # for local testing
+
+    # 2018 (CRBU only) — applies the NDVI-stratified 2018->2025 correction:
+    python generate_aop_pc_maps.py --year 2018 --domains CRBU \\
+        --output-dir data/derived/aop_pc_maps_2018
 """
 
 from __future__ import annotations
@@ -71,6 +84,17 @@ TILE_SIZE_M = 1000          # AOP mosaic tile size
 AGG_FACTOR  = 3             # 1m -> 3m
 N_PC        = 20
 
+# NDVI-stratified 2018->2025 correction bins. Mirrors R 04_join_spectra.R /
+# 15_stratified_year_correction.R: breaks c(-Inf,0.2,0.4,0.6,0.8,Inf), cut
+# with right=FALSE. NDVI_BREAKS holds only the internal cut points so that
+# np.digitize(ndvi, NDVI_BREAKS) (right=False) returns 0..4 in label order.
+CORRECTION_YEAR = 2018
+NDVI_BREAKS = (0.20, 0.40, 0.60, 0.80)
+NDVI_LABELS = ("ndvi_lt_0.20", "ndvi_0.20_0.40", "ndvi_0.40_0.60",
+               "ndvi_0.60_0.80", "ndvi_ge_0.80")
+NDVI_RED_NM = 660.0
+NDVI_NIR_NM = 860.0
+
 
 # ---------- Config ---------------------------------------------------------
 
@@ -78,6 +102,39 @@ N_PC        = 20
 class PreprocConfig:
     water_band_ranges_nm: list[tuple[float, float]]
     no_data_sentinel: float
+
+
+@dataclass(frozen=True)
+class YearCorrection:
+    """NDVI-stratified 2018->2025 per-band delta, aligned to the AOP cube's
+    full band order. Applied in L2-normalized space at the 3 m stage.
+
+    delta:    (n_bins, n_full_bands) float32, NaN deltas already -> 0.
+    red_idx / nir_idx: cube band indices nearest 660 / 860 nm (for NDVI).
+    breaks:   internal NDVI cut points for np.digitize (right=False).
+    """
+    delta: np.ndarray
+    red_idx: int
+    nir_idx: int
+    breaks: np.ndarray
+
+
+def load_year_correction_delta(path: Path) -> tuple[np.ndarray, np.ndarray]:
+    """Read the NDVI-stratified delta CSV into (delta, wavelength_nm).
+
+    delta is (n_bins, n_bands) ordered by NDVI_LABELS x ascending band_number,
+    with NaN -> 0 to match R's `ifelse(is.na(delta), 0, delta)`.
+    """
+    cor = pd.read_csv(path)
+    bands = np.sort(cor["band_number"].unique())
+    delta = np.full((len(NDVI_LABELS), len(bands)), np.nan, dtype=np.float64)
+    wl = np.full(len(bands), np.nan, dtype=np.float64)
+    for i, lab in enumerate(NDVI_LABELS):
+        sub = cor[cor["ndvi_bin"] == lab].set_index("band_number").reindex(bands)
+        delta[i] = sub["delta"].to_numpy()
+        wl = sub["wavelength_nm"].to_numpy()
+    delta = np.nan_to_num(delta, nan=0.0).astype(np.float32)
+    return delta, wl
 
 
 # ---------- AOP store access -----------------------------------------------
@@ -149,6 +206,7 @@ def process_tile(
     pca_center: np.ndarray,
     pca_loadings: np.ndarray,
     out_path: Path,
+    correction: YearCorrection | None = None,
 ) -> tuple[bool, str]:
     """Compute PC01..PC20 for one tile and write a 20-band COG.
 
@@ -193,6 +251,27 @@ def process_tile(
         warnings.simplefilter("ignore", category=RuntimeWarning)
         arr_3m = np.nanmean(blk, axis=(2, 4))
     del arr_norm, blk
+
+    # --- 2b. NDVI-stratified 2018->2025 correction (year 2018 only) --------
+    # Applied here, on the L2-normalized 3 m mean spectrum and BEFORE the
+    # water mask, to mirror R 04_join_spectra.R (which corrects the
+    # L2-normalized per-site mean over the full 426-band grid). NDVI picks
+    # the bin; that bin's per-band delta is added. NaN NDVI -> no change.
+    if correction is not None:
+        if correction.delta.shape[1] != arr_3m.shape[0]:
+            return False, (f"correction has {correction.delta.shape[1]} bands "
+                           f"but tile has {arr_3m.shape[0]}")
+        red = arr_3m[correction.red_idx]
+        nir = arr_3m[correction.nir_idx]
+        denom = nir + red
+        with np.errstate(invalid="ignore", divide="ignore"):
+            ndvi = np.where(denom != 0, (nir - red) / denom, np.nan)
+        bin_idx = np.digitize(ndvi, correction.breaks)   # right=False -> 0..4
+        valid = ~np.isnan(ndvi)
+        for k in range(correction.delta.shape[0]):
+            m = valid & (bin_idx == k)
+            if m.any():
+                arr_3m[:, m] += correction.delta[k][:, None]
 
     # --- 3. Select kept bands ----------------------------------------------
     arr_kept = arr_3m[keep_band_idx, :, :]
@@ -264,6 +343,25 @@ def run(args: argparse.Namespace) -> None:
     logger.info("Loaded PCA model: %d retained bands x %d PCs",
                 pca_loadings.shape[0], N_PC)
 
+    # 2018->2025 radiometric correction (loaded here; wired to the cube's
+    # band grid lazily on the first tile, alongside keep_band_idx).
+    correction_delta = correction_wl = None
+    if args.year == CORRECTION_YEAR and not args.no_year_correction:
+        if not args.correction_csv.exists():
+            raise FileNotFoundError(
+                f"--year {CORRECTION_YEAR} needs {args.correction_csv} for the "
+                "2018->2025 correction. Pass --no-year-correction to project "
+                "2018 reflectance uncorrected (NOT recommended — PCs will be "
+                "off-basis).")
+        correction_delta, correction_wl = load_year_correction_delta(args.correction_csv)
+        logger.info("Loaded 2018->2025 NDVI-stratified correction: "
+                    "%d bins x %d bands (%s)",
+                    correction_delta.shape[0], correction_delta.shape[1],
+                    args.correction_csv.name)
+    elif args.year == CORRECTION_YEAR:
+        logger.warning("--no-year-correction set: 2018 PCs computed WITHOUT the "
+                       "2018->2025 correction; they will not match the 2025 basis.")
+
     domains = args.domains or ["ALMO", "CRBU", "UPTA"]
     logger.info("Listing tiles from S3 for %s ...", ", ".join(domains))
     tiles = list_tiles_s3(domains, args.year)
@@ -278,6 +376,7 @@ def run(args: argparse.Namespace) -> None:
     out_root.mkdir(parents=True, exist_ok=True)
 
     keep_band_idx: np.ndarray | None = None
+    correction: YearCorrection | None = None
     ds_cache: dict[str, xr.Dataset] = {}
     t_start = time.time()
     n_ok = n_skip = n_fail = 0
@@ -301,12 +400,30 @@ def run(args: argparse.Namespace) -> None:
                 "Matched %d training wavelengths (max drift %.2f nm)",
                 len(keep_band_idx), max_drift,
             )
+            if correction_delta is not None:
+                if correction_delta.shape[1] != len(wls_full):
+                    raise RuntimeError(
+                        f"correction table has {correction_delta.shape[1]} bands "
+                        f"but AOP cube has {len(wls_full)}; cannot align by index")
+                wl_drift = float(np.max(np.abs(correction_wl - wls_full)))
+                red_idx = int(np.argmin(np.abs(wls_full - NDVI_RED_NM)))
+                nir_idx = int(np.argmin(np.abs(wls_full - NDVI_NIR_NM)))
+                correction = YearCorrection(
+                    delta=correction_delta, red_idx=red_idx, nir_idx=nir_idx,
+                    breaks=np.asarray(NDVI_BREAKS),
+                )
+                logger.info(
+                    "Year correction wired: NDVI red=%.1fnm(idx %d) "
+                    "nir=%.1fnm(idx %d); max correction-vs-cube band drift %.2f nm",
+                    wls_full[red_idx], red_idx, wls_full[nir_idx], nir_idx, wl_drift,
+                )
 
         t0 = time.time()
         try:
             ok, msg = process_tile(
                 ds, int(t.easting), int(t.northing),
                 cfg, keep_band_idx, pca_center, pca_loadings, out_path,
+                correction=correction,
             )
         except Exception as e:
             logger.exception("Tile (%s, %d, %d) crashed: %s",
@@ -365,6 +482,14 @@ def build_parser() -> argparse.ArgumentParser:
                    help="Re-process tiles even if outputs already exist.")
     p.add_argument("--skip-vrt",    action="store_true",
                    help="Skip building per-domain VRT mosaics at the end.")
+    p.add_argument("--correction-csv", type=Path,
+                   default=Path("data/small_reference/"
+                                "year_effect_correction_2018_to_2025_by_ndvi.csv"),
+                   help="NDVI-stratified 2018->2025 per-band delta table; "
+                        "applied only when --year 2018.")
+    p.add_argument("--no-year-correction", action="store_true",
+                   help="Disable the 2018->2025 radiometric correction even "
+                        "for --year 2018 (PCs will be off the 2025 basis).")
     p.add_argument("--log-level",   default="INFO")
     return p
 
