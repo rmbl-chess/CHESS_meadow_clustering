@@ -8,7 +8,9 @@ of hundreds of tiles + a VRT.
 Uses the per-domain VRT that generate_aop_pc_maps.py builds as the
 input to gdal_translate — gdal_translate streams the VRT through the
 COG driver, so memory use is bounded by the block size, not the full
-raster size. Output is a strict COG with internal overviews.
+raster size. Output is a strict COG tuned for GIS performance:
+BAND-interleaved (single-PC views read one band, not all 20), ZSTD-
+compressed (fast decode), with a deep internal overview pyramid.
 
 If a per-domain VRT is missing (e.g., generate_aop_pc_maps.py was
 interrupted before the final VRT pass), this script rebuilds it from
@@ -79,11 +81,26 @@ def mosaic_domain(vrt: Path, out_tif: Path) -> tuple[bool, str]:
         "gdal_translate",
         str(vrt), str(out_tif),
         "-of", "COG",
-        "-co", "COMPRESS=DEFLATE",
-        "-co", "LEVEL=6",
-        "-co", "PREDICTOR=YES",
+        # BAND interleave is the big GIS-performance win: a 20-band float
+        # PC stack is almost always viewed one PC (or a 3-PC composite) at a
+        # time. PIXEL interleave (the COG default) forces decompressing all
+        # 20 bands per tile to render one; BAND lets GDAL touch only the
+        # requested band(s) -> ~10-30x faster single-band reads in QGIS.
+        "-co", "INTERLEAVE=BAND",
+        # ZSTD decompresses far faster than DEFLATE (cost ~constant across
+        # levels), so tile reads are quicker; LEVEL=13 keeps the ratio close
+        # to DEFLATE-6 on this float data.
+        "-co", "COMPRESS=ZSTD",
+        "-co", "LEVEL=13",
+        "-co", "PREDICTOR=YES",                 # floating-point predictor (=3)
         "-co", "BLOCKSIZE=512",
+        # Force a fresh, deep overview pyramid so zoomed-out views cascade to
+        # a tiny top level. IGNORE_EXISTING avoids reusing a shallow source
+        # pyramid; COUNT=6 -> ~60 px top overview for these domains.
+        "-co", "OVERVIEWS=IGNORE_EXISTING",
+        "-co", "OVERVIEW_COUNT=6",
         "-co", "OVERVIEW_RESAMPLING=AVERAGE",
+        "-co", "NUM_THREADS=ALL_CPUS",
         "-co", "BIGTIFF=IF_SAFER",
     ]
     logger.info("Running: %s", " ".join(cmd))
