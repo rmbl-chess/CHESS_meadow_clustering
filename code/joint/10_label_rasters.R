@@ -6,19 +6,20 @@
 # colortable in memory, writes a sister "_labeled.tif" COG. The original
 # numeric uint8 raster is left in place.
 #
-# Color scheme: 3x3 grid on (moisture, elevation) with muted earth tones.
+# Color scheme: 4 physiognomy/habitat families, each rendered as an HCL ramp
+# so the HUE shows the broad structural category and the within-family
+# lightness/hue ramp (ordered by elevation then snow-free DOY) distinguishes
+# the communities inside it:
 #
-#   hue        = moisture     dry -> mesic -> wet
-#                              warm brown -> olive -> slate blue
-#   lightness  = elevation    montane -> subalpine -> alpine
-#                              dark -> medium -> light
-#   chroma     = constant     ~moderate, avoids vivid colors
+#   shrubland     blue - grey - purple
+#   grassland     tan - yellow - brown      (graminoid-dominated)
+#   forb_meadow   green - olive - brown     (forb-dominated)
+#   wetland       pink - red
 #
-# Disturbed (Taraxacum-dominated, S20) gets a single distinct earth-tone
-# (muted mustard) so it stands out without breaking the saturation budget.
-#
-# Within a cell, classes share the same color — within-cell distinction
-# comes from short_label rather than hue.
+# Category is derived from class_type + moisture + dominant-indicator
+# lifeform (shrub -> shrubland; wet -> wetland; graminoid top indicator ->
+# grassland; else forb_meadow). An optional `category` column in
+# class_categories.csv overrides the derived value per class.
 #
 # Inputs:
 #   data/derived/aop_classified/{DOMAIN}_class_3m_v1.tif
@@ -56,9 +57,26 @@ ns_draft <- if (file.exists(ns_path)) {
 }
 
 # --- 1. Build the RAT (one row per class code) ---------------------------
+# Parent-inheritance fallback: a split sub-class (e.g. S01.a) with no explicit
+# class_categories row inherits its PARENT's (S01) moisture/elevation, so the
+# categories table need not be re-curated every time the splits change. The
+# color *category* is still derived per sub-class from its own indicator
+# (below), so e.g. S01.c Artemisia still resolves to shrubland. Explicit
+# sub-class rows in class_categories.csv override the inherited values.
+cats_resolved <- tibble::tibble(final_label = lookup$final_label,
+                                parent = sub("\\..*$", "", lookup$final_label)) |>
+  dplyr::left_join(cats, by = "final_label") |>
+  dplyr::left_join(cats |> dplyr::transmute(parent = final_label,
+                                            moisture_p = moisture,
+                                            elevation_p = elevation),
+                   by = "parent") |>
+  dplyr::transmute(final_label,
+                   moisture  = dplyr::coalesce(moisture, moisture_p),
+                   elevation = dplyr::coalesce(elevation, elevation_p))
+
 rat <- lookup |>
   dplyr::left_join(csum, by = "final_label") |>
-  dplyr::left_join(cats, by = "final_label") |>
+  dplyr::left_join(cats_resolved, by = "final_label") |>
   dplyr::left_join(ns_draft, by = "final_label") |>
   dplyr::transmute(
     value        = class_code,
@@ -85,34 +103,70 @@ print(rat |> dplyr::count(moisture, elevation, name = "n") |>
                            values_fill = 0L) |>
         as.data.frame())
 
-# --- 2. 3x3 (moisture x elevation) muted earth-tone grid -----------------
-# Equal-chroma, lightness varies along the elevation axis, hue along
-# the moisture axis. Disturbed gets one off-grid color.
-hex_grid <- matrix(
-  c(
-    # montane     subalpine    alpine
-    "#8a6f3e",   "#b5915f",   "#d4b89e",   # dry   (warm brown -> tan)
-    "#4f7a3f",   "#79a663",   "#b6cea3",   # mesic (forest green -> medium -> light green)
-    "#4a6a85",   "#7095ae",   "#a0bbd0"    # wet   (slate -> steel -> light blue)
-  ),
-  nrow = 3, byrow = TRUE,
-  dimnames = list(moisture  = c("dry", "mesic", "wet"),
-                  elevation = c("montane", "subalpine", "alpine"))
-)
-disturbed_hex <- "#c5b83d"   # muted mustard
+# --- 2. Physiognomy/habitat family + within-family HCL ramp --------------
+# Graminoid genera (grasses, sedges, rushes) -> grassland; everything else
+# herbaceous -> forb_meadow. Used only when class_type is meadow and the
+# class is not wet.
+gram_genera <- c("Festuca", "Leucopoa", "Deschampsia", "Calamagrostis",
+  "Bromus", "Bromopsis", "Poa", "Elymus", "Pascopyrum", "Achnatherum",
+  "Hesperostipa", "Stipa", "Danthonia", "Phleum", "Trisetum", "Koeleria",
+  "Muhlenbergia", "Agrostis", "Vahlodea", "Helictotrichon",
+  "Carex", "Kobresia", "Juncus", "Eleocharis", "Luzula")
+# Woody dominants among the meadow-clustered classes (e.g. Vaccinium heath,
+# Purshia/Chrysothamnus shrub-steppe) are physiognomically shrubland even
+# though their class_type is "meadow".
+shrub_genera <- c("Vaccinium", "Artemisia", "Purshia", "Chrysothamnus",
+  "Ericameria", "Amelanchier", "Salix", "Ribes", "Dasiphora", "Betula",
+  "Alnus", "Lonicera", "Prunus", "Juniperus", "Sambucus", "Symphoricarpos",
+  "Cornus", "Holodiscus", "Rhus", "Shepherdia", "Pentaphylloides")
+genus1 <- function(x) sub(" .*$", "", x)
 
-assign_color <- function(moisture, elevation) {
-  out <- rep(NA_character_, length(moisture))
-  is_dist <- moisture == "disturbed"
-  out[is_dist] <- disturbed_hex
-  if (any(!is_dist)) {
-    out[!is_dist] <- hex_grid[cbind(moisture[!is_dist],
-                                    elevation[!is_dist])]
-  }
-  out
+# dominant indicator + snow-free DOY (for lifeform call + within-family order)
+aux <- readr::read_csv("data/small_reference/label_community_names.csv",
+                       show_col_types = FALSE) |>
+  dplyr::select(final_label, top_indicator, snow_free_doy_mean)
+rat <- rat |> dplyr::left_join(aux, by = "final_label")
+
+# optional per-class override from class_categories.csv $category
+override <- if ("category" %in% names(cats))
+  stats::setNames(cats$category, cats$final_label) else character(0)
+rat <- rat |> dplyr::mutate(category = dplyr::case_when(
+  final_label %in% names(override) &
+    !is.na(override[final_label])          ~ unname(override[final_label]),
+  class_type == "shrub"                    ~ "shrubland",
+  genus1(top_indicator) %in% shrub_genera  ~ "shrubland",
+  moisture == "wet"                        ~ "wetland",
+  genus1(top_indicator) %in% gram_genera   ~ "grassland",
+  TRUE                                     ~ "forb_meadow"))
+
+# HCL ramps per family: (hue, chroma, lightness) start -> end. Wetland hue
+# 350 -> 372 wraps through red (hcl() takes hue mod 360).
+fam_hcl <- list(
+  shrubland   = list(h = c(255, 300), c = c(30, 46), l = c(46, 78)),
+  grassland   = list(h = c(82,  48),  c = c(46, 62), l = c(83, 52)),
+  forb_meadow = list(h = c(140, 100), c = c(38, 54), l = c(68, 40)),
+  wetland     = list(h = c(350, 372), c = c(45, 66), l = c(73, 50)))
+fam_colors <- function(cat, n) {
+  p <- fam_hcl[[cat]]; f <- if (n == 1) 0.5 else seq(0, 1, length.out = n)
+  grDevices::hcl(h = p$h[1] + f * (p$h[2] - p$h[1]),
+                 c = p$c[1] + f * (p$c[2] - p$c[1]),
+                 l = p$l[1] + f * (p$l[2] - p$l[1]))
 }
-rat$color_hex <- assign_color(rat$moisture, rat$elevation)
-stopifnot(all(!is.na(rat$color_hex)))
+elev_ord <- c(montane = 1L, subalpine = 2L, alpine = 3L, disturbed = 2L)
+rat <- rat |>
+  dplyr::group_by(category) |>
+  dplyr::arrange(dplyr::coalesce(elev_ord[elevation], 2L),
+                 dplyr::coalesce(snow_free_doy_mean, 0), final_label,
+                 .by_group = TRUE) |>
+  dplyr::mutate(color_hex =
+                  fam_colors(dplyr::first(category), dplyr::n())[dplyr::row_number()]) |>
+  dplyr::ungroup() |>
+  dplyr::arrange(value) |>
+  dplyr::select(-top_indicator, -snow_free_doy_mean)   # keep `category` in RAT
+stopifnot(all(!is.na(rat$color_hex)), all(!is.na(rat$category)))
+
+cat("\nClasses per physiognomy family:\n")
+print(rat |> dplyr::count(category, name = "n") |> as.data.frame())
 
 # --- 3. Apply to each domain raster -------------------------------------
 domains <- c("ALMO", "CRBU", "UPTA")

@@ -29,20 +29,26 @@ env          <- readRDS("data/derived/environment.rds")
 
 primary_k        <- 26
 primary_variant  <- "variant_G"  # PCs 2,4-12 + DOY z-scaled (drop PC1 brightness + PC3 year-shift)
-# GATED subclustering: heterogeneous parents are split by species-Hellinger
-# Ward, but a split is KEPT only if every sub-class is spectrally MAPPABLE --
-# its 5-fold RF CV recall on the inference feature space (20 PC + DOY + CHM)
-# must clear `recall_bar`. This keeps the splits the AOP classifier can
-# actually reproduce (S09/S08/S02/S07) and leaves irreducible ones whole
-# (e.g. S01 = sparse-sage-in-meadow, unseparable even in raw field spectra).
-# Replaces the old binary do_subclustering switch, which disabled ALL splits
-# because SOME were unmappable. See the audit in the commit message / docs.
-recall_bar     <- 0.40
-min_sub_size   <- 8L     # don't create a sub-class smaller than this
-min_year_n     <- 1L     # require >= this many sites per YEAR in each sub-class,
-                         # i.e. both 2018 & 2025 present -> no single-year splits
-                         # (2018-only sub-classes lack a clean 2025-basis anchor)
-chm_for_gate   <- readRDS("data/derived/canopy_height.rds")
+# GATED subclustering: every sizable spectral cluster is a split candidate.
+# Split by species-Hellinger Ward, trying k=3 then k=2 and keeping the FINEST
+# split whose sub-classes are big enough and clear `recall_bar` (min 5-fold
+# RF CV recall on the 20-PC + DOY + CHM inference space). The bar is relaxed:
+# we'd rather keep ecologically real distinctions as separate classes -- even
+# ones hard to map today (e.g. S20 Chrysothamnus- vs Artemisia-dominated
+# shrublands; S01 grass-sage vs forb halves) -- and flag them
+# `needs_ancillary` for later resolution with topographic-wetness / phenology
+# covariates, than treat distinct communities as equivalent. Splits >=
+# `ancillary_recall` are mappable now.
+#
+# Single-year sub-classes are allowed: the elevation-stratified sampling
+# (2018 more alpine, 2025 more low-elevation sagebrush) means some
+# communities are only in one year, and the 2018->2025 radiometric correction
+# makes 2018 mappable. Mappability is enforced by the recall gate, not a
+# year rule.
+recall_bar       <- 0.25   # keep a split if min sub-class recall clears this
+ancillary_recall <- 0.40   # below this, flag sub-classes as needs_ancillary
+min_sub_size     <- 8L     # don't create a sub-class smaller than this
+chm_for_gate     <- readRDS("data/derived/canopy_height.rds")
 k_col            <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
 
@@ -64,7 +70,36 @@ print(spec_summary |> dplyr::select(spec_cluster, n_sites, dominance,
                                     indicator_genus, coherent),
       n = Inf, width = Inf)
 
-incoherent <- spec_summary$spec_cluster[!spec_summary$coherent]
+# Monotypic-stand sites (>= threshold cover of a candidate species) are pulled
+# into their own species classes downstream. The gate must split each cluster
+# as it will be DEPLOYED -- i.e. on the RESIDUAL membership after those sites
+# leave -- so we define the monotypic set here and exclude it from the split.
+# (Same table/threshold are reused by the override block below.)
+monotypic_threshold <- 70
+monotypic_table <- tibble::tribble(
+  ~species_col,                 ~label,
+  "Veratrum_tenuipetalum_cover",  "Veratrum tenuipetalum",
+  "Ligusticum_porteri_cover",     "Ligusticum porteri",
+  "Caltha_leptosepala_cover",     "Caltha leptosepala",
+  "Corydalis_caseana_cover",      "Corydalis caseana",
+  "Osmorhiza_occidentalis_cover", "Osmorhiza occidentalis"
+)
+cover_combined <- readRDS("data/derived/cover_combined.rds")
+mono_cols  <- intersect(monotypic_table$species_col, names(cover_combined))
+mono_sites <- cover_combined |>
+  dplyr::filter(dplyr::if_any(dplyr::all_of(mono_cols),
+                              ~ !is.na(.x) & .x >= monotypic_threshold)) |>
+  dplyr::select(site_number, Year)
+cat(sprintf("Monotypic-stand sites excluded from the gate: %d\n", nrow(mono_sites)))
+
+# Candidates = spectral clusters whose RESIDUAL (post-monotypic) membership is
+# large enough for a 2-way split. The coherence flag above is retained only as
+# diagnostic context; it no longer gates splitting (S20 is "coherent" by
+# dominance yet splits into Chrysothamnus- vs Artemisia-dominated shrublands).
+residual_sizes <- asg |>
+  dplyr::anti_join(mono_sites, by = c("site_number", "Year")) |>
+  dplyr::count(spec_cluster, name = "n_resid")
+candidates <- residual_sizes$spec_cluster[residual_sizes$n_resid >= 2 * min_sub_size]
 
 # --- Sub-cluster the incoherent ones by species-level Hellinger Ward -------
 hell <- comp_species$hellinger
@@ -106,52 +141,55 @@ gate_min_recall <- function(site_year_sub) {
   min(diag(cm) / rowSums(cm), na.rm = TRUE)
 }
 
-cat(sprintf("\nGated subclustering (recall_bar = %.2f):\n", recall_bar))
-for (sc_id in incoherent) {
-  sites_in <- asg |> filter(spec_cluster == sc_id) |>
-    dplyr::select(site_number, Year)
+split_min_rec <- c()   # spec_cluster -> kept split's min sub-class recall
+cat(sprintf("\nGated subclustering (recall_bar = %.2f, try k=3 then k=2):\n",
+            recall_bar))
+for (sc_id in candidates) {
+  members <- asg |> filter(spec_cluster == sc_id) |>
+    dplyr::select(site_number, Year) |>
+    dplyr::anti_join(mono_sites, by = c("site_number", "Year"))   # residual only
   hell_subset <- hell |>
-    inner_join(sites_in, by = c("site_number", "Year")) |>
+    inner_join(members, by = c("site_number", "Year")) |>
     dplyr::select(site_number, Year, dplyr::all_of(named_cols))
-  if (nrow(hell_subset) < 2 * min_sub_size) next
-  n_sub <- if (nrow(hell_subset) >= 60) 3L else 2L
+  n <- nrow(hell_subset)
+  if (n < 2 * min_sub_size) next
+  hc <- hclust(dist(as.matrix(hell_subset[, named_cols]), method = "euclidean"),
+               method = "ward.D2")
 
-  d  <- dist(as.matrix(hell_subset[, named_cols]), method = "euclidean")
-  hc <- hclust(d, method = "ward.D2")
-  cuts <- cutree(hc, k = n_sub)
-  sub_tags <- letters[cuts]
-
-  # Gate: keep the split only if every sub-class is mappable AND big enough.
-  prop    <- hell_subset |> dplyr::select(site_number, Year) |>
-    dplyr::mutate(sub = sub_tags)
-  min_rec <- gate_min_recall(prop)
-  size_ok <- all(table(sub_tags) >= min_sub_size)
-  yr_ok   <- all(tapply(hell_subset$Year, sub_tags, function(yy)
-               sum(yy == 2018L) >= min_year_n && sum(yy == 2025L) >= min_year_n))
-  keep    <- !is.na(min_rec) && min_rec >= recall_bar && size_ok && yr_ok
-  reason  <- if (keep) "SPLIT" else if (is.na(min_rec)) "keep (untestable)" else
-             if (min_rec < recall_bar) "keep (unmappable)" else
-             if (!size_ok) "keep (sub<min_size)" else "keep (single-year)"
-  yrtag <- paste(vapply(sort(unique(sub_tags)), function(s)
-             sprintf("%d/%d", sum(hell_subset$Year[sub_tags == s] == 2018L),
-                              sum(hell_subset$Year[sub_tags == s] == 2025L)),
-             character(1)), collapse = ",")
-  cat(sprintf("  %s: %d-way (n %s, 18/25 %s), min sub-recall %s -> %s\n",
-              sc_id, n_sub, paste(table(sub_tags), collapse = "/"), yrtag,
-              ifelse(is.na(min_rec), "NA", sprintf("%.2f", min_rec)), reason))
-  if (!keep) next
-
+  # Try the finest split first; keep the first k that is big enough, present
+  # in both years, and clears the recall bar.
+  chosen <- NULL
+  for (k in c(3L, 2L)) {
+    if (n < k * min_sub_size) next
+    tags <- letters[cutree(hc, k = k)]
+    if (any(table(tags) < min_sub_size)) next
+    mr <- gate_min_recall(hell_subset |> dplyr::select(site_number, Year) |>
+                            dplyr::mutate(sub = tags))
+    if (!is.na(mr) && mr >= recall_bar) {
+      chosen <- list(k = k, tags = tags, min_rec = mr); break
+    }
+  }
+  if (is.null(chosen)) {
+    cat(sprintf("  %s: n=%d -> keep whole (no split clears %.2f)\n",
+                sc_id, n, recall_bar))
+    next
+  }
+  flag <- if (chosen$min_rec < ancillary_recall) "  [needs_ancillary]" else ""
+  cat(sprintf("  %s: n=%d -> SPLIT k=%d (%s), min sub-recall %.2f%s\n",
+              sc_id, n, chosen$k, paste(table(chosen$tags), collapse = "/"),
+              chosen$min_rec, flag))
   split_passed <- c(split_passed, sc_id)
-  for (i in seq_along(sub_tags)) {
+  split_min_rec[sc_id] <- chosen$min_rec
+  for (i in seq_along(chosen$tags)) {
     mask <- asg$site_number == hell_subset$site_number[i] &
             asg$Year        == hell_subset$Year[i]
-    asg$sub_cluster[mask] <- sub_tags[i]
+    asg$sub_cluster[mask] <- chosen$tags[i]
   }
-  sub_details[[sc_id]] <- list(hclust = hc, k = n_sub,
-                               n = nrow(hell_subset), min_recall = min_rec)
+  sub_details[[sc_id]] <- list(hclust = hc, k = chosen$k,
+                               n = n, min_recall = chosen$min_rec)
 }
-cat(sprintf("=> %d/%d incoherent clusters split: %s\n",
-            length(split_passed), length(incoherent),
+cat(sprintf("=> %d/%d candidate clusters split: %s\n",
+            length(split_passed), length(candidates),
             paste(split_passed, collapse = ", ")))
 
 # Orphans: sites in heterogeneous spec clusters whose composition was too
@@ -330,20 +368,10 @@ asg <- asg |>
 # classes. A site with >= monotypic_threshold cover of a candidate species
 # gets its final_label overridden to a monotypic class code (Mxx_...).
 # Each site can only trigger one override (cover sums to 100 per site).
-monotypic_threshold <- 70
-monotypic_table <- tibble::tribble(
-  ~species_col,                 ~label,
-  "Veratrum_tenuipetalum_cover",  "Veratrum tenuipetalum",
-  "Ligusticum_porteri_cover",     "Ligusticum porteri",
-  "Caltha_leptosepala_cover",     "Caltha leptosepala",
-  "Corydalis_caseana_cover",      "Corydalis caseana",
-  "Osmorhiza_occidentalis_cover", "Osmorhiza occidentalis"
-)
-
-# Pull just the candidate cover columns from the joined veg+spectra table.
-cover_for_override <- readRDS("data/derived/cover_combined.rds") |>
-  dplyr::select(site_number, Year,
-                dplyr::any_of(monotypic_table$species_col))
+# monotypic_threshold + monotypic_table are defined above (shared with the
+# gate, which excludes these >= threshold-cover sites from the split).
+cover_for_override <- cover_combined |>
+  dplyr::select(site_number, Year, dplyr::any_of(monotypic_table$species_col))
 
 asg <- asg |>
   dplyr::left_join(cover_for_override, by = c("site_number", "Year")) |>
@@ -368,6 +396,19 @@ print(tibble::tibble(label = names(n_overridden_per_species),
 
 # Drop the temporary cover columns (we keep monotypic_species as the flag).
 asg <- asg |> dplyr::select(-dplyr::any_of(monotypic_table$species_col))
+
+# --- Mappability annotation -------------------------------------------------
+# Tag each split sub-class with its gate recall, and flag the ones below
+# `ancillary_recall` as needing ancillary data (topographic wetness /
+# phenology) for a future classifier to separate them spectrally.
+asg <- asg |>
+  dplyr::mutate(
+    map_recall      = unname(split_min_rec[sub("\\..*$", "", final_label)]),
+    needs_ancillary = !is.na(map_recall) & map_recall < ancillary_recall)
+cat(sprintf("\nSub-classes flagged needs_ancillary (recall < %.2f): %s\n",
+            ancillary_recall,
+            paste(sort(unique(asg$final_label[asg$needs_ancillary])),
+                  collapse = ", ")))
 
 # --- RF eval on the CLUSTERED 2025 set only (NOT the inferred 2018) -------
 # Including inferred labels in CV would be circular -- they were assigned
@@ -447,7 +488,15 @@ final_summary <- sizes |>
   mutate(spec_cluster = stringr::str_extract(final_label, "^S\\d+"),
          recall = as.numeric(final_eval$recall[final_label])) |>
   left_join(per_label, by = "final_label") |>
+  left_join(asg |> dplyr::distinct(final_label, map_recall, needs_ancillary),
+            by = "final_label") |>
   arrange(spec_cluster, final_label)
+
+# Standalone record of which sub-classes need ancillary data to map.
+readr::write_csv(
+  final_summary |> dplyr::filter(!is.na(map_recall)) |>
+    dplyr::select(final_label, n, map_recall, needs_ancillary, indicator_species),
+  "data/derived/subclass_mappability.csv")
 
 cat(sprintf("\n=== FINAL CLUSTERING (Architecture B, k_spec=%d) ===\n", primary_k))
 cat(sprintf("Total final labels: %d   CV accuracy: %.3f (chance = %.3f)\n",
@@ -478,5 +527,7 @@ saveRDS(list(
   dom_threshold  = dom_threshold,
   het_threshold  = het_threshold,
   recall_bar     = recall_bar,
-  split_passed   = split_passed
+  ancillary_recall = ancillary_recall,
+  split_passed   = split_passed,
+  split_min_rec  = split_min_rec
 ), "data/derived/final_clusters_B.rds")

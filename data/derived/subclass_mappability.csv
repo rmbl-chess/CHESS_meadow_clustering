@@ -1,0 +1,17 @@
+final_label,n,map_recall,needs_ancillary,indicator_species
+S01.a,35,0.26666666666666666,TRUE,Erigeron_speciosus
+S01.b,14,0.26666666666666666,TRUE,Festuca_thurberi
+S01.c,15,0.26666666666666666,TRUE,Artemisia_tridentata
+S02.a,18,0.8888888888888888,FALSE,Lathyrus_lanszwertii
+S02.b,12,0.8888888888888888,FALSE,Vaccinium_cespitosum
+S07.a,32,0.45454545454545453,FALSE,Ligusticum_porteri
+S07.b,11,0.45454545454545453,FALSE,Deschampsia_cespitosa
+S08.a,14,0.5,FALSE,Ligusticum_porteri
+S08.b,14,0.5,FALSE,Veratrum_tenuipetalum
+S09.a,11,0.36363636363636365,TRUE,Ligusticum_porteri
+S09.b,19,0.36363636363636365,TRUE,Heliomeris_multiflora
+S09.c,11,0.36363636363636365,TRUE,Vaccinium_cespitosum
+S10.a,13,0.75,FALSE,Potentilla_pulcherrima
+S10.b,8,0.75,FALSE,Ligusticum_porteri
+S20.a,8,0.25,TRUE,Artemisia_tridentata
+S20.b,29,0.25,TRUE,Erigeron_speciosus

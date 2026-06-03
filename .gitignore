@@ -111,6 +111,7 @@ data/cache/
 !data/derived/cv_field_vs_mosaic_3m.csv
 !data/derived/natureserve_cache.json
 !data/derived/natureserve_candidates.csv
+!data/derived/subclass_mappability.csv
 !data/derived/joint_training.gpkg
 !data/derived/aop_classified/
 !data/derived/aop_classified/class_lookup.csv
