@@ -40,6 +40,10 @@ desc  <- readr::read_csv("data/derived/label_descriptions.csv",
                          show_col_types = FALSE)
 cats  <- readr::read_csv("data/small_reference/class_categories.csv",
                          show_col_types = FALSE)
+# per-class plot characterization (snow-free DOY + auto narrative) so the
+# curation file carries our side of the comparison alongside the candidates.
+names_tbl <- readr::read_csv("data/small_reference/label_community_names.csv",
+                             show_col_types = FALSE)
 
 # --- reconciliation map (our_name -> list(name, level)) ------------------
 # natureserve_name may hold multiple ";"-separated aliases (e.g. Veratrum
@@ -117,6 +121,12 @@ score_class <- function(lbl) {
   tot_iv <- sum(ind$iv)
   cmoist <- cats$moisture[cats$final_label == lbl][1]
   celev  <- cats$elevation[cats$final_label == lbl][1]
+  # our plot-side characterization (for the curation file)
+  cabund <- desc$abundant[desc$final_label == lbl][1]
+  cinds  <- desc$indicators[desc$final_label == lbl][1]
+  cphys  <- desc$physiognomy[desc$final_label == lbl][1]
+  cdoy   <- names_tbl$snow_free_doy_mean[names_tbl$final_label == lbl][1]
+  cnarr  <- names_tbl$narrative_draft[names_tbl$final_label == lbl][1]
 
   scored <- eco |> rowwise() |> mutate(
     hit = list({
@@ -148,12 +158,21 @@ score_class <- function(lbl) {
     slice_head(n = 3)
   if (nrow(scored) == 0) return(NULL)
   scored |> transmute(
-    final_label = lbl, rank = row_number(),
+    final_label = lbl,
+    # --- our plot-side characterization (same on each candidate row) ------
+    our_community    = cnarr,
+    our_moisture     = cmoist, our_elevation = celev,
+    snow_free_doy    = round(cdoy),
+    our_dominant_taxa  = cabund,
+    our_indicator_taxa = cinds,
+    our_physiognomy    = cphys,
+    # --- NatureServe candidate -------------------------------------------
+    rank = row_number(),
     community = name, ecosystem_id = id, level, grank, url,
     matched_species = vapply(matched, paste, "", collapse = "; "),
     recall = round(recall, 2), precision = round(precision, 2),
-    score = round(score, 2), moist_cue, elev_cue,
-    class_moisture = cmoist, class_elevation = celev)
+    score = round(score, 2),
+    community_moist_cue = moist_cue, community_elev_cue = elev_cue)
 }
 
 labels <- sort(unique(desc$final_label))
