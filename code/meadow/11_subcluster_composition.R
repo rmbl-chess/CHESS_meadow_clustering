@@ -29,13 +29,20 @@ env          <- readRDS("data/derived/environment.rds")
 
 primary_k        <- 26
 primary_variant  <- "variant_G"  # PCs 2,4-12 + DOY z-scaled (drop PC1 brightness + PC3 year-shift)
-# do_subclustering = FALSE means spec_cluster is the training label and the
-# sub_cluster column is kept only as ecological metadata. Sub-classes within a
-# parent share the parent's spectral signature, so the AOP classifier can't
-# tell them apart -- forcing them apart just creates classes with recall ~0.
-# Setting this to TRUE restores the old behavior of splitting heterogeneous
-# parents into sub-labels.
-do_subclustering <- FALSE
+# GATED subclustering: heterogeneous parents are split by species-Hellinger
+# Ward, but a split is KEPT only if every sub-class is spectrally MAPPABLE --
+# its 5-fold RF CV recall on the inference feature space (20 PC + DOY + CHM)
+# must clear `recall_bar`. This keeps the splits the AOP classifier can
+# actually reproduce (S09/S08/S02/S07) and leaves irreducible ones whole
+# (e.g. S01 = sparse-sage-in-meadow, unseparable even in raw field spectra).
+# Replaces the old binary do_subclustering switch, which disabled ALL splits
+# because SOME were unmappable. See the audit in the commit message / docs.
+recall_bar     <- 0.40
+min_sub_size   <- 8L     # don't create a sub-class smaller than this
+min_year_n     <- 1L     # require >= this many sites per YEAR in each sub-class,
+                         # i.e. both 2018 & 2025 present -> no single-year splits
+                         # (2018-only sub-classes lack a clean 2025-basis anchor)
+chm_for_gate   <- readRDS("data/derived/canopy_height.rds")
 k_col            <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
 
@@ -67,15 +74,46 @@ nonsp_cover <- c("Other_Forb_cover", "Other_Graminoid_cover", "NPV_cover",
 named_cols <- setdiff(names(hell), c("site_number", "Year", nonsp_cover))
 
 asg$sub_cluster <- NA_character_
-sub_details <- list()
+sub_details  <- list()
+split_passed <- character(0)   # spec clusters whose split cleared the gate
 
+# Inference-space features for the mappability gate (matches 09: 20 PC + DOY + CHM).
+gate_feats <- spec_feat |>
+  dplyr::select(site_number, Year, dplyr::all_of(sprintf("spec_PC%02d", 1:20))) |>
+  dplyr::inner_join(env, by = c("site_number", "Year")) |>
+  dplyr::left_join(chm_for_gate, by = c("site_number", "Year"))
+gate_cols <- c(sprintf("spec_PC%02d", 1:20), "snow_free_doy", "canopy_height_m")
+
+# Min per-sub-class 5-fold RF CV recall for a proposed split (NA if untestable).
+gate_min_recall <- function(site_year_sub) {
+  df <- site_year_sub |>
+    dplyr::inner_join(gate_feats, by = c("site_number", "Year"))
+  X  <- as.matrix(df[, gate_cols]); ok <- stats::complete.cases(X)
+  X  <- X[ok, , drop = FALSE]; y <- factor(df$sub[ok])
+  if (nlevels(y) < 2 || any(table(y) < 2)) return(NA_real_)
+  set.seed(42); n <- length(y); fold <- integer(n)
+  for (lvl in levels(y)) { idx <- which(y == lvl)
+    fold[idx] <- ((sample(seq_along(idx)) - 1L) %% 5L) + 1L }
+  preds <- factor(rep(NA_character_, n), levels = levels(y))
+  for (f in 1:5) {
+    tr <- which(fold != f); te <- which(fold == f)
+    if (length(unique(y[tr])) < 2) next
+    fit <- ranger::ranger(x = X[tr, , drop = FALSE], y = y[tr], num.trees = 400,
+                          classification = TRUE, seed = 42 + f, verbose = FALSE)
+    preds[te] <- predict(fit, X[te, , drop = FALSE])$predictions
+  }
+  cm <- table(truth = y, pred = preds)
+  min(diag(cm) / rowSums(cm), na.rm = TRUE)
+}
+
+cat(sprintf("\nGated subclustering (recall_bar = %.2f):\n", recall_bar))
 for (sc_id in incoherent) {
   sites_in <- asg |> filter(spec_cluster == sc_id) |>
     dplyr::select(site_number, Year)
   hell_subset <- hell |>
     inner_join(sites_in, by = c("site_number", "Year")) |>
     dplyr::select(site_number, Year, dplyr::all_of(named_cols))
-  if (nrow(hell_subset) < 6) next
+  if (nrow(hell_subset) < 2 * min_sub_size) next
   n_sub <- if (nrow(hell_subset) >= 60) 3L else 2L
 
   d  <- dist(as.matrix(hell_subset[, named_cols]), method = "euclidean")
@@ -83,14 +121,38 @@ for (sc_id in incoherent) {
   cuts <- cutree(hc, k = n_sub)
   sub_tags <- letters[cuts]
 
-  # Assign back to asg
+  # Gate: keep the split only if every sub-class is mappable AND big enough.
+  prop    <- hell_subset |> dplyr::select(site_number, Year) |>
+    dplyr::mutate(sub = sub_tags)
+  min_rec <- gate_min_recall(prop)
+  size_ok <- all(table(sub_tags) >= min_sub_size)
+  yr_ok   <- all(tapply(hell_subset$Year, sub_tags, function(yy)
+               sum(yy == 2018L) >= min_year_n && sum(yy == 2025L) >= min_year_n))
+  keep    <- !is.na(min_rec) && min_rec >= recall_bar && size_ok && yr_ok
+  reason  <- if (keep) "SPLIT" else if (is.na(min_rec)) "keep (untestable)" else
+             if (min_rec < recall_bar) "keep (unmappable)" else
+             if (!size_ok) "keep (sub<min_size)" else "keep (single-year)"
+  yrtag <- paste(vapply(sort(unique(sub_tags)), function(s)
+             sprintf("%d/%d", sum(hell_subset$Year[sub_tags == s] == 2018L),
+                              sum(hell_subset$Year[sub_tags == s] == 2025L)),
+             character(1)), collapse = ",")
+  cat(sprintf("  %s: %d-way (n %s, 18/25 %s), min sub-recall %s -> %s\n",
+              sc_id, n_sub, paste(table(sub_tags), collapse = "/"), yrtag,
+              ifelse(is.na(min_rec), "NA", sprintf("%.2f", min_rec)), reason))
+  if (!keep) next
+
+  split_passed <- c(split_passed, sc_id)
   for (i in seq_along(sub_tags)) {
     mask <- asg$site_number == hell_subset$site_number[i] &
             asg$Year        == hell_subset$Year[i]
     asg$sub_cluster[mask] <- sub_tags[i]
   }
-  sub_details[[sc_id]] <- list(hclust = hc, k = n_sub, n = nrow(hell_subset))
+  sub_details[[sc_id]] <- list(hclust = hc, k = n_sub,
+                               n = nrow(hell_subset), min_recall = min_rec)
 }
+cat(sprintf("=> %d/%d incoherent clusters split: %s\n",
+            length(split_passed), length(incoherent),
+            paste(split_passed, collapse = ", ")))
 
 # Orphans: sites in heterogeneous spec clusters whose composition was too
 # sparse for sub-clustering (only rare/zero named genera). Absorb them into
@@ -109,19 +171,15 @@ asg <- asg |>
   left_join(modal_sub, by = "spec_cluster") |>
   mutate(
     sub_cluster = if_else(
-      is.na(sub_cluster) & spec_cluster %in% incoherent,
+      is.na(sub_cluster) & spec_cluster %in% split_passed,
       modal_sub, sub_cluster
     )
   ) |>
   dplyr::select(-modal_sub) |>
-  mutate(final_label = if (do_subclustering) {
-    if_else(is.na(sub_cluster),
-            spec_cluster,
-            paste0(spec_cluster, ".", sub_cluster))
-  } else {
-    spec_cluster
-  },
-  source = "clustered")  # both 2018 + 2025 cluster directly after the
+  mutate(final_label = if_else(is.na(sub_cluster),
+                               spec_cluster,
+                               paste0(spec_cluster, ".", sub_cluster)),
+         source = "clustered")  # both 2018 + 2025 cluster directly after the
                           # year-effect radiometric correction (see
                           # code/joint/13_year_effect_analysis.R).
 
@@ -418,5 +476,7 @@ saveRDS(list(
   sub_details    = sub_details,
   primary_k      = primary_k,
   dom_threshold  = dom_threshold,
-  het_threshold  = het_threshold
+  het_threshold  = het_threshold,
+  recall_bar     = recall_bar,
+  split_passed   = split_passed
 ), "data/derived/final_clusters_B.rds")

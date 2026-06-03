@@ -20,13 +20,16 @@ Salix sp.,wet,subalpine
 Sambucus racemosa,mesic,subalpine
 Symphoricarpos rotundifolius,mesic,subalpine
 S01,mesic,montane
-S02,dry,subalpine
+S02.a,mesic,subalpine
+S02.b,dry,subalpine
 S03,wet,subalpine
 S04,mesic,subalpine
 S05,dry,subalpine
 S06,wet,alpine
-S07,mesic,subalpine
-S08,mesic,subalpine
+S07.a,mesic,subalpine
+S07.b,wet,subalpine
+S08.a,mesic,subalpine
+S08.b,wet,subalpine
 S09,mesic,subalpine
 S10,mesic,subalpine
 S11,dry,montane
