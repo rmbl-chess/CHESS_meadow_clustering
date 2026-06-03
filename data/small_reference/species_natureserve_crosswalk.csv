@@ -1,0 +1,16 @@
+our_name,natureserve_name,match_level,note,description_note
+Aquilegia coerulea var. coerulea,Aquilegia caerulea,species,drop variety + spelling (NatureServe: caerulea),
+Bromopsis ciliata,Bromus ciliatus,species,Bromopsis is a segregate of Bromus; NatureServe/ITIS uses Bromus ciliatus,
+Bromopsis inermis,Bromus inermis,species,Bromopsis segregate of Bromus,
+Bromopsis sp.,Bromus,genus,genus-level placeholder; Bromopsis segregate of Bromus,
+Carex sp.,Carex,genus,genus-level placeholder (field cover recorded to genus),
+Carex spp,Carex,genus,genus-level placeholder (field cover recorded to genus),
+Chamerion danielsii,Chamaenerion,genus,dwarf-fireweed segregate not in NatureServe; conservative genus match (Chamaenerion),Field taxon is Chamerion danielsii (dwarf alpine fireweed); no NatureServe equivalent, matched only to genus Chamaenerion.
+Clementsia rhodantha,Rhodiola rhodantha,species,Clementsia is a synonym genus of Rhodiola,
+Hymenoxys hoopesii,Dugaldia hoopesii,species,NatureServe accepted name is Dugaldia hoopesii (syn. Hymenoxys/Helenium hoopesii),Field taxon is Hymenoxys hoopesii (orange sneezeweed); NatureServe's accepted name for it is Dugaldia hoopesii.
+Juncus cf. drummondii,Juncus drummondii,species,drop the cf. uncertainty qualifier,
+Mahonia repens,Berberis repens,species,Mahonia folded into Berberis by NatureServe,
+Salix spp,Salix,genus,genus-level placeholder,
+Tolmachevia integrifolia,Rhodiola integrifolia,species,Tolmachevia is a synonym genus of Rhodiola,
+Vaccinium cespitosum,Vaccinium caespitosum,species,spelling variant; NatureServe/ITIS uses caespitosum,
+Veratrum tenuipetalum,Veratrum californicum; Veratrum viride,species,V. californicum is the accepted name but its communities are Great Basin/Sierra (not CO); the Colorado false-hellebore wet meadow is classified under V. viride,Regional taxon is Veratrum tenuipetalum; NatureServe nomenclature uses V. californicum and the Colorado wet-meadow community is classified under V. viride.
