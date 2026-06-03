@@ -20,31 +20,31 @@ Salix sp.,wet,subalpine
 Sambucus racemosa,mesic,subalpine
 Symphoricarpos rotundifolius,mesic,subalpine
 S01,mesic,montane
-S02,dry,montane
-S03,dry,montane
+S02,dry,subalpine
+S03,wet,subalpine
 S04,mesic,subalpine
-S05,mesic,montane
-S06,dry,montane
-S07,dry,montane
-S08,dry,montane
-S09,dry,montane
-S10,dry,subalpine
-S11,mesic,subalpine
+S05,dry,subalpine
+S06,wet,alpine
+S07,mesic,subalpine
+S08,mesic,subalpine
+S09,mesic,subalpine
+S10,mesic,subalpine
+S11,dry,montane
 S12,mesic,subalpine
 S13,mesic,subalpine
-S14,wet,subalpine
-S15,dry,subalpine
+S14,dry,alpine
+S15,mesic,alpine
 S16,wet,subalpine
-S17,wet,subalpine
-S18,dry,alpine
-S19,mesic,alpine
-S20,disturbed,disturbed
-S21,wet,alpine
-S22,wet,subalpine
-S23,mesic,alpine
-S24,wet,alpine
-S25,dry,subalpine
-S26,wet,subalpine
+S17,wet,alpine
+S18,dry,montane
+S19,dry,montane
+S20,dry,montane
+S21,dry,montane
+S22,mesic,montane
+S23,disturbed,disturbed
+S24,dry,subalpine
+S25,mesic,alpine
+S26,mesic,subalpine
 Veratrum tenuipetalum,wet,subalpine
 Ligusticum porteri,mesic,subalpine
 Caltha leptosepala,wet,subalpine
