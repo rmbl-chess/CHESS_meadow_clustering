@@ -14,35 +14,38 @@ class_code,final_label
 13,Purshia tridentata
 14,Ribes sp.
 15,S01
-16,S02
-17,S03
-18,S04
-19,S05
-20,S06
-21,S07
-22,S08
-23,S09
-24,S10
-25,S11
-26,S12
-27,S13
-28,S14
-29,S15
-30,S16
-31,S17
-32,S18
-33,S19
-34,S20
-35,S21
-36,S22
-37,S23
-38,S24
-39,S25
-40,S26
-41,Salix boothii
-42,Salix other
-43,Salix planifolia
-44,Salix wolfii
-45,Sambucus racemosa
-46,Symphoricarpos rotundifolius
-47,Veratrum tenuipetalum
+16,S02.a
+17,S02.b
+18,S03
+19,S04
+20,S05
+21,S06
+22,S07.a
+23,S07.b
+24,S08.a
+25,S08.b
+26,S09
+27,S10
+28,S11
+29,S12
+30,S13
+31,S14
+32,S15
+33,S16
+34,S17
+35,S18
+36,S19
+37,S20
+38,S21
+39,S22
+40,S23
+41,S24
+42,S25
+43,S26
+44,Salix boothii
+45,Salix other
+46,Salix planifolia
+47,Salix wolfii
+48,Sambucus racemosa
+49,Symphoricarpos rotundifolius
+50,Veratrum tenuipetalum

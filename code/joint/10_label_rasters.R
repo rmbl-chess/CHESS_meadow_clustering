@@ -42,19 +42,39 @@ csum   <- readr::read_csv("data/derived/class_summary_table.csv",
   dplyr::select(final_label, short_label, description, class_type)
 cats   <- readr::read_csv("data/small_reference/class_categories.csv",
                           show_col_types = FALSE)
+# Provisional (top-1) NatureServe community per class from the crosswalk
+# draft (20_ecosystem_crosswalk.R) — surfaced on the map so the draft
+# classes can be reviewed spatially before final candidate selection.
+ns_path  <- "data/derived/natureserve_candidates.csv"
+ns_draft <- if (file.exists(ns_path)) {
+  readr::read_csv(ns_path, show_col_types = FALSE) |>
+    dplyr::filter(rank == 1) |>
+    dplyr::select(final_label, ns_community = community, ns_grank = grank)
+} else {
+  tibble::tibble(final_label = character(), ns_community = character(),
+                 ns_grank = character())
+}
 
 # --- 1. Build the RAT (one row per class code) ---------------------------
 rat <- lookup |>
   dplyr::left_join(csum, by = "final_label") |>
   dplyr::left_join(cats, by = "final_label") |>
+  dplyr::left_join(ns_draft, by = "final_label") |>
   dplyr::transmute(
-    value       = class_code,
-    short_label = dplyr::coalesce(short_label, final_label),
-    description = dplyr::coalesce(description, final_label),
-    final_label = final_label,
-    class_type  = class_type,
-    moisture    = moisture,
-    elevation   = elevation
+    value        = class_code,
+    short_label  = dplyr::coalesce(short_label, final_label),
+    description  = dplyr::coalesce(description, final_label),
+    final_label  = final_label,
+    class_type   = class_type,
+    moisture     = moisture,
+    elevation    = elevation,
+    ns_community = ns_community,
+    ns_grank     = ns_grank,
+    # on-map label: class short label + provisional NatureServe community
+    map_label    = dplyr::if_else(
+      is.na(ns_community),
+      dplyr::coalesce(short_label, final_label),
+      paste0(dplyr::coalesce(short_label, final_label), " — ", ns_community))
   )
 stopifnot(all(!is.na(rat$moisture)),
           all(!is.na(rat$elevation)))
@@ -154,7 +174,7 @@ write_qml <- function(rat, qml_path) {
         gsub("'", "&apos;",
           gsub("<", "&lt;",
             gsub(">", "&gt;",
-              gsub("&", "&amp;", rat$short_label)))))
+              gsub("&", "&amp;", rat$map_label)))))
     ),
     collapse = "\n"
   )
