@@ -13,39 +13,45 @@ class_code,final_label
 12,Prunus virginiana
 13,Purshia tridentata
 14,Ribes sp.
-15,S01
-16,S02.a
-17,S02.b
-18,S03
-19,S04
-20,S05
-21,S06
-22,S07.a
-23,S07.b
-24,S08.a
-25,S08.b
-26,S09
-27,S10
-28,S11
-29,S12
-30,S13
-31,S14
-32,S15
-33,S16
-34,S17
-35,S18
-36,S19
-37,S20
-38,S21
-39,S22
-40,S23
-41,S24
-42,S25
-43,S26
-44,Salix boothii
-45,Salix other
-46,Salix planifolia
-47,Salix wolfii
-48,Sambucus racemosa
-49,Symphoricarpos rotundifolius
-50,Veratrum tenuipetalum
+15,S01.a
+16,S01.b
+17,S01.c
+18,S02.a
+19,S02.b
+20,S03
+21,S04
+22,S05
+23,S06
+24,S07.a
+25,S07.b
+26,S08.a
+27,S08.b
+28,S09.a
+29,S09.b
+30,S09.c
+31,S10.a
+32,S10.b
+33,S11
+34,S12
+35,S13
+36,S14
+37,S15
+38,S16
+39,S17
+40,S18
+41,S19
+42,S20.a
+43,S20.b
+44,S21
+45,S22
+46,S23
+47,S24
+48,S25
+49,S26
+50,Salix boothii
+51,Salix other
+52,Salix planifolia
+53,Salix wolfii
+54,Sambucus racemosa
+55,Symphoricarpos rotundifolius
+56,Veratrum tenuipetalum

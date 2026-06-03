@@ -7,12 +7,15 @@ Build a joint meadow + shrub classifier for NEON AOP imagery in the East River /
 The CHESS map classifier needs training samples that are (a) spectrally separable in 1 m NEON AOP imagery and (b) interpretable as recognizable plant communities. This repo:
 
 1. Reconciles 2018 + 2025 CHESS field vegetation campaigns into one harmonized cover table.
-2. Clusters 2025 meadow plots into spectrally distinct community types and infers 2018 labels by composition + phenology similarity. 31 meadow classes.
+2. Clusters **both** 2018 + 2025 meadow plots (after an NDVI-stratified 2018→2025 radiometric correction brings the two years onto one spectral basis) into spectrally distinct community types, then **gated composition-subclustering** splits each spectral cluster further only where the split stays spectrally mappable. **40 meadow classes** (low-mappability sub-classes are flagged `needs_ancillary`).
 3. Assembles a parallel shrub training set (species-level labels, with Salix collapsed to 4 spectrally distinguishable groups). 16 shrub classes.
-4. Joins the two into a single classifier with 47 classes (548 meadow + 310 shrub sites). Features = 20 spectral PCs + 6 narrow-band indices + snow-free DOY + canopy height.
-5. Selects stratified target pixels across the basin, runs Python extraction + classification on a cloud server, and computes a per-pixel novelty + leverage score so the next field campaign can be targeted at the gaps.
+4. Joins the two into a single classifier with **56 classes** (548 meadow + 310 shrub sites). Deployment features = 20 spectral PCs + snow-free DOY + canopy height (the 6 narrow-band indices are used in CV but dropped at inference).
+5. Selects stratified target pixels, runs Python extraction + classification on a cloud server, and computes a per-pixel novelty + leverage score so the next field campaign targets the gaps.
+6. Produces **wall-to-wall classified + confidence COGs** per AOP domain, and a **NatureServe IVC community crosswalk** mapping each class to a recognized vegetation community.
 
-**Current state.** Joint 47-class RF reaches 63–65 % balanced CV accuracy. Inference (unweighted RF) has been run on 5,354 meadow pixels across the three AOP domains, with predicted class and Mahalanobis novelty scored for each. A sampling-priority GeoPackage + class summary table are ready for the team — see `docs/sampling_priority_guide.md`.
+**Current state.** Joint 56-class RF reaches ~64 % balanced CV accuracy. Per-pixel sampling priority (5,354 basin pixels: predicted class + Mahalanobis novelty + leverage) and wall-to-wall classified/confidence/labeled COGs are produced for all three AOP domains. A NatureServe crosswalk draft (`natureserve_candidates.csv`) awaits curation. See `docs/sampling_priority_guide.md` for the team-facing deliverable.
+
+> **Note:** the meadow PCA basis was refit and the classes resplit; inference now reads PC mosaics regenerated on the current basis (an older off-basis set caused meadow↔shrub misclassification — see Key choices).
 
 ## Pipeline
 
@@ -25,13 +28,14 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Load 2018/2025 field data | `01_load.R` | per-year cover + species + crowns + spectra RDS |
 | Reconcile taxonomy | `02_reconcile_taxonomy.R` | `data/derived/taxonomy_crosswalk.csv` |
 | Combine cover | `03_combine_cover.R` | `data/derived/cover_combined.rds` |
-| Join AOP spectra | `04_join_spectra.R` | `data/derived/veg_spectra.rds` |
-| Preprocess features | `05_preprocess_features.R` | brightness-normed spectra + Hellinger cover + PCA |
-| **Architecture B: spectra-first cluster** | `10_cluster_spectra.R` | Ward / PCs 2–12 + snow-free DOY, z-scaled (K-selection exploration in `_attic/`, see attic README) |
-| Composition sub-clusters | `11_subcluster_composition.R` | within-spectral subclusters by composition |
+| Join AOP spectra + year correction | `04_join_spectra.R` | `data/derived/veg_spectra.rds` — L2-normalized per-site spectra; applies the NDVI-stratified 2018→2025 radiometric correction to 2018 so both years cluster together |
+| Preprocess features | `05_preprocess_features.R` | brightness-normed spectra + Hellinger cover + PCA (fit on 2025, both years projected) |
+| **Architecture B: spectra-first cluster** | `10_cluster_spectra.R` | Ward / variant_G = PCs 2–12 + snow-free DOY, z-scaled (PC1 dropped; K-selection exploration in `_attic/`) |
+| **Gated composition sub-clusters** | `11_subcluster_composition.R` | splits each spectral cluster by species-Hellinger only where the split is RF-mappable (try k=3/2, min recall ≥ 0.25) on the post-monotypic residual; flags `needs_ancillary` (< 0.40). `final_clusters_B.rds`, `subclass_mappability.csv` |
 | Environment join | `13_extract_environment.R` | snow-free DOY per site |
 | Training-sample export | `17_export_training_samples.R` | `training_samples_*.{csv,gpkg}` |
 | Class descriptions + narratives | `19_label_descriptions.R` | `data/derived/label_descriptions.csv` (IndVal + abundant species + physiognomy) AND `data/small_reference/label_community_names.csv` (auto-drafted starter narratives; preserves user-curated rows on re-run) |
+| **NatureServe IVC crosswalk** | `20_ecosystem_crosswalk.R` | scores each class's IndVal assemblage against the cached Colorado NatureServe catalog (species-F1 + ecology) → `natureserve_candidates.csv` (top-3 draft per class for curation). Needs `code/python/natureserve_fetch.py` run first to build the cache |
 | **Target pixel selection** | `23_target_pixels.R` | `target_pixels.{csv,gpkg}` (6,000 stratified meadow pixels) |
 | Classifier-feature export | `24_export_classifier_model.R` | `aop_classifier_*.{csv,json}` — R → Python handoff |
 | **Diagnostic suite** (last) | `25_diagnostics.R` | One file with seven sections: cluster figures (A), env coherence (B), PC1/PC2 (C), inference QC (D), size distribution (E), K-sweep (F), year-effect (G). All output PNGs + RDS artifacts |
@@ -52,25 +56,34 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Step | Script | Output |
 |---|---|---|
 | Canopy height extraction | `01_canopy_height.R` | `canopy_height.rds` — 1 m NEON CHM at every crown centroid (single-point extract, all three domains in < 1 s) |
-| **Joint training set + RF** | `02_training.R` | `joint_training_set.{rds,csv}`, `punch_list.csv`. 858 sites × 47 classes; 28 features; balanced 5-fold CV ~ 64 % |
+| **Joint training set + RF** | `02_training.R` | `joint_training_set.{rds,csv}`, `punch_list.csv`. 858 sites × 56 classes; CV on 28 features but the deployed RF uses 22 (drops the 6 indices); balanced 5-fold CV ~ 64 % |
 | Inference on basin pixels | `03_predict_inference_pixels.R` | `inference_predictions.csv` — unweighted RF predictions on the 5,354 extracted meadow pixels; refreshes the punch list with `predicted_n_pixels` |
 | Landscape novelty | `04_landscape_distance.R` | Mahalanobis distance from every inference pixel to every class centroid (pooled within-class covariance). `inference_pixel_distances.csv`, `novelty_by_class.csv`, `novelty_by_hex.gpkg` |
 | **Per-pixel sampling priority** | `05_sampling_priority.R` | `sampling_priority.gpkg` — leverage = `nearest_d / sqrt(n_training_for_predicted_class)` per pixel + per-class top-10 candidate sites |
 | Joint summary outputs | `06_summary_outputs.R` | `class_summary_table.csv` (one row per class with N, prevalence, recall, indicator + abundant taxa, description, median leverage) AND `joint_training.gpkg` (two layers, `training_sites_crowns` + `training_sites_points`, with class metadata for QGIS review) |
 | Joint figures | `08_figures.R` | `docs/figures/joint_*.pdf` — recall + leverage scatter + feature space + confusion matrix |
+| **Wall-to-wall inference** | `09_inference.R` | refits the unweighted 22-feature joint RF and predicts class + max-probability per 3 m pixel across each domain's PC mosaic; masks to CHM ≤ 4 m AND R3D018 meadow/shrub landcover. `aop_classified/{DOM}_{class,confidence}_3m_v1.tif` (COGs) + `class_lookup.csv` |
+| **Labeled rasters** | `10_label_rasters.R` | attaches RAT + 4-family physiognomy color table + top-1 NatureServe draft community → `{DOM}_class_3m_v1_labeled.tif` + `.qml` + `class_lookup_labeled.csv` |
+| Landcover mask | `11_landcover_mask.R` | standalone R3D018 meadow/shrub mask (now folded into `09`'s single pass) |
+| Year-effect + correction | `12–15_*.R` | 2018→2025 spectral year-effect diagnosis and the NDVI-stratified per-band radiometric correction fit (consumed by `code/meadow/04_join_spectra.R`) |
 
 ### Python tools (`code/python/`)
 
 | Script | Purpose |
 |---|---|
 | `extract_aop_features.py` | Extract 20 PCs + 6 narrow-band indices at each target pixel (3 m, per-pixel L2 norm → 3 × 3 mean → water-band mask → PCA project). Periodic parquet checkpointing + resume on re-run. |
-| `generate_aop_pc_maps.py` | Write 20-band PC COGs for every 2025 AOP tile + per-domain VRT mosaics. boto3 tile inventory (no AWS CLI dependency). |
-| `mosaic_pc_maps.py` | Collapse per-tile COGs + VRTs into one multi-band COG per domain (streams through `gdal_translate -of COG`). Rebuilds the VRT from tile COGs if missing. For off-server data migration. |
+| `generate_aop_pc_maps.py` | Write 20-band PC COGs per AOP tile + per-domain VRTs, for **2025 and 2018** (the `--year 2018` run applies the NDVI-stratified radiometric correction; 2018 is CRBU-only). Projects through the current `aop_classifier_pca.csv`. boto3 tile inventory. |
+| `mosaic_pc_maps.py` | Collapse per-tile COGs into one multi-band COG per domain (**BAND interleave + ZSTD + deep overview pyramid** — ~10–30× faster single-band rendering in QGIS). Rebuilds the VRT if missing. |
+| `natureserve_fetch.py` | Query the NatureServe Explorer API for candidate IVC communities per class's reconciled diagnostic species; cache to `natureserve_cache.json` (with fetch date + citation) for the offline crosswalk match. |
 
 ## Key choices
 
 - **Architecture B (spectra-first clustering).** Meadow classes are spectral clusters first, composition second. A clustering that isn't spectrally separable can't be mapped.
-- **2025-only meadow clustering.** 2018 AOP spectra have atmospheric-correction drift (see `17_year_effect_pcs.R`); 2018 sites are assigned the nearest 2025 cluster by composition (Hellinger) + snow-free DOY similarity, with a confidence tier.
+- **Both years cluster together (2018→2025 correction).** 2018 AOP spectra had atmospheric-correction drift; an NDVI-stratified per-band correction (`year_effect_correction_2018_to_2025_by_ndvi.csv`, applied in `04_join_spectra.R`) removes it, so 2018 plots cluster directly alongside 2025 rather than being inferred. Single-year classes are legitimate (the elevation-stratified sampling design: 2018 more alpine, 2025 more low-elevation sagebrush).
+- **Gated, mappability-aware subclustering.** Spectral clusters split into community sub-classes ONLY where each sub-class clears an RF-mappability bar (CV recall ≥ 0.25 on the 22-feature inference space), evaluated on the post-monotypic residual membership. Sub-classes below 0.40 are kept but flagged `needs_ancillary` — we preserve ecologically real distinctions even when 3 m spectra can't yet separate them, to be resolved later with topographic-wetness / phenology covariates.
+- **Inference reads PC mosaics on the CURRENT basis.** Training and inference must share one PCA basis. The `JPL_delivered/` mosaics were on a stale basis (sign-flipped PC1, rotated higher PCs) and caused spatially-coherent meadow↔shrub misclassification; `09` now reads mosaics regenerated by `generate_aop_pc_maps.py` from the current `aop_classifier_pca.csv`. A co-located train-vs-mosaic PC correlation is the check.
+- **Physiognomy color scheme.** Labeled rasters use 4 HCL hue families (shrubland blue-purple, grassland tan-brown, forb-meadow green, wetland pink-red); within-family lightness/hue ramps order by elevation→snowmelt, so hue = structure and the in-family gradient = community.
+- **NatureServe crosswalk.** Each class is matched to a recognized IVC community by its IndVal diagnostic-species assemblage (reconciled to NatureServe nomenclature) against a cached Colorado catalog.
 - **Salix 4-way split.** Centroid dendrogram from `33_shrub_separability.R` shows all 12 Salix binomials in one cluster. We keep the three highest-N species (`wolfii`, `boothii`, `planifolia`) and collapse the rest to `Salix other`. Within-Salix DOY barely helps — kept at genus-plus-four resolution.
 - **Pixel-level shrub training with NDVI ≥ 0.20 filter + min 3 pixels/site.** Trades a slight overall-accuracy loss against rescuing small classes (Purshia 0 → 1.0, Betula 0 → 0.5, Prunus 0 → 0.67) by giving them more training signal per site.
 - **CHM extracted at crown centroids (single point per crown).** 1 m NEON CHM is at the same scale as the 3 m AOP feature recipe — single-pixel reads are 100× faster than polygon extraction over the cloud-mounted rasters (< 1 s total vs ~30 min for polygons).
@@ -84,13 +97,14 @@ Canonical artifacts under `data/derived/` (force-included via `.gitignore` excep
 
 | Path | What |
 |---|---|
-| `data/small_reference/label_community_names.csv` | Hand-tuned narratives for the 31 meadow classes |
+| `data/small_reference/label_community_names.csv` | Auto-drafted (curatable) narratives for the 40 meadow classes |
 | `data/derived/training_samples_sites.csv` | Meadow training: one row per (plot, year) with `final_label`, confidence tier, env covariates |
 | `data/derived/training_samples_crowns.gpkg` | Meadow crown polygons for QGIS review |
 | `data/derived/shrub_training_set.csv` | Shrub training table (N=310) |
 | `data/derived/shrub_label_crosswalk.csv` | canonical_binomial → final_label mapping |
 | `data/derived/canopy_height.rds` | 1 m CHM at every crown centroid (1325 sites) |
-| `data/derived/joint_training_set.csv` | Joint meadow+shrub training (858 sites × 47 classes) |
+| `data/derived/joint_training_set.csv` | Joint meadow+shrub training (858 sites × 56 classes) |
+| `data/derived/subclass_mappability.csv` | Per split sub-class: gate CV recall + `needs_ancillary` flag |
 | `data/derived/joint_training.gpkg` | Same as above with crown geometries + class metadata |
 | `data/derived/punch_list.csv` | Class-level summary: training N, recall, predicted prevalence, top confusions, augmentation priority |
 | `data/derived/class_summary_table.csv` | Per-class table with detailed IndVal indicator + abundant taxa strings, descriptions, median leverage |
@@ -101,6 +115,9 @@ Canonical artifacts under `data/derived/` (force-included via `.gitignore` excep
 | `data/derived/novelty_by_class.csv`, `.../novelty_by_hex.gpkg` | Aggregated novelty for spatial review |
 | **`data/derived/sampling_priority.gpkg`** | **Primary deliverable** — 5,354 candidate pixels ranked by leverage |
 | `data/derived/sampling_priority_top.csv` | Top 10 per class (346 candidate sites for fieldwork planning) |
+| `data/derived/aop_classified/{DOM}_{class,confidence}_3m_v1.tif` | Wall-to-wall classified + confidence COGs per domain (gitignored; local only) |
+| `data/derived/aop_classified/{DOM}_class_3m_v1_labeled.tif` + `.qml` + `class_lookup_labeled.csv` | Labeled rasters with physiognomy colors + draft NatureServe community (sidecars committed) |
+| `data/derived/natureserve_cache.json`, `natureserve_candidates.csv` | NatureServe IVC catalog snapshot + top-3 crosswalk draft per class |
 | `docs/figures/joint_*.pdf` | Class recall + leverage scatter + feature space + confusion (vector PDFs) |
 | `docs/sampling_priority_guide.md` | Team-facing one-pager: how to interpret + use `sampling_priority.gpkg` |
 
@@ -144,9 +161,10 @@ R -e 'renv::restore()'
 #   ESS-DIVE-Vegetation-Field-2018/
 #   ESS-DIVE-Vegetation-Field-2025/
 #   ESS-DIVE-Spectra/
-# Also: a local copy of R3D018 1 m landcover (for 22_target_pixels.R)
-# and three NEON CHM tifs (for 36_canopy_height.R) - paths hard-coded
-# at the top of those scripts; edit as needed for your environment.
+# Also: a local copy of R3D018 1 m landcover (for code/meadow/23_target_pixels.R
+# and code/joint/09_inference.R), and the NEON CHM + JPL PC mosaic paths
+# hard-coded at the top of code/joint/01_canopy_height.R / 09_inference.R;
+# edit as needed for your environment.
 
 # Phase 1: meadow classes + target pixels + R-side feature export
 for f in code/meadow/*.R; do Rscript "$f"; done
@@ -177,7 +195,9 @@ The Python feature extractor checkpoints to parquet every `--checkpoint-every` p
 
 ## Status / open questions
 
-- **Inference is meadow-biased.** The 5,354-pixel inference set is filtered to R3D018 meadow class with strict neighborhood-purity rules; shrub leverage is undercounted. A shrub-targeted inference run is planned to balance the picture.
+- **`needs_ancillary` sub-classes** (S01.a/b/c, S09.a/b/c, S20.a/b) are spectrally hard to separate at 3 m — next is a classifier with ancillary covariates (topographic wetness, phenology). See `subclass_mappability.csv`.
+- **NatureServe crosswalk is a draft.** `natureserve_candidates.csv` is top-3 per class; curating the final `class_ecosystem_crosswalk.csv` and wiring the recognized community + G-rank into the descriptions/labels is pending. `10` currently surfaces only the top-1 draft on the map.
+- **Inference is meadow-biased.** The 5,354-pixel sampling-priority set is filtered to R3D018 meadow class with strict neighborhood-purity rules; shrub leverage is undercounted. A shrub-targeted inference run is planned to balance the picture.
 - **Small-N classes need spatial diversity, not just more samples.** Prunus virginiana (n=3), Purshia tridentata (n=4), Alnus incana (n=4) are concentrated in a single drainage in the training data — augmentation should prioritize new geographic locations, not just more N.
 - **ESS-DIVE DOIs and 2018↔2025 site crosswalk** still pending in `data/README.md`.
 - **2018 wavelength drift** is implicit (nearest-index match, max ~2 nm). Resampling onto a common grid is on the list if a band-specific artifact shows up downstream.
