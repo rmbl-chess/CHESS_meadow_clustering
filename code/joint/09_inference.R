@@ -2,8 +2,8 @@
 #
 # For each AOP domain (ALMO, CRBU, UPTA) this script:
 #   1. Builds a 22-band 3 m raster stack:
-#        bands  1-20  spec_PC01..PC20    (JPL PC mosaic, same basis as the
-#                                          deployed aop_classifier_pca.csv)
+#        bands  1-20  spec_PC01..PC20    (RMBL PC mosaic regenerated on the
+#                                          current aop_classifier_pca.csv basis)
 #        band     21  snow_free_doy      (R4D061, resampled to 3 m)
 #        band     22  canopy_height_m    (3 m max CHM from 01_canopy_height.R)
 #   2. Refits the joint RF on the 858 training sites using ONLY those 22
@@ -18,8 +18,8 @@
 # Inputs:
 #   data/derived/joint_training_set.rds
 #   data/derived/aop_chm_3m/{DOMAIN}_chm_max_3m.tif       (from 01)
-#   /Users/ian/Library/CloudStorage/.../JPL_delivered/PrincipalComponents/
-#      {DOMAIN}_pc_mosaic_3m_v1.tif                       (20-band JPL mosaic)
+#   data/derived/aop_pc_maps_mosaic/{ALMO,UPTA}_pc_mosaic.tif,
+#      CRBU_pc_mosaic_2025.tif                            (20-band PC mosaics)
 #   R4D061 via rSDP                                       (snow-free DOY 27 m)
 # Outputs:
 #   data/derived/aop_classified/{DOMAIN}_class_3m_v1.tif
@@ -44,13 +44,22 @@ N_PC <- 20
 LANDCOVER_KEEP <- c(3L, 9L, 10L)
 
 domains <- c("ALMO", "CRBU", "UPTA")
-pc_dir  <- "/Users/ian/Library/CloudStorage/GoogleDrive-ibreckhe@gmail.com/My Drive/BreckheimerLab2025/Projects/CHESS/Data/AOP_mosaics/JPL_delivered/PrincipalComponents"
+# 20-band PC mosaics regenerated on the CURRENT PCA basis
+# (generate_aop_pc_maps.py + mosaic_pc_maps.py), so training and inference
+# share one basis. Earlier JPL_delivered mosaics were on an older basis
+# (sign-flipped PC01, rotated PC3/4) and caused meadow<->shrub swaps.
+# Naming isn't uniform: CRBU is year-suffixed (a 2018 CRBU mosaic also lives
+# in this dir); ALMO/UPTA are 2025-only.
+pc_dir  <- "data/derived/aop_pc_maps_mosaic"
 chm_dir <- "data/derived/aop_chm_3m"
 out_dir <- "data/derived/aop_classified"
 landcover_1m_path <- "data/raw/SDP/UG_landcover_1m_v4.tif"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-pc_paths  <- setNames(file.path(pc_dir,  sprintf("%s_pc_mosaic_3m_v1.tif", domains)), domains)
+pc_files <- c(ALMO = "ALMO_pc_mosaic.tif",
+              CRBU = "CRBU_pc_mosaic_2025.tif",
+              UPTA = "UPTA_pc_mosaic.tif")
+pc_paths  <- setNames(file.path(pc_dir, pc_files[domains]), domains)
 chm_paths <- setNames(file.path(chm_dir, sprintf("%s_chm_max_3m.tif",      domains)), domains)
 stopifnot(all(file.exists(unlist(pc_paths))))
 stopifnot(all(file.exists(unlist(chm_paths))))

@@ -108,6 +108,7 @@ data/cache/
 !data/derived/year_effect_summary.csv
 !data/derived/year_effect_per_point.csv
 !data/derived/class_summary_table.csv
+!data/derived/cv_field_vs_mosaic_3m.csv
 !data/derived/joint_training.gpkg
 !data/derived/aop_classified/
 !data/derived/aop_classified/class_lookup.csv
