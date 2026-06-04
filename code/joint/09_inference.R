@@ -43,26 +43,34 @@ N_PC <- 20
 # buildings, forest understory) is masked out.
 LANDCOVER_KEEP <- c(3L, 9L, 10L)
 
-domains <- c("ALMO", "CRBU", "UPTA")
-# 20-band PC mosaics regenerated on the CURRENT PCA basis
-# (generate_aop_pc_maps.py + mosaic_pc_maps.py), so training and inference
-# share one basis. Earlier JPL_delivered mosaics were on an older basis
-# (sign-flipped PC01, rotated PC3/4) and caused meadow<->shrub swaps.
-# Naming isn't uniform: CRBU is year-suffixed (a 2018 CRBU mosaic also lives
-# in this dir); ALMO/UPTA are 2025-only.
 pc_dir  <- "data/derived/aop_pc_maps_mosaic"
 chm_dir <- "data/derived/aop_chm_3m"
 out_dir <- "data/derived/aop_classified"
 landcover_1m_path <- "data/raw/SDP/UG_landcover_1m_v4.tif"
 dir.create(out_dir, showWarnings = FALSE, recursive = TRUE)
 
-pc_files <- c(ALMO = "ALMO_pc_mosaic.tif",
-              CRBU = "CRBU_pc_mosaic_2025.tif",
-              UPTA = "UPTA_pc_mosaic.tif")
-pc_paths  <- setNames(file.path(pc_dir, pc_files[domains]), domains)
-chm_paths <- setNames(file.path(chm_dir, sprintf("%s_chm_max_3m.tif",      domains)), domains)
-stopifnot(all(file.exists(unlist(pc_paths))))
-stopifnot(all(file.exists(unlist(chm_paths))))
+# Inference runs: output name + its 20-band PC mosaic + the CHM to sample.
+# The mosaics are regenerated on the CURRENT PCA basis (the old JPL_delivered
+# set was sign-flipped and caused meadow<->shrub swaps). 2018 is CRBU-only,
+# reuses the CRBU CHM (canopy structure is stable over 7 years), and its
+# mosaic carries the NDVI-stratified 2018->2025 radiometric correction.
+# snow_free_doy is the R4D061 30-yr climatology for ALL runs for now -- swap a
+# year-specific snow-free-DOY layer in per run here if/when one is available.
+runs <- tibble::tribble(
+  ~out_name,   ~pc_file,                  ~chm_dom,
+  "ALMO",      "ALMO_pc_mosaic.tif",      "ALMO",
+  "CRBU",      "CRBU_pc_mosaic_2025.tif", "CRBU",
+  "UPTA",      "UPTA_pc_mosaic.tif",      "UPTA",
+  "CRBU_2018", "CRBU_pc_mosaic_2018.tif", "CRBU"
+)
+# Restrict to a subset via env var CHESS_RUNS (comma-separated out_names);
+# unset = run all. Lets you (re)do one year/domain without redoing the rest.
+.sel <- Sys.getenv("CHESS_RUNS")
+if (nzchar(.sel)) runs <- runs[runs$out_name %in% trimws(strsplit(.sel, ",")[[1]]), ]
+runs$pc_path  <- file.path(pc_dir,  runs$pc_file)
+runs$chm_path <- file.path(chm_dir, sprintf("%s_chm_max_3m.tif", runs$chm_dom))
+stopifnot(nrow(runs) > 0, all(file.exists(runs$pc_path)), all(file.exists(runs$chm_path)))
+cat(sprintf("Inference runs: %s\n", paste(runs$out_name, collapse = ", ")))
 
 # --- 1. Refit joint RF on 22 features -----------------------------------
 js <- readRDS("data/derived/joint_training_set.rds")
@@ -115,10 +123,10 @@ predict_class_conf <- function(model, data, ...) {
         conf  = apply(probs, 1, max))
 }
 
-run_domain <- function(dom) {
+run_domain <- function(dom, pc_path, chm_path) {
   cat(sprintf("\n=== %s ===\n", dom))
 
-  pc_stack <- terra::rast(pc_paths[[dom]])
+  pc_stack <- terra::rast(pc_path)
   if (terra::nlyr(pc_stack) < N_PC) {
     stop(sprintf("%s PC mosaic has %d bands, need >= %d",
                  dom, terra::nlyr(pc_stack), N_PC))
@@ -129,7 +137,7 @@ run_domain <- function(dom) {
               terra::nrow(pc_stack), terra::ncol(pc_stack),
               terra::res(pc_stack)[1], terra::nlyr(pc_stack)))
 
-  chm <- terra::rast(chm_paths[[dom]])
+  chm <- terra::rast(chm_path)
   chm <- terra::resample(chm, pc_stack, method = "near")
   names(chm) <- "canopy_height_m"
 
@@ -239,5 +247,6 @@ run_domain <- function(dom) {
               file.size(out_conf)  / 1e6))
 }
 
-for (dom in domains) run_domain(dom)
+for (i in seq_len(nrow(runs)))
+  run_domain(runs$out_name[i], runs$pc_path[i], runs$chm_path[i])
 cat("\nDone.\n")

@@ -168,9 +168,12 @@ stopifnot(all(!is.na(rat$color_hex)), all(!is.na(rat$category)))
 cat("\nClasses per physiognomy family:\n")
 print(rat |> dplyr::count(category, name = "n") |> as.data.frame())
 
-# --- 3. Apply to each domain raster -------------------------------------
-domains <- c("ALMO", "CRBU", "UPTA")
+# --- 3. Apply to each class raster present ------------------------------
+# Discover from the class COGs that exist (ALMO/CRBU/UPTA + e.g. CRBU_2018),
+# so new year/domain inference runs are labeled automatically.
 in_dir  <- "data/derived/aop_classified"
+domains <- sub("_class_3m_v1\\.tif$", "",
+               list.files(in_dir, pattern = "_class_3m_v1\\.tif$"))
 
 for (dom in domains) {
   in_path  <- file.path(in_dir, sprintf("%s_class_3m_v1.tif",         dom))
