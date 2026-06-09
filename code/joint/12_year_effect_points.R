@@ -2,15 +2,20 @@
 # for evaluating 2018-vs-2025 AOP year effects via direct re-extraction
 # at the same locations.
 #
-# Two point types:
-#   vegetated      R3D018 class 3 (meadow) + class 10 (deciduous shrub)
-#                  with >= 80% purity in the 3 m cell. Use this set to
-#                  test phenology differences between years (NDVI, red
-#                  edge, NIR plateau, etc.).
-#   non_vegetated  R3D018 class 6 (rock / bare soil / sparse veg) with
-#                  >= 80% purity. Surfaces that don't grow back season-
-#                  to-season — any spectral shift between 2018 and 2025
-#                  is most likely instrument / radiometric calibration.
+# Strata (point_type = coarse veg/non-veg; cover_class = lifeform):
+#   meadow_shrub    R3D018 class 3 (meadow) + class 10 (deciduous shrub)
+#                   [point_type vegetated]. Phenology differences between
+#                   years (NDVI, red edge, NIR plateau, etc.).
+#   tree_deciduous  R3D018 class 2 (deciduous trees > 2 m) [vegetated].
+#   tree_evergreen  R3D018 class 1 (evergreen trees & shrubs) [vegetated].
+#                   The two tree strata let us break the vegetated year-
+#                   effect comparison out by canopy lifeform.
+#   bare            R3D018 class 6 (rock / bare soil / sparse veg)
+#                   [point_type non_vegetated]. Surfaces that don't grow
+#                   back season-to-season — any spectral shift between
+#                   2018 and 2025 is most likely instrument / radiometric
+#                   calibration.
+# All strata require >= 80% purity in the 3 m cell.
 #
 # Both strata are further binned by snow-free DOY (early / mid / late)
 # so phenology / elevation isn't confounded with year. Sample size is
@@ -58,53 +63,49 @@ cat(sprintf("  %d x %d px (%.1fs)\n",
             terra::nrow(lc_dom), terra::ncol(lc_dom),
             as.numeric(Sys.time() - t0, units = "secs")))
 
-# Binary masks per stratum (1 where in target, 0 elsewhere).
-veg_1m <- terra::classify(
-  lc_dom,
-  matrix(c(3, 3, 1, 10, 10, 1), ncol = 3, byrow = TRUE),
-  others = 0L, include.lowest = TRUE, right = NA,
-  datatype = "INT1U"
-)
-bare_1m <- terra::classify(
-  lc_dom,
-  matrix(c(6, 6, 1), ncol = 3, byrow = TRUE),
-  others = 0L, include.lowest = TRUE, right = NA,
-  datatype = "INT1U"
-)
+# One binary 3 m purity mask per landcover stratum (>= purity_threshold of
+# the 9 underlying 1 m cells are the target class), snapped to the CHM grid.
+purity_mask <- function(target_classes) {
+  rcl <- cbind(target_classes, target_classes, 1)
+  m1  <- terra::classify(lc_dom, rcl, others = 0L,
+                         include.lowest = TRUE, right = NA, datatype = "INT1U")
+  frac <- terra::aggregate(m1, fact = 3, fun = "mean", na.rm = TRUE)
+  terra::resample(frac >= purity_threshold, ref_3m, method = "near")
+}
 
-# Aggregate to 3 m by mean fraction in each 3x3 block, then threshold.
-veg_frac  <- terra::aggregate(veg_1m,  fact = 3, fun = "mean", na.rm = TRUE)
-bare_frac <- terra::aggregate(bare_1m, fact = 3, fun = "mean", na.rm = TRUE)
-veg_3m  <- veg_frac  >= purity_threshold
-bare_3m <- bare_frac >= purity_threshold
-
-# Snap both to the CRBU CHM grid.
-veg_3m  <- terra::resample(veg_3m,  ref_3m, method = "near")
-bare_3m <- terra::resample(bare_3m, ref_3m, method = "near")
+# point_type is the coarse veg/non-veg split scripts 13/15 rely on;
+# cover_class is the lifeform breakout this set adds.
+strata <- tibble::tribble(
+  ~cover_class,     ~classes,   ~point_type,
+  "meadow_shrub",   c(3L, 10L), "vegetated",
+  "tree_deciduous", 2L,         "vegetated",
+  "tree_evergreen", 1L,         "vegetated",
+  "bare",           6L,         "non_vegetated"
+)
 
 # --- 2. Candidate cell centers per stratum ---------------------------------
-candidates <- function(mask, type_label) {
+candidates <- function(mask, cover_label, type_label) {
   idx <- which(terra::values(mask, mat = FALSE) == 1)
   if (length(idx) == 0) return(NULL)
   xy <- terra::xyFromCell(mask, idx)
   tibble::tibble(x_utm = xy[, 1], y_utm = xy[, 2],
-                 point_type = type_label)
+                 cover_class = cover_label, point_type = type_label)
 }
-veg_pts  <- candidates(veg_3m,  "vegetated")
-bare_pts <- candidates(bare_3m, "non_vegetated")
-cat(sprintf("Candidates: %s vegetated, %s non-vegetated\n",
-            format(nrow(veg_pts),  big.mark = ","),
-            format(nrow(bare_pts), big.mark = ",")))
+cand_list <- purrr::pmap(strata, function(cover_class, classes, point_type) {
+  candidates(purity_mask(classes), cover_class, point_type)
+})
+cat("Candidates per cover_class:\n")
+for (d in cand_list) if (!is.null(d))
+  cat(sprintf("  %-15s %s\n", d$cover_class[1],
+              format(nrow(d), big.mark = ",")))
 
-# Pre-sample to manageable size before the DOY extract.
+# Pre-sample each stratum to manageable size before the DOY extract.
 prefilter_n <- 50000L
 prefilter <- function(df, n) {
+  if (is.null(df) || nrow(df) == 0) return(df)
   if (nrow(df) > n) dplyr::slice_sample(df, n = n, replace = FALSE) else df
 }
-all_pts <- dplyr::bind_rows(
-  prefilter(veg_pts,  prefilter_n),
-  prefilter(bare_pts, prefilter_n)
-)
+all_pts <- purrr::map_dfr(cand_list, prefilter, n = prefilter_n)
 
 # --- 3. Snow-free DOY at each candidate ------------------------------------
 cat("Extracting snow-free DOY (R4D061) ... ")
@@ -128,14 +129,14 @@ all_pts <- all_pts |>
                                 labels = doy_breaks$band,
                                 include.lowest = TRUE))
 
-cat("Candidate counts by point_type x doy_band:\n")
-print(all_pts |> dplyr::count(point_type, doy_band) |>
+cat("Candidate counts by cover_class x doy_band:\n")
+print(all_pts |> dplyr::count(cover_class, doy_band) |>
         tidyr::pivot_wider(names_from = doy_band, values_from = n,
                            values_fill = 0L) |> as.data.frame())
 
-# --- 4. Stratified random sample ------------------------------------------
+# --- 4. Stratified random sample (n_per_stratum per cover_class x DOY) ------
 sampled <- all_pts |>
-  dplyr::group_by(point_type, doy_band) |>
+  dplyr::group_by(cover_class, doy_band) |>
   dplyr::group_split() |>
   purrr::map_dfr(function(df) {
     dplyr::slice_sample(df, n = min(n_per_stratum, nrow(df)),
@@ -143,7 +144,7 @@ sampled <- all_pts |>
   })
 
 cat(sprintf("\nFinal: %d points\n", nrow(sampled)))
-print(sampled |> dplyr::count(point_type, doy_band) |>
+print(sampled |> dplyr::count(cover_class, doy_band) |>
         tidyr::pivot_wider(names_from = doy_band, values_from = n,
                            values_fill = 0L) |> as.data.frame())
 
@@ -151,7 +152,7 @@ out <- sampled |>
   dplyr::transmute(
     point_id  = seq_len(dplyr::n()),
     domain    = domain_code,
-    point_type, doy_band, snow_free_doy, x_utm, y_utm
+    point_type, cover_class, doy_band, snow_free_doy, x_utm, y_utm
   )
 
 readr::write_csv(out, "data/derived/year_effect_points.csv")

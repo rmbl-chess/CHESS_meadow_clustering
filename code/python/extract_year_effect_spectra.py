@@ -20,8 +20,8 @@ For each point:
 Output:
   data/derived/year_effect_spectra.parquet
     long-ish format, one row per (point_id, year)
-    columns: point_id, year, x_utm, y_utm, point_type, doy_band,
-             snow_free_doy, n_pixels, ndvi, rfl_band_1..N
+    columns: point_id, year, x_utm, y_utm, point_type, cover_class,
+             doy_band, snow_free_doy, n_pixels, ndvi, rfl_band_1..N
   data/derived/year_effect_wavelengths.csv
     band index -> wavelength (nm)
 
@@ -164,6 +164,7 @@ def run(args: argparse.Namespace) -> int:
                 "x_utm":         p.x_utm,
                 "y_utm":         p.y_utm,
                 "point_type":    p.point_type,
+                "cover_class":   getattr(p, "cover_class", p.point_type),
                 "doy_band":      p.doy_band,
                 "snow_free_doy": p.snow_free_doy,
                 "n_pixels":      n_pix,
