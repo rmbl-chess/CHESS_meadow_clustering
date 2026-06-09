@@ -36,6 +36,8 @@ crosswalk <- readr::read_csv("data/derived/shrub_label_crosswalk.csv",
                              show_col_types = FALSE)
 sp_2018   <- readRDS("data/derived/spectra_2018.rds")
 sp_2025   <- readRDS("data/derived/spectra_2025.rds")
+sp_2026_path <- "data/derived/spectra_2026.rds"
+sp_2026   <- if (file.exists(sp_2026_path)) readRDS(sp_2026_path) else NULL
 env       <- readRDS("data/derived/environment.rds")           # snow-free DOY
 baseline  <- readRDS("data/derived/shrub_training_set.rds")  # site-averaged
 
@@ -63,10 +65,18 @@ pix_2018 <- sp_2018$spectra |>
   dplyr::filter(shade == 1 | is.na(shade)) |>
   dplyr::semi_join(dplyr::filter(labels, Year == 2018L), by = "site_number") |>
   dplyr::mutate(Year = 2018L)
-cat(sprintf("Pixels: %d (2025 Shrub) + %d (2018 shrub-dominated)\n",
-            nrow(pix_2025), nrow(pix_2018)))
+# 2026: same Shrub-site_type filter as 2025 (extracted from 2025 AOP).
+pix_2026 <- if (!is.null(sp_2026)) {
+  sp_2026$spectra |>
+    dplyr::filter(site_type == "Shrub", shade == 1 | is.na(shade)) |>
+    dplyr::semi_join(dplyr::filter(labels, Year == 2026L), by = "site_number") |>
+    dplyr::mutate(Year = 2026L)
+} else NULL
+cat(sprintf("Pixels: %d (2025 Shrub) + %d (2018 shrub-dominated) + %d (2026 Shrub)\n",
+            nrow(pix_2025), nrow(pix_2018),
+            if (is.null(pix_2026)) 0L else nrow(pix_2026)))
 
-pixels <- dplyr::bind_rows(pix_2025, pix_2018)
+pixels <- dplyr::bind_rows(pix_2025, pix_2018, pix_2026)
 rfl_cols  <- grep("^rfl_band_", names(pixels), value = TRUE)
 band_nums <- as.integer(stringr::str_extract(rfl_cols, "\\d+$"))
 band_wl   <- sp_2025$wavelengths$center_wavelength[

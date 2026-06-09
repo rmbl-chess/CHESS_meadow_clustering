@@ -78,12 +78,24 @@ crowns_2025 <- sf::st_read("data/derived/crowns_2025.gpkg", quiet = TRUE) |>
   dplyr::mutate(Year = 2025L) |>
   dplyr::select(site_number, Year, domain)
 
-centroids <- dplyr::bind_rows(crowns_2018, crowns_2025) |>
+# 2026 supplemental crowns (ALMO + CRBU); domain backfilled in 01_load.R from
+# the extracted spectra. Reuses the 2025 CHM for its domain (canopy structure),
+# same convention as 2018 reusing the CRBU CHM.
+crowns_2026_path <- "data/derived/crowns_2026.gpkg"
+crowns_2026 <- if (file.exists(crowns_2026_path)) {
+  c26 <- sf::st_read(crowns_2026_path, quiet = TRUE)
+  if ("domain" %in% names(c26)) {
+    c26 |> dplyr::mutate(Year = 2026L) |>
+      dplyr::select(site_number, Year, domain)
+  } else NULL
+} else NULL
+
+centroids <- dplyr::bind_rows(crowns_2018, crowns_2025, crowns_2026) |>
   sf::st_transform(32613) |>
   sf::st_centroid()
-cat(sprintf("\nCrown centroids: %d (2018=%d, 2025=%d)\n",
+cat(sprintf("\nCrown centroids: %d (2018=%d, 2025=%d, 2026=%d)\n",
             nrow(centroids), sum(centroids$Year == 2018L),
-            sum(centroids$Year == 2025L)))
+            sum(centroids$Year == 2025L), sum(centroids$Year == 2026L)))
 
 extract_chm_for_domain <- function(centroids_dom, chm_path_3m) {
   cat(sprintf("%s: extracting 3m max CHM at %d centroids ... ",
@@ -117,10 +129,11 @@ chm_per_site <- per_crown |>
     .groups         = "drop"
   )
 
-cat(sprintf("\nPer-site CHM table: %d sites (2018=%d, 2025=%d)\n",
+cat(sprintf("\nPer-site CHM table: %d sites (2018=%d, 2025=%d, 2026=%d)\n",
             nrow(chm_per_site),
             sum(chm_per_site$Year == 2018L),
-            sum(chm_per_site$Year == 2025L)))
+            sum(chm_per_site$Year == 2025L),
+            sum(chm_per_site$Year == 2026L)))
 cat("\n3m max canopy height summary (m):\n")
 print(summary(chm_per_site$canopy_height_m))
 

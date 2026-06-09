@@ -21,6 +21,8 @@ suppressPackageStartupMessages({
 records  <- readRDS("data/derived/shrub_records_canonical.rds")
 sp_2018  <- readRDS("data/derived/spectra_2018.rds")
 sp_2025  <- readRDS("data/derived/spectra_2025.rds")
+sp_2026_path <- "data/derived/spectra_2026.rds"
+sp_2026  <- if (file.exists(sp_2026_path)) readRDS(sp_2026_path) else NULL
 
 # Wavelength sanity check (same as 04_join_spectra.R; 2025 is canonical).
 wl_2018 <- sp_2018$wavelengths
@@ -71,6 +73,15 @@ cat(sprintf("2018 spectra rows: %d total (no site_type column)\n",
 spectra_2025 <- agg_spectra(sp_2025_shrub, 2025L)
 spectra_2018 <- agg_spectra(sp_2018_shrub, 2018L)
 
+# 2026: shrub crowns extracted from 2025 AOP (site_type == "Shrub"); no year
+# correction (2025 basis). NULL when the Hub extraction hasn't run yet.
+spectra_2026 <- if (!is.null(sp_2026)) {
+  sp_2026_shrub <- dplyr::filter(sp_2026$spectra, site_type == "Shrub")
+  cat(sprintf("2026 spectra rows: %d total, %d at Shrub crowns\n",
+              nrow(sp_2026$spectra), nrow(sp_2026_shrub)))
+  agg_spectra(sp_2026_shrub, 2026L)
+} else NULL
+
 # 2018 -> 2025 NDVI-stratified correction (mirror of meadow 04 logic;
 # see code/joint/15_stratified_year_correction.R for fit + validation).
 NDVI_BREAKS <- c(-Inf, 0.20, 0.40, 0.60, 0.80, Inf)
@@ -116,7 +127,7 @@ spectra_2018 <- apply_year_correction(
   wavelengths
 )
 
-spectra_combined <- dplyr::bind_rows(spectra_2018, spectra_2025)
+spectra_combined <- dplyr::bind_rows(spectra_2018, spectra_2025, spectra_2026)
 
 # --- Join to records ------------------------------------------------------
 joined <- records |>
@@ -126,8 +137,9 @@ joined <- records |>
   dplyr::inner_join(spectra_combined, by = c("site_number", "Year"))
 
 cat(sprintf(
-  "\nJoined shrub records to spectra: %d sites (%d 2018, %d 2025)\n",
-  nrow(joined), sum(joined$Year == 2018L), sum(joined$Year == 2025L)
+  "\nJoined shrub records to spectra: %d sites (%d 2018, %d 2025, %d 2026)\n",
+  nrow(joined), sum(joined$Year == 2018L), sum(joined$Year == 2025L),
+  sum(joined$Year == 2026L)
 ))
 
 # Report records that fell out of the join (no matching pixels at the site).

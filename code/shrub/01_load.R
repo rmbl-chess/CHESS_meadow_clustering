@@ -97,8 +97,36 @@ shrub_2018 <- cover_2018 |>
 cat(sprintf("2018 shrub records (single-species, cover==100): %d\n",
             nrow(shrub_2018)))
 
+# --- 2026 supplemental -----------------------------------------------------
+# Same cover==100 single-species-crown rule as 2018, but the 2026 cover names
+# species directly (Cover_Class_Name is the binomial). No species_list, so
+# family is left NA. Spectra come from 2025 AOP (site_type == "Shrub").
+veg_2026 <- readRDS("data/derived/veg_2026.rds")
+shrub_2026 <- veg_2026$cover |>
+  dplyr::filter(Cover_Type == "Live Vegetation - Named Species",
+                Cover_Percent == 100) |>
+  tidyr::separate(Cover_Class_Name, into = c("genus", "species"),
+                  sep = " ", remove = FALSE, extra = "merge", fill = "right") |>
+  dplyr::mutate(genus = stringr::str_squish(genus),
+                species = stringr::str_squish(species)) |>
+  dplyr::filter(genus %in% shrub_genera |
+                (genus == "Artemisia" & species == "tridentata")) |>
+  dplyr::transmute(
+    site_number    = as.integer(site_number),
+    Year           = 2026L,
+    sampling_area  = Sampling_Area,
+    raw_species    = Cover_Class_Name,
+    family         = NA_character_,
+    genus, species,
+    binomial       = stringr::str_squish(Cover_Class_Name),
+    vegetation_height_cm = NA_real_
+  )
+
+cat(sprintf("2026 shrub records (single-species, cover==100): %d\n",
+            nrow(shrub_2026)))
+
 # --- Combine + summarize --------------------------------------------------
-records <- dplyr::bind_rows(shrub_2018, shrub_2025) |>
+records <- dplyr::bind_rows(shrub_2018, shrub_2025, shrub_2026) |>
   dplyr::arrange(Year, site_number)
 
 source_summary <- records |>

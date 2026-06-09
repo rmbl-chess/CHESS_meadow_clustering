@@ -12,3 +12,11 @@ campaign,raw_name,unified_category,note
 2025,Nonvegetated Rock,Bare,Lumped with Dirt into single Bare column per user decision
 2025,Other Deciduous Shrub,Other_Deciduous_Shrub,2025-only; 2018 records shrubs individually as Salix/Ribes/etc.
 2025,Other Succulent,Other_Forb,Reassigned to Other_Forb per user decision (n=1, 5% cover)
+2026,Other Forb,Other_Forb,
+2026,Other Graminoid,Other_Graminoid,
+2026,Other Moss/Lichen,Other_Moss_Lichen,
+2026,Non-Photosynthetic Vegetation,NPV,Litter + standing dead
+2026,Nonvegetated Dirt,Bare,Lumped with Rock into single Bare column per user decision
+2026,Nonvegetated Rock,Bare,Lumped with Dirt into single Bare column per user decision
+2026,Other Deciduous Shrub,Other_Deciduous_Shrub,Same handling as 2025
+2026,Other Succulent,Other_Forb,Reassigned to Other_Forb per 2025 decision

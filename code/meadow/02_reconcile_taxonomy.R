@@ -19,6 +19,7 @@ library(tidyverse)
 
 veg_2018 <- readRDS("data/derived/veg_2018.rds")
 veg_2025 <- readRDS("data/derived/veg_2025.rds")
+veg_2026 <- readRDS("data/derived/veg_2026.rds")
 
 # --- 2018: CoverCode -> "Genus species" ------------------------------------
 # The 2018 species_list has Genus + Species columns and an AltFieldCode that
@@ -50,7 +51,26 @@ cw_2025 <- veg_2025$species |>
     note           = Notes
   )
 
-crosswalk <- dplyr::bind_rows(cw_2018, cw_2025)
+# --- 2026: Cover_Class_Name is already a binomial --------------------------
+# The supplemental campaign has no species_list; the Named-Species token IS
+# the canonical name. Auto-resolve canonical = token; the manual-edits override
+# below fixes the misspellings/generics (Pusatilla, Bromus tectortum, Sedge)
+# and registers the new taxa (Opuntia, Yucca).
+cw_2026 <- veg_2026$cover |>
+  dplyr::filter(Cover_Type == "Live Vegetation - Named Species",
+                !is.na(Cover_Class_Name),
+                stringr::str_squish(Cover_Class_Name) != "") |>
+  dplyr::distinct(Cover_Class_Name) |>
+  dplyr::transmute(
+    campaign       = "2026",
+    raw_name       = Cover_Class_Name,
+    canonical_name = stringr::str_squish(Cover_Class_Name),
+    gbif_id        = NA_integer_,
+    needs_review   = FALSE,
+    note           = NA_character_
+  )
+
+crosswalk <- dplyr::bind_rows(cw_2018, cw_2025, cw_2026)
 
 # Normalize whitespace + case on canonical so identical species across years
 # collapse to one column downstream.

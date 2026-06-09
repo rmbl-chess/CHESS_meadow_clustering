@@ -2,6 +2,7 @@ Year,raw_binomial,canonical_binomial,note,n_records
 2025,Acer glabrum,Acer glabrum,,2
 2018,Alnus incana,Alnus incana,,1
 2025,Alnus incana,Alnus incana,,3
+2026,Alnus incana,Alnus incana,,5
 2025,Amelanchier alnifolia,Amelanchier alnifolia,,12
 2025,Artemisia cana,Artemisia cana,,2
 2018,Artemisia tridentata,Artemisia tridentata,,3
@@ -9,6 +10,7 @@ Year,raw_binomial,canonical_binomial,note,n_records
 2018,Betula glandulosa,Betula glandulosa,,1
 2025,Betula glandulosa,Betula glandulosa,,5
 2025,Cornus sericea,Cornus sericea,,1
+2026,Cornus sericea,Cornus sericea,,5
 2018,Pentaphylloides floribunda,Dasiphora fruticosa,Pentaphylloides is a junior synonym of Dasiphora,13
 2025,Dasiphora fruticosa,Dasiphora fruticosa,,21
 2025,Holodiscus discolor,Holodiscus discolor,,2
@@ -17,6 +19,7 @@ Year,raw_binomial,canonical_binomial,note,n_records
 2025,Juniperus scopulorum,Juniperus scopulorum,,4
 2018,Distegia involucrata,Lonicera involucrata,Distegia is a junior synonym of Lonicera,3
 2025,Lonicera involucrata,Lonicera involucrata,,3
+2026,Lonicera involucrata,Lonicera involucrata,,2
 2025,Prunus virginiana,Prunus virginiana,,3
 2025,Purshia tridentata,Purshia tridentata,,4
 2025,Ribes cereum,Ribes cereum,,3

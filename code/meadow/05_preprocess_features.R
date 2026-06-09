@@ -48,15 +48,15 @@ spec_mat <- as.matrix(joined[, keep_cols])
 #
 # Fit the basis on the 2025 rows ONLY so it matches JPL's pre-computed
 # 3 m PC mosaics (which were generated on the 2025-only basis the
-# original aop_classifier_pca.csv was exported on). 2018 spectra — now
-# year-corrected in 04_join_spectra.R — are still PROJECTED onto this
-# basis so they contribute to clustering and the joint training set,
-# they just don't drag the basis itself. This keeps inference COGs
-# (data/derived/aop_classified/) coherent with the new RF.
+# original aop_classifier_pca.csv was exported on). 2018 + 2026 spectra
+# (2018 year-corrected in 04; 2026 extracted directly from 2025 AOP) are
+# PROJECTED onto this basis so they contribute to clustering and the joint
+# training set without dragging the basis itself. This keeps the inference
+# COGs (data/derived/aop_classified/) coherent with the new RF.
 is_2025 <- joined$Year == 2025L
 pca   <- prcomp(spec_mat[is_2025, , drop = FALSE],
                  center = TRUE, scale. = FALSE)
-# Project ALL rows (both years) onto the 2025-fit basis.
+# Project ALL rows (every year) onto the 2025-fit basis.
 spec_centered <- sweep(spec_mat, 2, pca$center, FUN = "-")
 n_pc  <- 20
 spec_pcs <- (spec_centered %*% pca$rotation)[, seq_len(n_pc), drop = FALSE]
@@ -68,8 +68,9 @@ message(sprintf(
   "Spectral PCA fit on %d 2025 rows; top %d PCs explain %.1f%% of fit variance.",
   sum(is_2025), n_pc, 100 * varexp[n_pc]
 ))
-message(sprintf("Projected %d sites onto basis (%d 2018 + %d 2025).",
-                nrow(spec_mat), sum(!is_2025), sum(is_2025)))
+message(sprintf("Projected %d sites onto basis (%d 2018 + %d 2025 + %d 2026).",
+                nrow(spec_mat), sum(joined$Year == 2018L), sum(is_2025),
+                sum(joined$Year == 2026L)))
 
 # Narrow-band indices. Pick the band whose center is closest to each target.
 band_of <- function(target_nm) which.min(abs(keep_wl - target_nm))

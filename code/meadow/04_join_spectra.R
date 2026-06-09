@@ -28,6 +28,10 @@ library(tidyverse)
 cover_combined <- readRDS("data/derived/cover_combined.rds")
 sp_2018        <- readRDS("data/derived/spectra_2018.rds")
 sp_2025        <- readRDS("data/derived/spectra_2025.rds")
+# 2026 supplemental spectra (extracted from 2025 AOP); present only after the
+# Hub extraction has run. Optional so the pipeline still runs without it.
+sp_2026_path   <- "data/derived/spectra_2026.rds"
+sp_2026        <- if (file.exists(sp_2026_path)) readRDS(sp_2026_path) else NULL
 
 # Wavelength grids: 2018 and 2025 are nearly identical (426 bands, 0.384-2.510
 # μm) but drift up to 10 nm in bands 81-135 (NIR plateau) — likely a NEON
@@ -143,7 +147,9 @@ correction_path <- "data/small_reference/year_effect_correction_2018_to_2025_by_
 spectra_combined <- dplyr::bind_rows(
   apply_year_correction(agg_spectra(sp_2018$spectra, 2018L),
                          2018L, correction_path, wavelengths),
-  agg_spectra(sp_2025$spectra, 2025L)
+  agg_spectra(sp_2025$spectra, 2025L),
+  # 2026 extracted from 2025 AOP -> no year correction (same basis as 2025).
+  if (!is.null(sp_2026)) agg_spectra(sp_2026$spectra, 2026L) else NULL
 )
 
 # Inner join on (site_number, Year) so only sites with both cover and spectra
@@ -153,10 +159,11 @@ joined <- dplyr::inner_join(
   by = c("site_number", "Year")
 )
 
-message(sprintf("veg_spectra: %d sites (%d 2018, %d 2025), %d cover cols, %d bands",
+message(sprintf("veg_spectra: %d sites (%d 2018, %d 2025, %d 2026), %d cover cols, %d bands",
                 nrow(joined),
                 sum(joined$Year == 2018L),
                 sum(joined$Year == 2025L),
+                sum(joined$Year == 2026L),
                 sum(grepl("_cover$", names(joined))),
                 sum(grepl("^rfl_band_", names(joined)))))
 

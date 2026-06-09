@@ -29,14 +29,22 @@ crowns_2018 <- sf::st_read("data/derived/crowns_2018.gpkg", quiet = TRUE) |>
 crowns_2025 <- sf::st_read("data/derived/crowns_2025.gpkg", quiet = TRUE) |>
   dplyr::mutate(Year = 2025L) |>
   dplyr::select(site_number, Year)
+# 2026 supplemental crowns (R4D061 is a 30-yr climatology, applied identically).
+crowns_2026_path <- "data/derived/crowns_2026.gpkg"
+crowns_2026 <- if (file.exists(crowns_2026_path)) {
+  sf::st_read(crowns_2026_path, quiet = TRUE) |>
+    dplyr::mutate(Year = 2026L) |>
+    dplyr::select(site_number, Year)
+} else NULL
 
-crowns <- dplyr::bind_rows(crowns_2018, crowns_2025) |>
+crowns <- dplyr::bind_rows(crowns_2018, crowns_2025, crowns_2026) |>
   sf::st_centroid() |>
   sf::st_transform(32613)
 
-cat(sprintf("Total crown centroids: %d (2018=%d, 2025=%d)\n",
+cat(sprintf("Total crown centroids: %d (2018=%d, 2025=%d, 2026=%d)\n",
             nrow(crowns),
-            sum(crowns$Year == 2018L), sum(crowns$Year == 2025L)))
+            sum(crowns$Year == 2018L), sum(crowns$Year == 2025L),
+            sum(crowns$Year == 2026L)))
 
 # Convert to terra SpatVector for raster extraction.
 crowns_vect <- terra::vect(crowns)

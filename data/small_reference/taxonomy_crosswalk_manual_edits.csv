@@ -5,3 +5,8 @@ campaign,raw_name,canonical_name,gbif_id,needs_review,note
 2025,Melanthiaceae-Veratrum californicum,Veratrum tenuipetalum,,FALSE,"V. californicum and V. tenuipetalum are synonymized in the RMBL flora; the 2018 list explicitly notes *syn. = V. californicum var. californicum. Treat all Veratrum samples as V. tenuipetalum."
 2018,PenFlo,Dasiphora fruticosa,5370380,FALSE,"2018 list uses segregate Pentaphylloides floribunda; 2025 uses Dasiphora fruticosa (modern accepted). Synonyms per the 2018 species_list note: *syn. = Potentilla fruticosa, Dasiphora fruticosa."
 2018,PsyLep,Caltha leptosepala,5371684,FALSE,"2018 list uses segregate Psychrophila leptosepala; 2025 uses Caltha leptosepala (modern accepted). 2018 species_list explicitly preferred Caltha (*syn. = Caltha leptosepala)."
+2026,Opuntia polyacantha,Opuntia polyacantha,,FALSE,"New 2026 taxon (low-elevation plains pricklypear); not present in 2018/2025."
+2026,Yucca glauca,Yucca glauca,,FALSE,"New 2026 taxon (soapweed yucca); not present in 2018/2025."
+2026,Pusatilla nuttalliana,Pulsatilla nuttalliana,,FALSE,"2026 cover misspelled ""Pusatilla""; canonical Pulsatilla nuttalliana (= Anemone patens, pasqueflower)."
+2026,Bromus tectortum,Bromus tectorum,,FALSE,"2026 cover misspelled ""tectortum""; canonical Bromus tectorum (cheatgrass)."
+2026,Sedge,Carex,,TRUE,"Generic ""Sedge"" Named-Species token; resolved to genus Carex. needs_review — no species-level ID."
