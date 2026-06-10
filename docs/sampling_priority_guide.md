@@ -1,6 +1,6 @@
 # Sampling-Priority Guide
 
-The 2026 CHESS sampling priority dataset ranks 5,354 candidate AOP pixels by how much each one would help the meadow / shrub classifier improve if a field crew went out and labeled it. This document explains what the labels mean, how the leverage score is built, and how to use the file in the field. Alongside it, the classifier now produces **wall-to-wall 3 m community maps** for the three AOP domains (ALMO / CRBU / UPTA) — see Files.
+The 2026 CHESS sampling priority dataset ranks 5,064 candidate AOP pixels by how much each one would help the meadow / shrub classifier improve if a field crew went out and labeled it (the 5,354-pixel cloud extraction, minus 290 pixels without CHM coverage). This document explains what the labels mean, how the leverage score is built, and how to use the file in the field. Alongside it, the classifier now produces **wall-to-wall 3 m community maps** for the three AOP domains (ALMO / CRBU / UPTA) — see Files.
 
 ## Files for the team
 
@@ -8,12 +8,12 @@ Canonical outputs live in the analysis repo under `data/derived/`:
 
 | File | What it is |
 |---|---|
-| `sampling_priority.gpkg` | **Primary fieldwork deliverable** — 5,354 candidate pixels with leverage scores, predicted class, and novelty metrics. |
-| `class_summary_table.csv` | One row per class (**56 classes**: 40 meadow + 16 shrub) with 2018/2025 support, basin prevalence, recall, indicator + abundant taxa, narratives, median leverage, and augmentation priority. |
-| `joint_training.gpkg` | All 858 training sites (548 meadow + 310 shrub) as crown polygons + centroids with class metadata — for inspecting where each class is currently sampled. |
-| `aop_classified/{DOM}_class_3m_v1_labeled.tif` (+ `.qml`) | **Wall-to-wall 3 m community map** per AOP domain (ALMO / CRBU / UPTA). Each class is colored by physiognomy family (shrubland blue-purple, grassland tan-brown, forb-meadow green, wetland pink-red) and labeled with its code + a draft NatureServe community; `{DOM}_confidence_3m_v1.tif` holds per-pixel max class probability. Load the `_labeled.tif` — the sibling `.qml` auto-applies colors + labels. |
+| `sampling_priority.gpkg` | **Primary fieldwork deliverable** — 5,064 candidate pixels with leverage scores, predicted class, and novelty metrics. |
+| `class_summary_table.csv` | One row per class (**51 classes**: 34 meadow + 17 shrub) with 2018/2025/2026 support, basin prevalence, recall, indicator + abundant taxa, narratives, median leverage, and augmentation priority. |
+| `joint_training.gpkg` | All training sites (604 meadow + 323 shrub) as crown polygons + centroids with class metadata — for inspecting where each class is currently sampled. |
+| `aop_classified/{DOM}_class_3m_v1_labeled.tif` (+ `.qml`) | **Wall-to-wall 3 m community map** per AOP domain (ALMO / CRBU / UPTA). Each class is colored by physiognomy family (shrubland blue-purple, grassland tan-brown, forb-meadow green, wetland pink-red) and labeled with its code + a draft NatureServe community; `{DOM}_confidence_3m_v1.tif` holds per-pixel max class probability. Load the `_labeled.tif` — the sibling `.qml` auto-applies colors + labels. **⚠️ These COGs are still on the prior 40/56-class system — pending re-inference on the current 34/51-class classifier (`09/10` deferred).** |
 
-Export dated snapshots to the team Google Drive (`.../Sampling_Priority_2026/datasets/`) for fieldwork. **The previous `*_2026_5_19` copies are stale (47-class) — re-export from the current 56-class outputs.**
+Export dated snapshots to the team Google Drive (`.../Sampling_Priority_2026/datasets/`) for fieldwork. **Re-export from the current 51-class outputs (the 2026 supplemental ALMO sagebrush campaign reclustered the meadow set from 40 → 34 classes).**
 
 ## What's in the gpkg
 
@@ -26,22 +26,22 @@ Export dated snapshots to the team Google Drive (`.../Sampling_Priority_2026/dat
 | `ood_flag` | `TRUE` when `nearest_d` exceeds the training 95th-percentile (most pixels are flagged — see caveats). |
 | `n_total` | Number of training sites for the predicted class. |
 | `balanced_recall` | Class-weighted RF CV recall for that class (from `02_training.R`). |
-| `predicted_n_pixels` | How many of the 5,354 inference pixels the unweighted RF assigns to this class (from `09_inference.R`). |
+| `predicted_n_pixels` | How many of the 5,064 inference pixels the unweighted RF assigns to this class (from `03_predict_inference_pixels.R`). |
 | `leverage` | Composite priority score (see below). |
 | `augmentation_priority` | Bucket: `critical` / `high` / `medium` / `ok`. |
 | `snow_free_doy`, `canopy_height_m` | Site covariates pulled at the pixel. |
 
 ## How training classes were built
 
-**Meadow classes (40 total).** Spectra-first hierarchical Ward clustering on per-plot NEON AOP spectra (PCs 2–12 + snow-free DOY, z-scaled; PC1 dropped). **Both** 2018 and 2025 plots cluster together — an NDVI-stratified 2018→2025 radiometric correction removes the between-year atmospheric drift, so 2018 is no longer dropped/inferred. Each spectral cluster is then split into community sub-classes by species composition, but only where the split stays **spectrally mappable** (an RF-recall gate); ecologically real but hard-to-map sub-classes are kept and flagged `needs_ancillary` (to be resolved later with topographic-wetness / phenology data). Monotypic-species overrides carve out near-pure stands (≥70% cover) as their own classes. Curatable narratives live in `data/small_reference/label_community_names.csv`.
+**Meadow classes (34 total).** Spectra-first hierarchical Ward clustering on per-plot NEON AOP spectra (PCs 2–12 + snow-free DOY, z-scaled; PC1 dropped). **2018, 2025, and 2026** plots cluster together — an NDVI-stratified 2018→2025 radiometric correction removes the between-year drift (the 2026 supplemental plots were extracted directly from 2025 AOP, so they need no correction). Each spectral cluster is then split into community sub-classes by species composition, but only where the split stays **spectrally mappable** (an RF-recall gate); ecologically real but hard-to-map sub-classes are kept and flagged `needs_ancillary`. In the current set only S06 (k=2) and S08 (k=3) split, and none are flagged `needs_ancillary` — the 56 new ALMO sagebrush plots reshaped the partition so the prior S01/S09/S20 sub-splits no longer form. Monotypic-species overrides carve out near-pure stands (≥70% cover) as their own classes. Curatable narratives live in `data/small_reference/label_community_names.csv`.
 
-**Shrub classes (16 total).** 2025 from the field shrub-crown table (one species per site by design). 2018 from `fractional_cover` filtered to rows where a shrub-dominated genus had cover = 100%. Synonyms reconciled (`Pentaphylloides floribunda → Dasiphora fruticosa`; `Distegia involucrata → Lonicera involucrata`). Salix species are not spectrally separable from each other; the three highest-N species (`Salix wolfii`, `boothii`, `planifolia`) are kept distinct and the remaining 9 binomials roll up to `Salix other`. Genera with <3 sites are dropped.
+**Shrub classes (17 total).** 2025 from the field shrub-crown table (one species per site by design). 2018 from `fractional_cover` filtered to rows where a shrub-dominated genus had cover = 100%. Synonyms reconciled (`Pentaphylloides floribunda → Dasiphora fruticosa`; `Distegia involucrata → Lonicera involucrata`). Salix species are not spectrally separable from each other; the three highest-N species (`Salix wolfii`, `boothii`, `planifolia`) are kept distinct and the remaining 9 binomials roll up to `Salix other`. Genera with <3 sites are dropped.
 
-**Joint training set.** 858 sites × 56 classes (548 meadow + 310 shrub). Shrub spectra are projected onto the deployed meadow PCA basis (`aop_classifier_pca.csv`) so training and inference share one feature space. CV uses 28 features (20 PCs, 6 narrow-band indices — NDVI / NDWI / PRI / red-edge slope / CAI / NDLI — snow-free DOY, canopy height); the **deployed inference RF uses 22**, dropping the 6 indices, which aren't available in the PC-only inference mosaics.
+**Joint training set.** 927 sites × 51 classes (604 meadow + 323 shrub). Shrub spectra are projected onto the deployed meadow PCA basis (`aop_classifier_pca.csv`) so training and inference share one feature space. CV uses 28 features (20 PCs, 6 narrow-band indices — NDVI / NDWI / PRI / red-edge slope / CAI / NDLI — snow-free DOY, canopy height); the **deployed inference RF uses 22**, dropping the 6 indices, which aren't available in the PC-only inference mosaics.
 
 **Two Random Forest fits, two purposes.** The same training data is used in two RFs that answer different questions:
 
-- **Balanced-weighted RF (`02_training.R`, 5-fold site-level CV)** — inverse-frequency class weights so every class contributes equally to per-class recall. Source of `balanced_recall`. Overall CV accuracy ~64%.
+- **Balanced-weighted RF (`02_training.R`, 5-fold site-level CV)** — inverse-frequency class weights so every class contributes equally to per-class recall. Source of `balanced_recall`. Overall CV accuracy ~67% (0.674 unweighted / 0.668 balanced).
 - **Unweighted RF (`09_inference.R`, predicts the basin pixels AND the wall-to-wall map)** — no class weights, so predictions follow the natural class proportions. Source of `predicted_label` and `predicted_n_pixels`. Using weights here was tried first and produced a wildly biased map: 33% of pixels assigned to the smallest meadow class (S26, n=7), because inverse-frequency weighting amplified rare classes ~22× and turned them into catch-alls for any uncertain pixel.
 
 The leverage score combines `balanced_recall`-style class quality with `predicted_n_pixels`-style prevalence, so both RFs feed into the prioritization.
@@ -78,7 +78,7 @@ Multiplying these two signals captures the kind of pixel a new field plot helps 
 ## Caveats
 
 - `predicted_label` reflects the *unweighted* RF (script 38) — it shows the realistic class proportions for the basin. `balanced_recall` reflects the *weighted* RF (script 37) — it shows per-class quality at training time. Both are correct for their own purpose; just don't expect a class with high `balanced_recall` to also have high `predicted_n_pixels`.
-- The 5,354 inference pixels were drawn from R3D018 landcover class 3 (meadow) with strict neighborhood-purity filters. **Shrub leverage is therefore undercounted** in this dataset because shrub crowns are rare in the meadow sample. For shrub-specific priorities, work from the class summary table directly (filter `class_type == "shrub"`) — a separate shrub-targeted inference run is planned.
+- The inference pixels were drawn from R3D018 landcover class 3 (meadow) with strict neighborhood-purity filters. **Shrub leverage is therefore undercounted** in this dataset because shrub crowns are rare in the meadow sample. For shrub-specific priorities, work from the class summary table directly (filter `class_type == "shrub"`) — a separate shrub-targeted inference run is planned.
 - ~94% of inference pixels exceed the OOD threshold. Hand-picked field crowns are spectrally tighter than random basin pixels — the threshold is calibrated against training distribution, so OOD is genuinely common. Treat `nearest_d` as a continuous ranking rather than the binary `ood_flag`.
 - Predicted classes for high-`nearest_d` pixels are extrapolations: the classifier picked the closest known class, but it might be a class that doesn't even exist in the training set. New samples in these regions sometimes warrant a new class.
 - Salix is at genus-plus-4 granularity by design. Don't expect a `Salix drummondiana` candidate to recover species-level resolution within Salix — that's not currently mappable.
@@ -92,6 +92,6 @@ Multiplying these two signals captures the kind of pixel a new field plot helps 
 | `code/shrub/01_load.R` → `code/shrub/06_pixel_training.R` | Shrub class pipeline |
 | `code/joint/01_canopy_height.R` | NEON 1 m CHM extracted at crown centroids |
 | `code/joint/02_training.R` | Joint training set + 47-class RF |
-| `code/joint/03_predict_inference_pixels.R` | RF predictions on the 5,354 inference pixels |
+| `code/joint/03_predict_inference_pixels.R` | RF predictions on the 5,064 inference pixels |
 | `code/joint/04_landscape_distance.R` | Per-pixel Mahalanobis distance to class centroids |
 | `code/joint/05_sampling_priority.R` | The leverage score that drives this gpkg |
