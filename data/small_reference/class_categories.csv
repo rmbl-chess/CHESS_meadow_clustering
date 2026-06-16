@@ -1,55 +1,52 @@
-final_label,moisture,elevation
-Alnus incana,wet,subalpine
-Amelanchier alnifolia,mesic,montane
-Artemisia cana,dry,subalpine
-Artemisia tridentata,dry,montane
-Betula glandulosa,wet,subalpine
-Cornus sericea,wet,montane
-Dasiphora fruticosa,wet,subalpine
-Holodiscus discolor,mesic,montane
-Juniperus sp.,dry,montane
-Lonicera involucrata,mesic,subalpine
-Prunus virginiana,mesic,montane
-Purshia tridentata,dry,montane
-Ribes sp.,mesic,subalpine
-Salix boothii,wet,subalpine
-Salix planifolia,wet,alpine
-Salix wolfii,wet,subalpine
-Salix other,wet,subalpine
-Salix sp.,wet,subalpine
-Sambucus racemosa,mesic,subalpine
-Symphoricarpos rotundifolius,mesic,subalpine
-S01,mesic,montane
-S02.a,mesic,subalpine
-S02.b,dry,subalpine
-S03,wet,subalpine
-S04,mesic,subalpine
-S05,dry,subalpine
-S06,wet,alpine
-S07.a,mesic,subalpine
-S07.b,wet,subalpine
-S08.a,mesic,subalpine
-S08.b,wet,subalpine
-S09,mesic,subalpine
-S10,mesic,subalpine
-S11,dry,montane
-S12,mesic,subalpine
-S13,mesic,subalpine
-S14,dry,alpine
-S15,mesic,alpine
-S16,wet,subalpine
-S17,wet,alpine
-S18,dry,montane
-S19,dry,montane
-S20,dry,montane
-S21,dry,montane
-S22,mesic,montane
-S23,disturbed,disturbed
-S24,dry,subalpine
-S25,mesic,alpine
-S26,mesic,subalpine
-Veratrum tenuipetalum,wet,subalpine
-Ligusticum porteri,mesic,subalpine
-Caltha leptosepala,wet,subalpine
-Corydalis caseana,mesic,alpine
-Osmorhiza occidentalis,mesic,subalpine
+"final_label","moisture","elevation"
+"Alnus incana","wet","montane"
+"Amelanchier alnifolia","mesic","montane"
+"Artemisia tridentata","dry","montane"
+"Betula glandulosa","mesic","subalpine"
+"Caltha leptosepala","wet","subalpine"
+"Cornus sericea","wet","montane"
+"Corydalis caseana","wet","subalpine"
+"Dasiphora fruticosa","mesic","subalpine"
+"Juniperus sp.","dry","montane"
+"Ligusticum porteri","wet","subalpine"
+"Lonicera involucrata","mesic","subalpine"
+"Osmorhiza occidentalis","mesic","subalpine"
+"Prunus virginiana","mesic","montane"
+"Purshia tridentata","dry","montane"
+"Ribes sp.","dry","subalpine"
+"S01","dry","montane"
+"S02","disturbed","disturbed"
+"S03","dry","subalpine"
+"S04","wet","subalpine"
+"S05","dry","montane"
+"S06.a","wet","subalpine"
+"S06.b","wet","subalpine"
+"S07","dry","alpine"
+"S08.a","mesic","subalpine"
+"S08.b","mesic","subalpine"
+"S08.c","mesic","alpine"
+"S09","mesic","subalpine"
+"S10","wet","subalpine"
+"S11","dry","alpine"
+"S12","mesic","alpine"
+"S13","mesic","alpine"
+"S14","wet","subalpine"
+"S15","mesic","subalpine"
+"S16","wet","alpine"
+"S17","mesic","montane"
+"S18","dry","montane"
+"S19","dry","montane"
+"S20","wet","montane"
+"S21","dry","montane"
+"S22","dry","montane"
+"S23","disturbed","disturbed"
+"S24","dry","montane"
+"S25","dry","montane"
+"S26","mesic","montane"
+"Salix boothii","wet","subalpine"
+"Salix other","wet","subalpine"
+"Salix planifolia","wet","subalpine"
+"Salix wolfii","wet","subalpine"
+"Sambucus racemosa","mesic","subalpine"
+"Symphoricarpos rotundifolius","mesic","montane"
+"Veratrum tenuipetalum","wet","subalpine"
