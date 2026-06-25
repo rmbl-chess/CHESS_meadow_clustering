@@ -7,13 +7,13 @@ Build a joint meadow + shrub classifier for NEON AOP imagery in the East River /
 The CHESS map classifier needs training samples that are (a) spectrally separable in 1 m NEON AOP imagery and (b) interpretable as recognizable plant communities. This repo:
 
 1. Reconciles 2018 + 2025 + 2026 CHESS field vegetation campaigns into one harmonized cover table.
-2. Clusters **2018 + 2025 + 2026** meadow plots (an NDVI-stratified 2018→2025 radiometric correction brings 2018/2025 onto one spectral basis; the 2026 supplemental plots are extracted directly from 2025 AOP, so they need no correction) into spectrally distinct community types, then **gated composition-subclustering** splits each spectral cluster further only where the split stays spectrally mappable. **34 meadow classes** (low-mappability sub-classes are flagged `needs_ancillary`).
+2. Clusters **2018 + 2025 + 2026** meadow plots (an NDVI-stratified 2018→2025 radiometric correction brings 2018/2025 onto one spectral basis; the 2026 supplemental plots are extracted directly from 2025 AOP, so they need no correction) into spectrally distinct community types, then **gated composition-subclustering** splits each spectral cluster further only where the split stays spectrally mappable. **35 meadow classes** (low-mappability sub-classes are flagged `needs_ancillary`).
 3. Assembles a parallel shrub training set (species-level labels, with Salix collapsed to 4 spectrally distinguishable groups). 17 shrub classes.
-4. Joins the two into a single classifier with **51 classes** (604 meadow + 323 shrub sites). Deployment features = 20 spectral PCs + snow-free DOY + canopy height (the 6 narrow-band indices are used in CV but dropped at inference).
+4. Joins the two into a single classifier with **52 classes** (632 meadow + 323 shrub sites). Deployment features = 20 spectral PCs + snow-free DOY + canopy height (the 6 narrow-band indices are used in CV but dropped at inference).
 5. Selects stratified target pixels, runs Python extraction + classification on a cloud server, and computes a per-pixel novelty + leverage score so the next field campaign targets the gaps.
 6. Produces **wall-to-wall classified + confidence COGs** per AOP domain, and a **NatureServe IVC community crosswalk** mapping each class to a recognized vegetation community.
 
-**Current state.** Joint 51-class RF reaches ~67 % CV accuracy (0.674 unweighted / 0.668 balanced) after the 2026 supplemental ALMO sagebrush campaign (56 meadow + 12 shrub plots) was folded in. Per-pixel sampling priority (5,064 basin pixels: predicted class + Mahalanobis novelty + leverage) is regenerated on the 51-class classifier. The wall-to-wall classified/confidence/labeled COGs are still on the prior 40/56-class system — **pending re-inference** (`09/10` deferred). A NatureServe crosswalk draft (`natureserve_candidates.csv`) awaits curation. See `docs/sampling_priority_guide.md` for the team-facing deliverable.
+**Current state.** Joint 52-class RF reaches ~67 % CV accuracy (0.679 unweighted / 0.674 balanced) after the 2026 supplemental campaign (98 plots across ALMO / CRBU / UPTA — 84 meadow + 12 shrub in training) was folded in. Per-pixel sampling priority (5,064 basin pixels: predicted class + Mahalanobis novelty + leverage) and the wall-to-wall classified/confidence/labeled COGs are regenerated on the 52-class classifier. A NatureServe crosswalk draft (`natureserve_candidates.csv`) awaits curation. See `docs/sampling_priority_guide.md` for the team-facing deliverable.
 
 > **Note:** the meadow PCA basis was refit and the classes resplit; inference now reads PC mosaics regenerated on the current basis (an older off-basis set caused meadow↔shrub misclassification — see Key choices).
 
@@ -56,7 +56,7 @@ R scripts are grouped into one subdirectory per phase under `code/`; each phase 
 | Step | Script | Output |
 |---|---|---|
 | Canopy height extraction | `01_canopy_height.R` | `canopy_height.rds` — 1 m NEON CHM at every crown centroid (single-point extract, all three domains in < 1 s) |
-| **Joint training set + RF** | `02_training.R` | `joint_training_set.{rds,csv}`, `punch_list.csv`. 927 sites × 51 classes; CV on 28 features but the deployed RF uses 22 (drops the 6 indices); balanced 5-fold CV ~ 67 % |
+| **Joint training set + RF** | `02_training.R` | `joint_training_set.{rds,csv}`, `punch_list.csv`. 955 sites × 52 classes; CV on 28 features but the deployed RF uses 22 (drops the 6 indices); balanced 5-fold CV ~ 67 % |
 | Inference on basin pixels | `03_predict_inference_pixels.R` | `inference_predictions.csv` — unweighted RF predictions on the 5,064 extracted meadow pixels with CHM coverage; refreshes the punch list with `predicted_n_pixels` |
 | Landscape novelty | `04_landscape_distance.R` | Mahalanobis distance from every inference pixel to every class centroid (pooled within-class covariance). `inference_pixel_distances.csv`, `novelty_by_class.csv`, `novelty_by_hex.gpkg` |
 | **Per-pixel sampling priority** | `05_sampling_priority.R` | `sampling_priority.gpkg` — leverage = `nearest_d / sqrt(n_training_for_predicted_class)` per pixel + per-class top-10 candidate sites |
@@ -97,13 +97,13 @@ Canonical artifacts under `data/derived/` (force-included via `.gitignore` excep
 
 | Path | What |
 |---|---|
-| `data/small_reference/label_community_names.csv` | Auto-drafted (curatable) narratives for the 34 meadow classes |
+| `data/small_reference/label_community_names.csv` | Auto-drafted (curatable) narratives for the 35 meadow classes |
 | `data/derived/training_samples_sites.csv` | Meadow training: one row per (plot, year) with `final_label`, confidence tier, env covariates |
 | `data/derived/training_samples_crowns.gpkg` | Meadow crown polygons for QGIS review |
 | `data/derived/shrub_training_set.csv` | Shrub training table (N=323) |
 | `data/derived/shrub_label_crosswalk.csv` | canonical_binomial → final_label mapping |
 | `data/derived/canopy_height.rds` | 1 m CHM at every crown centroid (1393 sites) |
-| `data/derived/joint_training_set.csv` | Joint meadow+shrub training (927 sites × 51 classes) |
+| `data/derived/joint_training_set.csv` | Joint meadow+shrub training (955 sites × 52 classes) |
 | `data/derived/subclass_mappability.csv` | Per split sub-class: gate CV recall + `needs_ancillary` flag |
 | `data/derived/joint_training.gpkg` | Same as above with crown geometries + class metadata |
 | `data/derived/punch_list.csv` | Class-level summary: training N, recall, predicted prevalence, top confusions, augmentation priority |
@@ -195,7 +195,7 @@ The Python feature extractor checkpoints to parquet every `--checkpoint-every` p
 
 ## Status / open questions
 
-- **`needs_ancillary` mechanism.** Sub-class splits below 0.40 CV recall are kept but flagged for later resolution with ancillary covariates (topographic wetness, phenology). In the current 34-class meadow set only S06 (k=2) and S08 (k=3) split and none are flagged — the 2026 ALMO sagebrush plots reshaped the spectral partition so the prior S01/S09/S20 sub-splits no longer form. See `subclass_mappability.csv`.
+- **`needs_ancillary` sub-classes.** Sub-class splits below 0.40 CV recall are kept but flagged for later resolution with ancillary covariates (topographic wetness, phenology). In the current 35-class meadow set S01, S04, S18, and S25 split; **S18.a/b and S25.a/b are flagged `needs_ancillary`** (the long-broad S01 finally splits a/b at recall 0.76/0.41). The split set shifts with each reclustering. See `subclass_mappability.csv`.
 - **NatureServe crosswalk is a draft.** `natureserve_candidates.csv` is top-3 per class; curating the final `class_ecosystem_crosswalk.csv` and wiring the recognized community + G-rank into the descriptions/labels is pending. `10` currently surfaces only the top-1 draft on the map.
 - **Inference is meadow-biased.** The sampling-priority set is filtered to R3D018 meadow class with strict neighborhood-purity rules; shrub leverage is undercounted. A shrub-targeted inference run is planned to balance the picture.
 - **Small-N classes need spatial diversity, not just more samples.** Prunus virginiana (n=3) and Purshia tridentata (n=4) remain concentrated in a single drainage — augmentation should prioritize new geographic locations, not just more N. The 2026 campaign rescued Alnus incana (4→9) and Cornus sericea (1→6); still-critical gaps are now Symphoricarpos rotundifolius, Lonicera involucrata, and the monotypic wet-forb meadows (Caltha, Osmorhiza) — see `punch_list.csv`.

@@ -1,52 +1,53 @@
 value,short_label,description,final_label,class_type,moisture,elevation,ns_community,ns_grank,map_label,category,color_hex
 1,Shrub - Alnus incana,Alnus incana,Alnus incana,shrub,wet,montane,NA,NA,Shrub - Alnus incana,shrubland,#606C8E
-2,Shrub - Amelanchier alnifolia,Amelanchier alnifolia,Amelanchier alnifolia,shrub,mesic,montane,NA,NA,Shrub - Amelanchier alnifolia,shrubland,#656F92
-3,Shrub - Artemisia tridentata,Artemisia tridentata,Artemisia tridentata,shrub,dry,montane,NA,NA,Shrub - Artemisia tridentata,shrubland,#6A7297
-4,Shrub - Betula glandulosa,Betula glandulosa,Betula glandulosa,shrub,mesic,subalpine,NA,NA,Shrub - Betula glandulosa,shrubland,#A693C5
-5,Caltha leptosepala,"Upper subalpine meadow, Caltha leptosepala-dominated",Caltha leptosepala,meadow,wet,subalpine,Caltha leptosepala Wet Meadow,G4,Caltha leptosepala — Caltha leptosepala Wet Meadow,wetland,#C16870
-6,Shrub - Cornus sericea,Cornus sericea,Cornus sericea,shrub,wet,montane,NA,NA,Shrub - Cornus sericea,shrubland,#6F759B
-7,Corydalis caseana,"Upper subalpine meadow, Corydalis caseana-dominated",Corydalis caseana,meadow,wet,subalpine,Heracleum maximum - Veratrum viride Wet Meadow Alliance,GNR,Corydalis caseana — Heracleum maximum - Veratrum viride Wet Meadow Alliance,wetland,#BC6267
-8,Shrub - Dasiphora fruticosa,Dasiphora fruticosa,Dasiphora fruticosa,shrub,mesic,subalpine,NA,NA,Shrub - Dasiphora fruticosa,shrubland,#AC96C9
-9,Shrub - Juniperus sp.,Juniperus sp.,Juniperus sp.,shrub,dry,montane,NA,NA,Shrub - Juniperus sp.,shrubland,#75789F
-10,Ligusticum porteri,"Subalpine meadow, Ligusticum porteri-dominated",Ligusticum porteri,meadow,wet,subalpine,Ligusticum porteri - Vicia americana Meadow,G3,Ligusticum porteri — Ligusticum porteri - Vicia americana Meadow,wetland,#D17C8C
-11,Shrub - Lonicera involucrata,Lonicera involucrata,Lonicera involucrata,shrub,mesic,subalpine,NA,NA,Shrub - Lonicera involucrata,shrubland,#B299CD
-12,Osmorhiza occidentalis,"Subalpine meadow, Osmorhiza occidentalis-dominated",Osmorhiza occidentalis,meadow,mesic,subalpine,"Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",G4,"Osmorhiza occidentalis — Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",forb_meadow,#679C67
-13,Shrub - Prunus virginiana,Prunus virginiana,Prunus virginiana,shrub,mesic,montane,NA,NA,Shrub - Prunus virginiana,shrubland,#7A7BA4
-14,Shrub - Purshia tridentata,Purshia tridentata,Purshia tridentata,shrub,dry,montane,NA,NA,Shrub - Purshia tridentata,shrubland,#7F7EA8
-15,Shrub - Ribes sp.,Ribes sp.,Ribes sp.,shrub,dry,subalpine,NA,NA,Shrub - Ribes sp.,shrubland,#B79CD1
-16,S01,"Subalpine meadow, Festuca thurberi-dominated",S01,meadow,dry,montane,Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland,G3,S01 — Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland,grassland,#CAB975
-17,S02,"Subalpine meadow, Taraxacum officinale-dominated",S02,meadow,disturbed,disturbed,Danthonia intermedia - Solidago multiradiata Grassland,G3,S02 — Danthonia intermedia - Solidago multiradiata Grassland,forb_meadow,#62955B
-18,S03,"Upper subalpine meadow, Mertensia ciliata-dominated",S03,meadow,dry,subalpine,Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland,G3,S03 — Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland,grassland,#BEA15A
-19,S04,"Subalpine meadow, Potentilla pulcherrima-dominated",S04,meadow,wet,subalpine,Heracleum maximum - Veratrum viride Wet Meadow Alliance,GNR,S04 — Heracleum maximum - Veratrum viride Wet Meadow Alliance,wetland,#C76F7A
-20,S05,"Subalpine rocky shrub-steppe, Bromopsis ciliata-dominated",S05,meadow,dry,montane,Purshia tridentata - Ribes cereum Shrubland Alliance,GNR,S05 — Purshia tridentata - Ribes cereum Shrubland Alliance,shrubland,#8A84B0
-21,S06.a,"Subalpine meadow, Heracleum maximum-dominated",S06.a,meadow,wet,subalpine,Cornus sericea / Heracleum maximum Wet Shrubland,G3,S06.a — Cornus sericea / Heracleum maximum Wet Shrubland,wetland,#DA8A9E
-22,S06.b,"Subalpine meadow, Delphinium barbeyi-dominated",S06.b,meadow,wet,subalpine,NA,NA,S06.b,wetland,#DF90A6
-23,S07,"Late-melt alpine / subalpine meadow, Tolmachevia integrifolia-dominated",S07,meadow,dry,alpine,Caltha leptosepala - Rhodiola rhodantha Wet Meadow,GNR,S07 — Caltha leptosepala - Rhodiola rhodantha Wet Meadow,forb_meadow,#526600
-24,S08.a,"Subalpine meadow, Ligusticum porteri-dominated",S08.a,meadow,mesic,subalpine,NA,NA,S08.a,forb_meadow,#5B853F
-25,S08.b,"Subalpine meadow, Veratrum tenuipetalum-dominated",S08.b,meadow,mesic,subalpine,NA,NA,S08.b,forb_meadow,#5F8D4D
-26,S08.c,"Upper subalpine meadow, Vaccinium cespitosum-dominated",S08.c,meadow,mesic,alpine,Salix glauca / Deschampsia cespitosa Wet Shrubland,G4,S08.c — Salix glauca / Deschampsia cespitosa Wet Shrubland,shrubland,#DBAEE7
-27,S09,"Upper subalpine meadow, Castilleja sulphurea-dominated",S09,meadow,mesic,subalpine,"Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",G4,"S09 — Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",forb_meadow,#56761A
-28,S10,"Subalpine meadow, Carex aquatilis-dominated",S10,meadow,wet,subalpine,Salix wolfii / Carex aquatilis Wet Shrubland,G4,S10 — Salix wolfii / Carex aquatilis Wet Shrubland,wetland,#E397AF
-29,S11,"Mid-elevation montane meadow, Festuca saximontana-dominated",S11,meadow,dry,alpine,Festuca campestris - Festuca idahoensis - Pseudoroegneria spicata Foothill Grassland Group,G4,S11 — Festuca campestris - Festuca idahoensis - Pseudoroegneria spicata Foothill Grassland Group,grassland,#B28A40
-30,S12,"Subalpine meadow, Phleum pratense-dominated",S12,meadow,mesic,alpine,NA,NA,S12,grassland,#A57227
-31,S13,"Upper subalpine meadow, Festuca idahoensis-dominated",S13,meadow,mesic,alpine,Salix wolfii / Calamagrostis canadensis Wet Shrubland,G3,S13 — Salix wolfii / Calamagrostis canadensis Wet Shrubland,shrubland,#E1B1EB
-32,S14,"Late-melt alpine / subalpine sparse meadow / shrubland, Vaccinium cespitosum-dominated",S14,meadow,wet,subalpine,Juncus parryi / Sibbaldia procumbens Alpine Snowbed,G3,S14 — Juncus parryi / Sibbaldia procumbens Alpine Snowbed,wetland,#CC7583
-33,S15,"Late-melt alpine / subalpine meadow, Bistorta bistortoides-dominated",S15,meadow,mesic,subalpine,Carex saxatilis Fen,G3,S15 — Carex saxatilis Fen,forb_meadow,#597E2F
-34,S16,"Subalpine meadow, Carex aquatilis-dominated",S16,meadow,wet,alpine,Salix wolfii / Carex aquatilis Wet Shrubland,G4,S16 — Salix wolfii / Carex aquatilis Wet Shrubland,wetland,#B65C5C
-35,S17,"Late-melt alpine / subalpine meadow, Carex aquatilis-dominated",S17,meadow,mesic,montane,Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,GNR,S17 — Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,forb_meadow,#77B38B
-36,S18,"Low-elevation sparse meadow / shrubland, Balsamorhiza sagittata-dominated",S18,meadow,dry,montane,Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,GNR,S18 — Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,shrubland,#9087B4
-37,S19,"Low-elevation rocky shrub-steppe, Chrysothamnus depressus-dominated",S19,meadow,dry,montane,Chrysothamnus viscidiflorus Shrub Grassland,GNR,S19 — Chrysothamnus viscidiflorus Shrub Grassland,shrubland,#9B8DBD
-38,S20,"Mid-elevation montane dry meadow, Carex sp.-dominated",S20,meadow,wet,montane,Salix wolfii / Carex utriculata Wet Shrubland,G4,S20 — Salix wolfii / Carex utriculata Wet Shrubland,wetland,#E89FB7
-39,S21,"Mid-elevation montane dry meadow, Carex sp.-dominated",S21,meadow,dry,montane,Sporobolus cryptandrus - Artemisia campestris Wet Meadow Alliance,GNR,S21 — Sporobolus cryptandrus - Artemisia campestris Wet Meadow Alliance,forb_meadow,#71AB80
-40,S22,"Mid-elevation montane meadow, Oxytropis deflexa-dominated",S22,meadow,dry,montane,Poa nervosa - Achnatherum lettermanii Grassland,G1,S22 — Poa nervosa - Achnatherum lettermanii Grassland,forb_meadow,#6CA474
-41,S23,"Subalpine meadow, Taraxacum officinale-dominated",S23,meadow,disturbed,disturbed,Bromus inermis - (Pascopyrum smithii) Ruderal Grassland,GNA,S23 — Bromus inermis - (Pascopyrum smithii) Ruderal Grassland,forb_meadow,#546E00
-42,S24,"Subalpine rocky shrub-steppe, Amelanchier alnifolia-dominated",S24,meadow,dry,montane,Artemisia cana ssp. bolanderi - Artemisia cana ssp. viscidula Shrub Steppe Alliance,GNR,S24 — Artemisia cana ssp. bolanderi - Artemisia cana ssp. viscidula Shrub Steppe Alliance,shrubland,#A090C1
-43,S25,"Late-melt alpine / subalpine meadow, Chamaenerion angustifolium-dominated",S25,meadow,dry,montane,Artemisia tridentata ssp. spiciformis - Artemisia tridentata ssp. vaseyana Montane Steppe Group,G4,S25 — Artemisia tridentata ssp. spiciformis - Artemisia tridentata ssp. vaseyana Montane Steppe Group,grassland,#D6D191
-44,S26,"Subalpine meadow, Agoseris glauca-dominated",S26,meadow,mesic,montane,Amelanchier alnifolia - Symphoricarpos spp. - Rhus glabra Central Rocky Mountain Shrubland Group,G4,S26 — Amelanchier alnifolia - Symphoricarpos spp. - Rhus glabra Central Rocky Mountain Shrubland Group,shrubland,#958AB9
-45,Shrub - Salix boothii,Salix boothii,Salix boothii,shrub,wet,subalpine,NA,NA,Shrub - Salix boothii,shrubland,#BD9FD5
-46,Shrub - Salix other,Salix other,Salix other,shrub,wet,subalpine,NA,NA,Shrub - Salix other,shrubland,#C3A1D9
-47,Shrub - Salix planifolia,Salix planifolia,Salix planifolia,shrub,wet,subalpine,NA,NA,Shrub - Salix planifolia,shrubland,#C9A4DC
-48,Shrub - Salix wolfii,Salix wolfii,Salix wolfii,shrub,wet,subalpine,NA,NA,Shrub - Salix wolfii,shrubland,#CFA7E0
-49,Shrub - Sambucus racemosa,Sambucus racemosa,Sambucus racemosa,shrub,mesic,subalpine,NA,NA,Shrub - Sambucus racemosa,shrubland,#D5ABE4
-50,Shrub - Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,shrub,mesic,montane,NA,NA,Shrub - Symphoricarpos rotundifolius,shrubland,#8581AC
-51,Veratrum tenuipetalum,"Subalpine meadow, Veratrum tenuipetalum-dominated",Veratrum tenuipetalum,meadow,wet,subalpine,Heracleum maximum - Veratrum viride Wet Meadow Alliance,GNR,Veratrum tenuipetalum — Heracleum maximum - Veratrum viride Wet Meadow Alliance,wetland,#D68395
+2,Shrub - Amelanchier alnifolia,Amelanchier alnifolia,Amelanchier alnifolia,shrub,mesic,montane,NA,NA,Shrub - Amelanchier alnifolia,shrubland,#657092
+3,Shrub - Artemisia tridentata,Artemisia tridentata,Artemisia tridentata,shrub,dry,montane,NA,NA,Shrub - Artemisia tridentata,shrubland,#6B7397
+4,Shrub - Betula glandulosa,Betula glandulosa,Betula glandulosa,shrub,mesic,subalpine,NA,NA,Shrub - Betula glandulosa,shrubland,#A994C7
+5,Caltha leptosepala,"Upper subalpine meadow, Caltha leptosepala-dominated",Caltha leptosepala,meadow,wet,subalpine,Caltha leptosepala Wet Meadow,G4,Caltha leptosepala — Caltha leptosepala Wet Meadow,wetland,#CE7887
+6,Shrub - Cornus sericea,Cornus sericea,Cornus sericea,shrub,wet,montane,NA,NA,Shrub - Cornus sericea,shrubland,#70769C
+7,Corydalis caseana,"Upper subalpine meadow, Corydalis caseana-dominated",Corydalis caseana,meadow,wet,subalpine,Heracleum maximum - Veratrum viride Wet Meadow Alliance,GNR,Corydalis caseana — Heracleum maximum - Veratrum viride Wet Meadow Alliance,wetland,#C8717D
+8,Shrub - Dasiphora fruticosa,Dasiphora fruticosa,Dasiphora fruticosa,shrub,mesic,subalpine,NA,NA,Shrub - Dasiphora fruticosa,shrubland,#AF98CB
+9,Shrub - Juniperus sp.,Juniperus sp.,Juniperus sp.,shrub,dry,montane,NA,NA,Shrub - Juniperus sp.,shrubland,#7679A0
+10,Ligusticum porteri,"Subalpine meadow, Ligusticum porteri-dominated",Ligusticum porteri,meadow,wet,subalpine,Ligusticum porteri - Vicia americana Meadow,G3,Ligusticum porteri — Ligusticum porteri - Vicia americana Meadow,wetland,#D38091
+11,Shrub - Lonicera involucrata,Lonicera involucrata,Lonicera involucrata,shrub,mesic,subalpine,NA,NA,Shrub - Lonicera involucrata,shrubland,#B59BD0
+12,Osmorhiza occidentalis,"Subalpine meadow, Osmorhiza occidentalis-dominated",Osmorhiza occidentalis,meadow,mesic,subalpine,"Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",G4,"Osmorhiza occidentalis — Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",forb_meadow,#5B853F
+13,Shrub - Prunus virginiana,Prunus virginiana,Prunus virginiana,shrub,mesic,montane,NA,NA,Shrub - Prunus virginiana,shrubland,#7B7CA4
+14,Shrub - Purshia tridentata,Purshia tridentata,Purshia tridentata,shrub,dry,montane,NA,NA,Shrub - Purshia tridentata,shrubland,#817FA9
+15,Shrub - Ribes sp.,Ribes sp.,Ribes sp.,shrub,dry,subalpine,NA,NA,Shrub - Ribes sp.,shrubland,#BC9ED4
+16,S01.a,"Subalpine meadow, Lathyrus lanszwertii-dominated",S01.a,meadow,mesic,subalpine,"Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",G4,"S01.a — Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",forb_meadow,#608F52
+17,S01.b,"Mid-elevation montane meadow, Festuca thurberi-dominated",S01.b,meadow,dry,montane,Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland,G3,S01.b — Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland,grassland,#D6D191
+18,S02,"Subalpine meadow, Taraxacum officinale-dominated",S02,meadow,wet,subalpine,Cardamine cordifolia - Mertensia ciliata - Senecio triangularis Wet Meadow,G4,S02 — Cardamine cordifolia - Mertensia ciliata - Senecio triangularis Wet Meadow,wetland,#C36A73
+19,S03,"Upper subalpine meadow, Mertensia ciliata-dominated",S03,meadow,mesic,montane,Aquilegia coerulea - Cirsium scopulorum Scree,GU,S03 — Aquilegia coerulea - Cirsium scopulorum Scree,forb_meadow,#689F6B
+20,S04.a,"Subalpine meadow, Veratrum tenuipetalum-dominated",S04.a,meadow,wet,subalpine,Heracleum maximum - Veratrum viride Wet Meadow Alliance,GNR,S04.a — Heracleum maximum - Veratrum viride Wet Meadow Alliance,wetland,#E397AE
+21,S04.b,"Subalpine meadow, Ligusticum porteri-dominated",S04.b,meadow,wet,subalpine,Ligusticum porteri - Vicia americana Meadow,G3,S04.b — Ligusticum porteri - Vicia americana Meadow,wetland,#DE8FA5
+22,S05,"Subalpine rocky shrub-steppe, Bromopsis ciliata-dominated",S05,meadow,dry,alpine,Caltha leptosepala - Rhodiola rhodantha Wet Meadow,GNR,S05 — Caltha leptosepala - Rhodiola rhodantha Wet Meadow,forb_meadow,#526600
+23,S06,"Upper subalpine meadow, Arnica mollis-dominated",S06,meadow,mesic,subalpine,Deschampsia cespitosa - Achillea millefolium var. occidentalis Wet Meadow,G5,S06 — Deschampsia cespitosa - Achillea millefolium var. occidentalis Wet Meadow,forb_meadow,#557101
+24,S07,"Late-melt alpine / subalpine meadow, Tolmachevia integrifolia-dominated",S07,meadow,mesic,subalpine,NA,NA,S07,forb_meadow,#587B29
+25,S08,"Upper subalpine meadow, Castilleja sulphurea-dominated",S08,meadow,mesic,subalpine,"Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",G4,"S08 — Festuca thurberi - (Lathyrus lanszwertii, Potentilla spp.) Grassland",forb_meadow,#56761A
+26,S09,"Upper subalpine meadow, Castilleja sulphurea-dominated",S09,meadow,wet,subalpine,Salix wolfii / Carex aquatilis Wet Shrubland,G4,S09 — Salix wolfii / Carex aquatilis Wet Shrubland,wetland,#E89FB7
+27,S10,"Subalpine meadow, Carex aquatilis-dominated",S10,meadow,dry,subalpine,Leymus innovatus - Festuca idahoensis - Leucopoa kingii Grassland Group,G4,S10 — Leymus innovatus - Festuca idahoensis - Leucopoa kingii Grassland Group,grassland,#BEA15A
+28,S11,"Mid-elevation montane meadow, Festuca saximontana-dominated",S11,meadow,mesic,subalpine,NA,NA,S11,grassland,#A57227
+29,S12,"Subalpine meadow, Phleum pratense-dominated",S12,meadow,mesic,alpine,Salix wolfii / Calamagrostis canadensis Wet Shrubland,G3,S12 — Salix wolfii / Calamagrostis canadensis Wet Shrubland,shrubland,#E1B1EB
+30,S13,"Upper subalpine meadow, Festuca idahoensis-dominated",S13,meadow,wet,subalpine,Juncus parryi / Sibbaldia procumbens Alpine Snowbed,G3,S13 — Juncus parryi / Sibbaldia procumbens Alpine Snowbed,wetland,#BD6368
+31,S14,"Late-melt alpine / subalpine sparse meadow / shrubland, Vaccinium cespitosum-dominated",S14,meadow,disturbed,disturbed,Salix wolfii / Carex aquatilis Wet Shrubland,G4,S14 — Salix wolfii / Carex aquatilis Wet Shrubland,forb_meadow,#5E8A49
+32,S15,"Late-melt alpine / subalpine meadow, Bistorta bistortoides-dominated",S15,meadow,wet,alpine,Salix wolfii / Carex aquatilis Wet Shrubland,G4,S15 — Salix wolfii / Carex aquatilis Wet Shrubland,wetland,#B65C5C
+33,S16,"Subalpine meadow, Carex aquatilis-dominated",S16,meadow,mesic,montane,Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,GNR,S16 — Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,forb_meadow,#6CA474
+34,S17,"Late-melt alpine / subalpine meadow, Carex aquatilis-dominated",S17,meadow,dry,montane,Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,GNR,S17 — Artemisia tridentata ssp. vaseyana / Balsamorhiza sagittata Shrubland,shrubland,#988BBB
+35,S18.a,"Low-elevation meadow, Artemisia tridentata-dominated",S18.a,meadow,dry,montane,Artemisia tridentata ssp. spiciformis - Artemisia tridentata ssp. vaseyana Montane Steppe Group,G4,S18.a — Artemisia tridentata ssp. spiciformis - Artemisia tridentata ssp. vaseyana Montane Steppe Group,shrubland,#9288B6
+36,S18.b,"Low-elevation sparse meadow / shrubland, Ericameria nauseosa-dominated",S18.b,meadow,dry,montane,Chrysothamnus viscidiflorus - Ericameria nauseosa - Krascheninnikovia lanata Steppe Group,G4,S18.b — Chrysothamnus viscidiflorus - Ericameria nauseosa - Krascheninnikovia lanata Steppe Group,shrubland,#8C85B2
+37,S19,"Low-elevation rocky shrub-steppe, Chrysothamnus depressus-dominated",S19,meadow,dry,montane,Sporobolus cryptandrus - Artemisia campestris Wet Meadow Alliance,GNR,S19 — Sporobolus cryptandrus - Artemisia campestris Wet Meadow Alliance,forb_meadow,#659A63
+38,S20,"Mid-elevation montane dry meadow, Carex sp.-dominated",S20,meadow,dry,montane,Purshia tridentata - Ribes cereum Shrubland Alliance,GNR,S20 — Purshia tridentata - Ribes cereum Shrubland Alliance,forb_meadow,#6FA97C
+39,S21,"Mid-elevation montane dry meadow, Carex sp.-dominated",S21,meadow,dry,montane,Amelanchier alnifolia - Symphoricarpos spp. - Rhus glabra Central Rocky Mountain Shrubland Group,G4,S21 — Amelanchier alnifolia - Symphoricarpos spp. - Rhus glabra Central Rocky Mountain Shrubland Group,forb_meadow,#62955B
+40,S22,"Mid-elevation montane meadow, Oxytropis deflexa-dominated",S22,meadow,disturbed,disturbed,Carex saxatilis Fen,G3,S22 — Carex saxatilis Fen,forb_meadow,#536C00
+41,S23,"Subalpine meadow, Taraxacum officinale-dominated",S23,meadow,dry,montane,Artemisia cana ssp. bolanderi - Artemisia cana ssp. viscidula Shrub Steppe Alliance,GNR,S23 — Artemisia cana ssp. bolanderi - Artemisia cana ssp. viscidula Shrub Steppe Alliance,shrubland,#A391C3
+42,S24,"Subalpine rocky shrub-steppe, Amelanchier alnifolia-dominated",S24,meadow,mesic,subalpine,Salix wolfii / Fragaria virginiana Wet Shrubland,G4,S24 — Salix wolfii / Fragaria virginiana Wet Shrubland,forb_meadow,#5A8035
+43,S25.a,"Low-elevation sparse meadow / shrubland, Opuntia polyacantha-dominated",S25.a,meadow,dry,montane,NA,NA,S25.a,forb_meadow,#73AE83
+44,S25.b,"Low-elevation sparse meadow / shrubland, Populus tremuloides-dominated",S25.b,meadow,mesic,montane,Artemisia tridentata ssp. spiciformis - Artemisia tridentata ssp. vaseyana Montane Steppe Group,G4,S25.b — Artemisia tridentata ssp. spiciformis - Artemisia tridentata ssp. vaseyana Montane Steppe Group,forb_meadow,#77B38B
+45,S26,"Subalpine meadow, Agoseris glauca-dominated",S26,meadow,mesic,montane,Amelanchier alnifolia - Symphoricarpos spp. - Rhus glabra Central Rocky Mountain Shrubland Group,G4,S26 — Amelanchier alnifolia - Symphoricarpos spp. - Rhus glabra Central Rocky Mountain Shrubland Group,shrubland,#9E8EBF
+46,Shrub - Salix boothii,Salix boothii,Salix boothii,shrub,wet,subalpine,NA,NA,Shrub - Salix boothii,shrubland,#C2A1D8
+47,Shrub - Salix other,Salix other,Salix other,shrub,wet,subalpine,NA,NA,Shrub - Salix other,shrubland,#C8A4DC
+48,Shrub - Salix planifolia,Salix planifolia,Salix planifolia,shrub,wet,subalpine,NA,NA,Shrub - Salix planifolia,shrubland,#CEA7E0
+49,Shrub - Salix wolfii,Salix wolfii,Salix wolfii,shrub,wet,subalpine,NA,NA,Shrub - Salix wolfii,shrubland,#D4AAE3
+50,Shrub - Sambucus racemosa,Sambucus racemosa,Sambucus racemosa,shrub,mesic,subalpine,NA,NA,Shrub - Sambucus racemosa,shrubland,#DAADE7
+51,Shrub - Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,shrub,mesic,montane,NA,NA,Shrub - Symphoricarpos rotundifolius,shrubland,#8682AD
+52,Veratrum tenuipetalum,"Subalpine meadow, Veratrum tenuipetalum-dominated",Veratrum tenuipetalum,meadow,wet,subalpine,Heracleum maximum - Veratrum viride Wet Meadow Alliance,GNR,Veratrum tenuipetalum — Heracleum maximum - Veratrum viride Wet Meadow Alliance,wetland,#D9879B
