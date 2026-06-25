@@ -27,7 +27,11 @@ Export dated snapshots to the team Google Drive (`.../Sampling_Priority_2026/dat
 | `n_total` | Number of training sites for the predicted class. |
 | `balanced_recall` | Class-weighted RF CV recall for that class (from `02_training.R`). |
 | `predicted_n_pixels` | How many of the 5,064 inference pixels the unweighted RF assigns to this class (from `03_predict_inference_pixels.R`). |
-| `leverage` | Composite priority score (see below). |
+| `leverage` | Raw composite priority score (see below). Kept for context — **do not rank on this directly** (it favours sparse/bare pixels). |
+| `ndvi`, `pct_cover_est` | Pixel NDVI and estimated % live plant cover (NDVI→cover calibration from training plots; approximate at the low end — see caveats). |
+| `meets_cover_min` | `TRUE` when `pct_cover_est` ≥ 25 % — i.e., a viable field target. |
+| **`leverage_gated`** | **The fieldwork ranking.** Equals `leverage` for vegetated targets, `0` below the 25 % cover minimum (so sparse bare/rock/dry pixels sink to the bottom). |
+| `leverage_gated_rank` | Rank by `leverage_gated` (1 = top target). |
 | `augmentation_priority` | Bucket: `critical` / `high` / `medium` / `ok`. |
 | `snow_free_doy`, `canopy_height_m` | Site covariates pulled at the pixel. |
 
@@ -59,14 +63,21 @@ leverage = nearest_d / sqrt(n_training_for_predicted_class)
 
 Multiplying these two signals captures the kind of pixel a new field plot helps the most with: spectrally novel *and* assigned to an under-trained class. The marginal value of one new sample falls as roughly `1/√n` for many learners, hence the square-root denominator. Pixels with high leverage are also where the classifier is most likely to be wrong on the final map.
 
+### Vegetation-cover gate (use `leverage_gated`, not raw `leverage`)
+
+Raw `leverage` rewards spectral *novelty*, and the most novel pixels are usually **sparsely vegetated** — bare soil, rock, or very dry ground (`leverage` is ≈ −0.5 correlated with NDVI). Those aren't valid field plots: crews target sites with **≥ 25 % live plant cover**. We calibrate an NDVI → live-cover relation from the training plots (which carry measured % cover; `live_frac = 8.6 + 91.6·NDVI`, R² ≈ 0.63, so 25 % cover ≈ NDVI 0.18), estimate `pct_cover_est` per pixel, and set **`leverage_gated` = `leverage` for pixels ≥ 25 % cover, else 0**. Only ~1.6 % of pixels are gated out, but they were the entire top of the raw-leverage list (sagebrush — NDVI 0.3–0.45, ~40 % cover — stays a valid target). **Rank on `leverage_gated`.**
+
+> The 25 % boundary is an *extrapolation*: all training plots are well-vegetated (lowest ~35 % cover), so `pct_cover_est` is approximate near the threshold. The cutoff is tunable (`cover_min_pct` in `05_sampling_priority.R`); inspect `pct_cover_est` against imagery before trusting borderline calls.
+
 ## How to use it in QGIS / in the field
 
-1. **Load** `Meadow_shrub_sampling_priority_2026_5_19.gpkg` in QGIS.
-2. **Symbolize** the points: graduated colors on `leverage` (quantile bins). Highest-leverage pixels jump out visually.
-3. **Filter** by `augmentation_priority IN ('critical', 'high')` to focus on the urgent classes first.
-4. **Label** points by `class_description` so the predicted vegetation type shows on the map.
-5. **Cross-check** with `Meadow_shrub_class_summary_table_2026_5_19.csv` for a class-level summary (training N, recall, predicted area, indicator taxa, top confusions) before heading out.
-6. **See existing training** by overlaying `Meadow_shrub_joint_training_2026_05_19.gpkg` (the `training_sites_points` layer) so you can avoid re-sampling well-covered classes.
+1. **Load** `sampling_priority.gpkg` in QGIS.
+2. **Filter out non-targets first:** `meets_cover_min = TRUE` (drops the sparse bare/rock/dry pixels).
+3. **Symbolize** the points: graduated colors on **`leverage_gated`** (quantile bins). Highest-priority *vegetated* pixels jump out.
+4. **Filter** by `augmentation_priority IN ('critical', 'high')` to focus on the urgent classes first.
+5. **Label** points by `class_description` so the predicted vegetation type shows on the map.
+6. **Cross-check** with `class_summary_table.csv` for a class-level summary (training N, recall, predicted area, indicator taxa, top confusions) before heading out.
+7. **See existing training** by overlaying `joint_training.gpkg` (the `training_sites_points` layer) so you can avoid re-sampling well-covered classes.
 
 ## What the priority buckets mean
 

@@ -94,9 +94,11 @@ class_extra <- tibble::tibble(
   dplyr::select(final_label, indicator_taxa, abundant_taxa, physiognomy,
                 description, short_label)
 
+# Use cover-gated leverage (sub-25%-cover pixels = 0) so a class predicted
+# mostly on sparse/bare pixels isn't credited with inflated priority.
 med_lev <- spri |>
   dplyr::group_by(predicted_label) |>
-  dplyr::summarise(median_leverage = stats::median(leverage, na.rm = TRUE),
+  dplyr::summarise(median_leverage = stats::median(leverage_gated, na.rm = TRUE),
                    .groups = "drop") |>
   dplyr::rename(final_label = predicted_label)
 
