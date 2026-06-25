@@ -32,8 +32,8 @@ Required packages: icechunk xarray numpy pandas shapely  (NOT geopandas).
 
 Usage (Hub, conda chess-hub):
     python code/python/extract_supplemental_spectra.py \\
-        --polygons data/raw/Supplemental_field_2026/augment_polygons_2026_06_04_wgs_utm.geojson \\
-        --cover    data/raw/Supplemental_field_2026/augment_cover_cleaned_2026_06_04.csv \\
+        --polygons data/raw/Supplemental_field_2026/augment_polygons_2026_06_23_wgs_utm.geojson \\
+        --cover    data/raw/Supplemental_field_2026/augment_cover_cleaned_2026_06_23.csv \\
         --year     2025 \\
         --output   "data/raw/ESS-DIVE-Spectra/site_extraction_spectra_2026.csv"
 """
@@ -57,14 +57,15 @@ logger = logging.getLogger("extract_supplemental_spectra")
 NO_DATA_SENTINEL = -9000.0
 N_BANDS = 426
 
-# Domain extents (EPSG:32613) from the 3 m CHM rasters. ALMO is tested first;
-# the two CRBU sites fall outside ALMO's box, so ALMO-first cleanly yields
-# 67 ALMO / 2 CRBU.
+# Domain extents (EPSG:32613) from the 3 m CHM rasters. The three boxes are
+# effectively disjoint (no x/y overlap between ALMO/CRBU/UPTA), so centroid-in-
+# bbox assigns cleanly; ALMO is tested first as a tie-break safeguard.
 DOMAIN_BBOX = {
     "ALMO": (337000.0, 356002.0, 4273998.0, 4299000.0),   # xmin,xmax,ymin,ymax
     "CRBU": (315000.0, 338001.0, 4297000.0, 4327000.0),
+    "UPTA": (343000.0, 363001.0, 4302000.0, 4326000.0),
 }
-DOMAIN_ORDER = ("ALMO", "CRBU")
+DOMAIN_ORDER = ("ALMO", "CRBU", "UPTA")
 
 # Shrub genera (mirror code/shrub/01_load.R) — used only to label site_type.
 SHRUB_GENERA = {

@@ -72,7 +72,7 @@ cover_2025 <- cover_2025 |>
 # no separate species_list (Cover_Class_Name is already the binomial). Spectra
 # are extracted from 2025 AOP by code/python/extract_supplemental_spectra.py.
 cover_2026 <- readr::read_csv(
-  file.path(raw_2026, "augment_cover_cleaned_2026_06_04.csv"),
+  file.path(raw_2026, "augment_cover_cleaned_2026_06_23.csv"),
   show_col_types = FALSE) |>
   dplyr::rename(site_number = Site_Number) |>
   dplyr::mutate(site_number = as.integer(site_number))
@@ -93,7 +93,7 @@ crowns_2025 <- sf::st_read(file.path(raw_spec, "CHESS_2025_crowns (1).geojson"),
 # backfilled below from the extracted spectra (the python extractor is the
 # authoritative source for both); force to MULTIPOLYGON to match 2025.
 crowns_2026 <- sf::st_read(
-  file.path(raw_2026, "augment_polygons_2026_06_04_wgs_utm.geojson"),
+  file.path(raw_2026, "augment_polygons_2026_06_23_wgs_utm.geojson"),
   quiet = TRUE) |>
   sf::st_zm(drop = TRUE) |>
   sf::st_transform(32613) |>

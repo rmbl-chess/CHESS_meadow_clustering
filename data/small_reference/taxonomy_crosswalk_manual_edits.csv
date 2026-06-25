@@ -10,3 +10,6 @@ campaign,raw_name,canonical_name,gbif_id,needs_review,note
 2026,Pusatilla nuttalliana,Pulsatilla nuttalliana,,FALSE,"2026 cover misspelled ""Pusatilla""; canonical Pulsatilla nuttalliana (= Anemone patens, pasqueflower)."
 2026,Bromus tectortum,Bromus tectorum,,FALSE,"2026 cover misspelled ""tectortum""; canonical Bromus tectorum (cheatgrass)."
 2026,Sedge,Carex,,TRUE,"Generic ""Sedge"" Named-Species token; resolved to genus Carex. needs_review — no species-level ID."
+2026,Lewisia pygmea,Lewisia pygmaea,,FALSE,"2026_06_23 batch misspelled ""pygmea""; canonical Lewisia pygmaea (alpine lewisia)."
+2026,Potentilla sp,Potentilla,,TRUE,"Generic ""Potentilla sp"" Named-Species token; resolved to genus Potentilla. needs_review — no species-level ID."
+2026,Clematis hirsuta,Clematis hirsutissima,,TRUE,"2026_06_23 batch ""Clematis hirsuta"" (a European sp.); almost certainly the RMBL native C. hirsutissima (sugarbowls). needs_review."
