@@ -1,35 +1,36 @@
 final_label,n_sites,n_2018,n_2025,recall,tier,snow_free_doy_mean,top_indicator,top_abundant,bare_pct,npv_pct,narrative_draft,narrative_curated,notes,short_label
-S25,26,0,1,0.9615384615384616,strong,87.04109500004695,Poa secunda,Artemisia tridentata,29.8,23.3,"Late-melt alpine / subalpine meadow, Chamaenerion angustifolium-dominated",NA,NA,NA
-S05,14,1,4,0.42857142857142855,weak,95.7889518737793,Purshia tridentata,Purshia tridentata,13.2,23.2,"Subalpine rocky shrub-steppe, Bromopsis ciliata-dominated",NA,NA,NA
-S18,6,0,6,0.8333333333333334,strong,100.78671391805013,Chrysothamnus depressus,Chrysothamnus depressus,55,6.7,"Low-elevation sparse meadow / shrubland, Balsamorhiza sagittata-dominated",NA,NA,NA
-S26,5,0,0,1,strong,100.873388671875,Prunus virginiana,Symphoricarpos rotundifolius,2,21,"Subalpine meadow, Agoseris glauca-dominated",NA,NA,NA
-S19,42,0,37,0.7857142857142857,marginal,103.19294738769531,Chrysothamnus viscidiflorus,Artemisia tridentata,29.2,21.9,"Low-elevation rocky shrub-steppe, Chrysothamnus depressus-dominated",NA,NA,NA
-S17,35,0,27,0.8857142857142857,strong,105.0851566859654,Wyethia amplexicaulis,Symphoricarpos rotundifolius,22.9,14.7,"Late-melt alpine / subalpine meadow, Carex aquatilis-dominated",NA,NA,NA
-S21,24,0,23,0.7916666666666666,marginal,121.71957365671794,Oxytropis deflexa,Oxytropis deflexa,NA,24.2,"Mid-elevation montane dry meadow, Carex sp.-dominated",NA,NA,NA
-S20,12,0,11,0.6666666666666666,marginal,123.03874079386394,Carex sp.,Carex sp.,NA,44.6,"Mid-elevation montane dry meadow, Carex sp.-dominated",NA,NA,NA
-S24,10,0,9,0.8,strong,126.52250595092774,Artemisia cana,Potentilla hippiana,9,47,"Subalpine rocky shrub-steppe, Amelanchier alnifolia-dominated",NA,NA,NA
-S01,57,23,34,0.9298245614035088,strong,130.66401070042662,Festuca thurberi,Artemisia tridentata,5.4,20.6,"Subalpine meadow, Festuca thurberi-dominated",NA,NA,NA
-S22,13,0,13,1,strong,133.669188279372,Eriogonum umbellatum,Eriogonum umbellatum,46.2,14.2,"Mid-elevation montane meadow, Oxytropis deflexa-dominated",NA,NA,NA
-S10,7,1,6,0.5714285714285714,marginal,137.8177490234375,Carex aquatilis,Carex aquatilis,2.1,11.4,"Subalpine meadow, Carex aquatilis-dominated",NA,NA,NA
-S06.b,12,3,9,0.16666666666666666,weak,139.7853775024414,Delphinium barbeyi,Delphinium barbeyi,14.6,15.4,"Subalpine meadow, Delphinium barbeyi-dominated",NA,NA,NA
+S25.b,9,0,0,0.1111111111111111,weak,85.20569652981229,Populus tremuloides,Artemisia tridentata,25,22.2,"Low-elevation sparse meadow / shrubland, Populus tremuloides-dominated",NA,NA,NA
+S25.a,18,0,0,0.8333333333333334,strong,88.43236541748047,Opuntia polyacantha,Purshia tridentata,32.5,23.6,"Low-elevation sparse meadow / shrubland, Opuntia polyacantha-dominated",NA,NA,NA
+S20,18,0,2,0.7222222222222222,marginal,98.98016569349501,Tetradymia canescens,Artemisia tridentata,33.3,19.7,"Mid-elevation montane dry meadow, Carex sp.-dominated",NA,NA,NA
+S18.b,33,0,27,0.8181818181818182,strong,100.5948530254942,Ericameria nauseosa,Purshia tridentata,26.7,23.5,"Low-elevation sparse meadow / shrubland, Ericameria nauseosa-dominated",NA,NA,NA
+S18.a,9,0,8,0,weak,100.79178788926866,Artemisia tridentata,Artemisia tridentata,15.6,18.9,"Low-elevation meadow, Artemisia tridentata-dominated",NA,NA,NA
+S17,7,0,6,0.8571428571428571,strong,102.19395555768695,Chrysothamnus depressus,Chrysothamnus depressus,55.7,6.4,"Late-melt alpine / subalpine meadow, Carex aquatilis-dominated",NA,NA,NA
+S26,6,0,0,0.8333333333333334,strong,103.9446538289388,Prunus virginiana,Symphoricarpos rotundifolius,1.7,19.2,"Subalpine meadow, Agoseris glauca-dominated",NA,NA,NA
+S16,29,0,20,0.7931034482758621,marginal,104.47110748291016,Wyethia amplexicaulis,Wyethia amplexicaulis,16.9,15.5,"Subalpine meadow, Carex aquatilis-dominated",NA,NA,NA
+S03,10,1,1,1,strong,116.38345413208008,Aquilegia coerulea,Festuca thurberi,NA,36.5,"Upper subalpine meadow, Mertensia ciliata-dominated",NA,NA,NA
+S19,25,0,23,0.8,strong,121.51397766113281,Oxytropis deflexa,Oxytropis deflexa,NA,24.4,"Low-elevation rocky shrub-steppe, Chrysothamnus depressus-dominated",NA,NA,NA
+S01.b,34,6,28,0.5,marginal,125.13214739631204,Festuca thurberi,Festuca thurberi,10,24.6,"Mid-elevation montane meadow, Festuca thurberi-dominated",NA,NA,NA
+S23,19,0,11,0.7894736842105263,marginal,128.4079216404965,Artemisia cana,Artemisia tridentata,8.2,42.9,"Subalpine meadow, Taraxacum officinale-dominated",NA,NA,NA
+S21,13,0,13,1,strong,133.669188279372,Eriogonum umbellatum,Eriogonum umbellatum,46.2,14.2,"Mid-elevation montane dry meadow, Carex sp.-dominated",NA,NA,NA
+S01.a,54,21,33,0.6851851851851852,marginal,136.29086840594258,Lathyrus lanszwertii,Lathyrus lanszwertii,11.4,15.4,"Subalpine meadow, Lathyrus lanszwertii-dominated",NA,NA,NA
+S14,28,1,27,0.8928571428571429,strong,137.26829501560755,Taraxacum officinale,Carex aquatilis,11.2,14.8,"Late-melt alpine / subalpine sparse meadow / shrubland, Vaccinium cespitosum-dominated",NA,NA,NA
+S09,6,1,5,0.6666666666666666,marginal,137.715576171875,Pedicularis groenlandica,Carex aquatilis,2.5,10,"Upper subalpine meadow, Castilleja sulphurea-dominated",NA,NA,NA
 Osmorhiza occidentalis,5,5,0,0,weak,140.229052734375,Osmorhiza occidentalis,Osmorhiza occidentalis,NA,4,"Subalpine meadow, Osmorhiza occidentalis-dominated",NA,NA,NA
-S02,21,2,19,0.6190476190476191,marginal,141.04442887079148,Taraxacum officinale,Taraxacum officinale,NA,11.7,"Subalpine meadow, Taraxacum officinale-dominated",NA,NA,NA
-S08.b,10,4,6,0.1,weak,142.16327056884765,Helianthella quinquenervis,Helianthella quinquenervis,18.5,12.5,"Subalpine meadow, Veratrum tenuipetalum-dominated",NA,NA,NA
-S06.a,13,9,4,0.38461538461538464,weak,144.69540757399338,Heracleum maximum,Ligusticum porteri,3.8,3.8,"Subalpine meadow, Heracleum maximum-dominated",NA,NA,NA
-Veratrum tenuipetalum,17,12,5,0.35294117647058826,weak,144.98740611356848,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,3.8,"Subalpine meadow, Veratrum tenuipetalum-dominated",NA,NA,NA
-S08.a,32,25,7,0.75,marginal,145.53307914733887,Heliomeris multiflora,Heliomeris multiflora,10.9,13.3,"Subalpine meadow, Ligusticum porteri-dominated",NA,NA,NA
-Ligusticum porteri,12,10,2,0.08333333333333333,weak,146.2771759033203,Ligusticum porteri,Ligusticum porteri,1.7,1.7,"Subalpine meadow, Ligusticum porteri-dominated",NA,NA,NA
-S15,21,1,20,0.8571428571428571,strong,147.4528605143229,Agoseris glauca,Carex aquatilis,NA,13.3,"Late-melt alpine / subalpine meadow, Bistorta bistortoides-dominated",NA,NA,NA
-S03,32,13,19,0.65625,marginal,149.64809370040894,Festuca thurberi,Festuca thurberi,10.6,18.6,"Upper subalpine meadow, Mertensia ciliata-dominated",NA,NA,NA
-S14,34,5,29,0.8529411764705882,strong,150.302001953125,Juncus parryi,Eriogonum umbellatum,23.8,17.6,"Late-melt alpine / subalpine sparse meadow / shrubland, Vaccinium cespitosum-dominated",NA,NA,NA
-S09,24,21,3,0.75,marginal,150.85312143961588,Castilleja sulphurea,Ligusticum porteri,NA,7.9,"Upper subalpine meadow, Castilleja sulphurea-dominated",NA,NA,NA
-S04,19,9,10,0.631578947368421,marginal,152.15458598889802,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,2.1,"Subalpine meadow, Potentilla pulcherrima-dominated",NA,NA,NA
+S04.a,13,10,3,0.6923076923076923,marginal,143.52343163123498,Veratrum tenuipetalum,Veratrum tenuipetalum,1.5,1.9,"Subalpine meadow, Veratrum tenuipetalum-dominated",NA,NA,NA
+S04.b,22,9,13,0.5454545454545454,marginal,143.71130648526278,Ligusticum porteri,Ligusticum porteri,9.8,10.5,"Subalpine meadow, Ligusticum porteri-dominated",NA,NA,NA
+S24,14,0,14,1,strong,143.84774235316686,Agoseris glauca,Achillea millefolium,NA,11.8,"Subalpine rocky shrub-steppe, Amelanchier alnifolia-dominated",NA,NA,NA
+Veratrum tenuipetalum,17,12,5,0.5294117647058824,marginal,144.98740611356848,Veratrum tenuipetalum,Veratrum tenuipetalum,NA,3.8,"Subalpine meadow, Veratrum tenuipetalum-dominated",NA,NA,NA
+Ligusticum porteri,12,10,2,0.25,weak,146.2771759033203,Ligusticum porteri,Ligusticum porteri,1.7,1.7,"Subalpine meadow, Ligusticum porteri-dominated",NA,NA,NA
+S07,55,33,22,0.8727272727272727,strong,147.2572010387074,Heliomeris multiflora,Heliomeris multiflora,12.4,12.5,"Late-melt alpine / subalpine meadow, Tolmachevia integrifolia-dominated",NA,NA,NA
+S08,23,20,3,0.782608695652174,marginal,150.43429432744566,Castilleja sulphurea,Ligusticum porteri,NA,7.8,"Upper subalpine meadow, Castilleja sulphurea-dominated",NA,NA,NA
+S10,15,15,0,0.8,strong,150.86789245605468,Festuca idahoensis,Helianthella quinquenervis,9.7,NA,"Subalpine meadow, Carex aquatilis-dominated",NA,NA,NA
 Caltha leptosepala,5,3,2,0,weak,153.60030822753907,Caltha leptosepala,Caltha leptosepala,2,NA,"Upper subalpine meadow, Caltha leptosepala-dominated",NA,NA,NA
-Corydalis caseana,5,5,0,0,weak,156.65664978027343,Corydalis caseana,Corydalis caseana,0,0,"Upper subalpine meadow, Corydalis caseana-dominated",NA,NA,NA
-S08.c,11,1,10,0.6363636363636364,marginal,160.22101107510653,Vaccinium cespitosum,Vaccinium cespitosum,11.8,9.1,"Upper subalpine meadow, Vaccinium cespitosum-dominated",NA,NA,NA
-S11,31,29,2,0.8387096774193549,strong,161.44478582566785,Festuca idahoensis,Ligusticum porteri,7.6,6.6,"Mid-elevation montane meadow, Festuca saximontana-dominated",NA,NA,NA
-S13,13,2,10,0.5384615384615384,marginal,162.439693744366,Vaccinium cespitosum,Vaccinium cespitosum,28.1,11.2,"Upper subalpine meadow, Festuca idahoensis-dominated",NA,NA,NA
-S12,8,1,7,1,strong,163.37217903137207,Bromopsis ciliata,Heterotheca villosa,34.4,11.2,"Subalpine meadow, Phleum pratense-dominated",NA,NA,NA
-S23,13,0,13,0.8461538461538461,strong,165.26896784855768,Chamaenerion angustifolium,Bromopsis inermis,21.5,14.6,"Subalpine meadow, Taraxacum officinale-dominated",NA,NA,NA
-S16,1,1,0,0,weak,170.93634033203125,Carex aquatilis,Carex aquatilis,0,0,"Subalpine meadow, Carex aquatilis-dominated",NA,NA,NA
-S07,14,13,1,0.8571428571428571,strong,171.0537109375,Tolmachevia integrifolia,Caltha leptosepala,NA,3.6,"Late-melt alpine / subalpine meadow, Tolmachevia integrifolia-dominated",NA,NA,NA
+S11,18,1,17,0.9444444444444444,strong,154.46578894721137,Bromopsis ciliata,Heterotheca villosa,43.1,11.1,"Mid-elevation montane meadow, Festuca saximontana-dominated",NA,NA,NA
+S06,38,18,20,0.7105263157894737,marginal,155.30874794407896,Arnica mollis,Ligusticum porteri,9.9,15.5,"Upper subalpine meadow, Arnica mollis-dominated",NA,NA,NA
+Corydalis caseana,5,5,0,0.4,weak,156.65664978027343,Corydalis caseana,Corydalis caseana,0,0,"Upper subalpine meadow, Corydalis caseana-dominated",NA,NA,NA
+S02,9,2,7,0.6666666666666666,marginal,157.99428982204861,Mertensia ciliata,Mertensia ciliata,0,2.2,"Subalpine meadow, Taraxacum officinale-dominated",NA,NA,NA
+S13,14,5,9,0.7857142857142857,marginal,158.98419298444475,Carex sp.,Carex sp.,NA,30.4,"Upper subalpine meadow, Festuca idahoensis-dominated",NA,NA,NA
+S12,14,2,12,0.7142857142857143,marginal,165.55609239850725,Vaccinium cespitosum,Vaccinium cespitosum,22.1,12.5,"Subalpine meadow, Phleum pratense-dominated",NA,NA,NA
+S22,15,0,15,0.8666666666666667,strong,165.80872497558593,Chamaenerion angustifolium,Carex saxatilis,18.7,15,"Mid-elevation montane meadow, Oxytropis deflexa-dominated",NA,NA,NA
+S05,19,18,1,0.7368421052631579,marginal,170.8135657059519,Tolmachevia integrifolia,Caltha leptosepala,NA,3.7,"Subalpine rocky shrub-steppe, Bromopsis ciliata-dominated",NA,NA,NA
+S15,1,1,0,0,weak,170.93634033203125,Carex aquatilis,Carex aquatilis,0,0,"Late-melt alpine / subalpine meadow, Bistorta bistortoides-dominated",NA,NA,NA

@@ -114,7 +114,7 @@ wl_2025      <- readr::read_csv(file.path(raw_spec, "wavelengths_2025.csv"),
 # 2026 spectra (extracted from 2025 AOP on the Hub). Same schema + wavelength
 # grid as 2025. Guarded so the rest of the pipeline runs before the Hub
 # extraction lands; domain/site_type from the extractor are authoritative.
-spectra_2026_path <- file.path(raw_spec, "site_extraction_spectra_2026.csv")
+spectra_2026_path <- file.path(raw_spec, "site_extraction_spectra_2026_06_25.csv")
 have_2026_spectra <- file.exists(spectra_2026_path)
 if (have_2026_spectra) {
   spectra_2026 <- readr::read_csv(spectra_2026_path, show_col_types = FALSE) |>
