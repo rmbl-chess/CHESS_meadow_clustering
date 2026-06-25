@@ -19,7 +19,8 @@
 #
 # Inputs (all on the current 2025-fit PCA basis):
 #   data/derived/joint_training_set.rds        (spec_PC01..20, Year, class_type)
-#   data/derived/extract_meadow_spectra_6k_v1.csv  (random pixel PCs)
+#   data/derived/inference_predictions.csv     (random pixel PCs, current basis,
+#                                               written by 03 — NOT the stale 6k file)
 #   data/derived/sampling_priority.gpkg        (leverage per pixel)
 #   data/derived/composition_species.rds       (meadow Hellinger)
 #   data/derived/final_clusters_B.rds          (meadow class membership)
@@ -47,7 +48,9 @@ train <- jt |>
                    dplyr::across(dplyr::all_of(pc_cols)))
 
 # --- Random basin pixels (PCs + leverage) ----------------------------------
-pix <- readr::read_csv("data/derived/extract_meadow_spectra_6k_v1.csv",
+# inference_predictions.csv carries the CURRENT-basis PCs (03 refreshes them
+# from the mosaics) — do NOT use the cached 6k file, whose PCs are stale-basis.
+pix <- readr::read_csv("data/derived/inference_predictions.csv",
                        show_col_types = FALSE) |>
   dplyr::mutate(key = paste(round(x_utm, 1), round(y_utm, 1), sep = "_"))
 sp <- sf::st_read("data/derived/sampling_priority.gpkg", quiet = TRUE) |>

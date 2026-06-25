@@ -53,6 +53,31 @@ cat(sprintf("Inference pixels: %d (ALMO=%d, CRBU=%d, UPTA=%d)\n",
             sum(pix$domain == "CRBU"),
             sum(pix$domain == "UPTA")))
 
+# --- 1b. Refresh the 20 PCs from the CURRENT PC mosaics ------------------
+# CRITICAL basis fix: the cached 6k extraction was projected on a STALE PCA
+# basis (sign-flipped vs the current aop_classifier_pca.csv the training PCs +
+# inference mosaics use; co-located 6k-vs-mosaic PC correlations were ~ -1.0).
+# Re-read the 20 PCs straight from the domain mosaics so the sampling-priority
+# pixels share the classifier's basis. The 6 narrow-band indices are computed
+# from raw reflectance (basis-independent) and kept as-is. Without this, the
+# RF predicts a different basis from the one it was trained on (~8% agreement).
+pc_mosaics <- c(ALMO = "ALMO_pc_mosaic.tif", CRBU = "CRBU_pc_mosaic_2025.tif",
+                UPTA = "UPTA_pc_mosaic.tif")
+pc_cols20 <- sprintf("spec_PC%02d", 1:20)
+for (dom in names(pc_mosaics)) {
+  idx <- which(pix$domain == dom); if (!length(idx)) next
+  mp <- file.path("data/derived/aop_pc_maps_mosaic", pc_mosaics[[dom]])
+  if (!file.exists(mp)) stop("missing PC mosaic for basis refresh: ", mp)
+  v <- terra::extract(terra::rast(mp), cbind(pix$x_utm[idx], pix$y_utm[idx]))
+  for (k in 1:20) pix[[pc_cols20[k]]][idx] <- v[[k]]
+  cat(sprintf("  %s: refreshed 20 PCs from mosaic at %d pixels\n", dom, length(idx)))
+}
+na_pc <- !stats::complete.cases(pix[, pc_cols20])
+if (any(na_pc)) {
+  cat(sprintf("  dropping %d pixels outside mosaic PC coverage\n", sum(na_pc)))
+  pix <- pix[!na_pc, ]
+}
+
 # --- 2. CHM at each pixel ------------------------------------------------
 # Single-point extraction matches the 1 m CHM resolution. The inference
 # pixels are 3 m cell centers, so a single-pixel read is the natural CHM
