@@ -32,10 +32,10 @@ Required packages: icechunk xarray numpy pandas shapely  (NOT geopandas).
 
 Usage (Hub, conda chess-hub):
     python code/python/extract_supplemental_spectra.py \\
-        --polygons data/raw/Supplemental_field_2026/augment_polygons_2026_06_23_wgs_utm.geojson \\
-        --cover    data/raw/Supplemental_field_2026/augment_cover_cleaned_2026_06_23.csv \\
+        --polygons data/raw/Supplemental_field_2026/augment_polygons_2026_06_29_wgs_utm.geojson \\
+        --cover    data/raw/Supplemental_field_2026/augment_cover_cleaned_2026_06_29.csv \\
         --year     2025 \\
-        --output   "data/raw/ESS-DIVE-Spectra/site_extraction_spectra_2026.csv"
+        --output   "data/raw/ESS-DIVE-Spectra/site_extraction_spectra_2026_06_29.csv"
 """
 
 from __future__ import annotations

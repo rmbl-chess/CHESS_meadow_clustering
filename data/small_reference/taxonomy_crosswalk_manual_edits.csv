@@ -13,3 +13,7 @@ campaign,raw_name,canonical_name,gbif_id,needs_review,note
 2026,Lewisia pygmea,Lewisia pygmaea,,FALSE,"2026_06_23 batch misspelled ""pygmea""; canonical Lewisia pygmaea (alpine lewisia)."
 2026,Potentilla sp,Potentilla,,TRUE,"Generic ""Potentilla sp"" Named-Species token; resolved to genus Potentilla. needs_review — no species-level ID."
 2026,Clematis hirsuta,Clematis hirsutissima,,TRUE,"2026_06_23 batch ""Clematis hirsuta"" (a European sp.); almost certainly the RMBL native C. hirsutissima (sugarbowls). needs_review."
+2026,3015,,,TRUE,"2026_06_29 batch: stray ""3015"" code in the Named-Species field at site 2110 (10% cover; site also has Artemisia tridentata). Data-entry error -> dropped (canonical NA). needs_review: confirm intended species."
+2026,Carex,Carex,,TRUE,"Generic ""Carex"" Named-Species token; resolved to genus Carex (same target as ""Sedge""). needs_review — no species-level ID."
+2026,Cerastium sp,Cerastium,,TRUE,"Generic ""Cerastium sp"" Named-Species token; resolved to genus Cerastium. needs_review — no species-level ID."
+2026,Erigeron sp,Erigeron,,TRUE,"Generic ""Erigeron sp"" Named-Species token; resolved to genus Erigeron. needs_review — no species-level ID."
