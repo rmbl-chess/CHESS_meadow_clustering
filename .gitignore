@@ -142,3 +142,5 @@ node_modules/
 .nuxt/
 .vercel/
 .cache/
+!data/derived/band_importance.csv
+!data/derived/band_importance_regions.csv
