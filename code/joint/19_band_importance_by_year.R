@@ -48,18 +48,29 @@ base <- jt |>
   dplyr::select(final_label, Year, dplyr::all_of(feat)) |>
   tidyr::drop_na()
 
-# --- Per-band importance for one row subset --------------------------------
-band_importance <- function(df) {
-  X <- as.matrix(df[, feat]); y <- factor(df$final_label)
-  imp_mat <- vapply(SEEDS, function(s) {
-    fit <- ranger::ranger(x = X, y = y, num.trees = 1000,
-                          importance = "permutation", classification = TRUE,
-                          seed = s, num.threads = 0)
-    fit$variable.importance[pc_cols]
-  }, numeric(n_pc))
-  imp_pc <- pmax(0, rowMeans(imp_mat))
-  band_imp <- as.numeric(V2 %*% imp_pc)
-  100 * band_imp / sum(band_imp)             # share of spectral importance (%)
+# --- Per-band importance for one subset, with CV-fold profiles -------------
+# Repeated stratified K-fold CV: each fold-model gives a per-band % profile; the
+# point estimate is the mean and the uncertainty is the SD across fold-models.
+cv_band_profiles <- function(df, K = 5L, R = 4L) {
+  X <- as.matrix(df[, feat]); y <- factor(df$final_label); n <- nrow(X)
+  out <- list()
+  for (rep in seq_len(R)) {
+    set.seed(2000L + rep)
+    fold <- integer(n)
+    for (lvl in levels(y)) { ii <- which(y == lvl)
+      fold[ii] <- ((sample(seq_along(ii)) - 1L) %% K) + 1L }
+    for (k in seq_len(K)) {
+      tr <- which(fold != k); yt <- droplevels(y[tr])
+      if (nlevels(yt) < 2) next
+      fit <- ranger::ranger(x = X[tr, , drop = FALSE], y = yt, num.trees = 800,
+                            importance = "permutation", classification = TRUE,
+                            seed = 2000L + rep * 10L + k, num.threads = 0)
+      ipc <- pmax(0, fit$variable.importance[pc_cols])
+      bi  <- as.numeric(V2 %*% ipc)
+      out[[length(out) + 1L]] <- 100 * bi / sum(bi)
+    }
+  }
+  do.call(cbind, out)                                    # 348 x (K*R)
 }
 
 subsets <- list(
@@ -72,20 +83,21 @@ for (nm in names(subsets))
               dplyr::n_distinct(subsets[[nm]]$final_label)))
 
 prof <- purrr::imap_dfr(subsets, function(df, nm) {
-  tibble::tibble(subset = nm, band = seq_along(sf$keep_wl),
-                 wavelength_nm = sf$keep_wl, importance_pct = band_importance(df))
+  M <- cv_band_profiles(df)
+  tibble::tibble(subset = nm, band = seq_along(sf$keep_wl), wavelength_nm = sf$keep_wl,
+                 importance_pct = rowMeans(M), sd_pct = apply(M, 1, stats::sd))
 }) |>
   dplyr::mutate(subset = factor(subset, levels = c("2018", "2025", "Both years")))
 
 # Wide by unique band index (keep_wl has a couple of duplicate nm values).
 w <- prof |>
   tidyr::pivot_wider(id_cols = c(band, wavelength_nm),
-                     names_from = subset, values_from = importance_pct)
+                     names_from = subset, values_from = c(importance_pct, sd_pct))
 readr::write_csv(w, "data/derived/band_importance_by_year.csv")
 
 # How similar are the 2018 and 2025 profiles? (residual year fingerprint)
 cat(sprintf("\n2018 vs 2025 per-band profile correlation: r = %.3f\n",
-            stats::cor(w$`2018`, w$`2025`)))
+            stats::cor(w$`importance_pct_2018`, w$`importance_pct_2025`)))
 
 # --- Companion panel: mean L2-normalized reflectance per year --------------
 mean_spectrum_by_year <- function(keep_wl) {
@@ -114,9 +126,12 @@ yr_cols <- c("2018" = "#1b9e77", "2025" = "#7570b3", "Both years" = "grey20")
 p_ref <- "Mean reflectance (L2-normalized)"
 p_imp <- "Band importance (% of spectral)"
 plotdf <- dplyr::bind_rows(
-  refl |> dplyr::transmute(panel = p_ref, wavelength_nm, series, value = reflectance),
+  refl |> dplyr::transmute(panel = p_ref, wavelength_nm, series, value = reflectance,
+                           ymin = NA_real_, ymax = NA_real_),
   prof |> dplyr::transmute(panel = p_imp, wavelength_nm, series = as.character(subset),
-                           value = importance_pct)
+                           value = importance_pct,
+                           ymin = pmax(0, importance_pct - sd_pct),
+                           ymax = importance_pct + sd_pct)
 ) |>
   dplyr::mutate(panel = factor(panel, levels = c(p_ref, p_imp)),
                 series = factor(series, levels = c("2018", "2025", "Both years")),
@@ -126,14 +141,20 @@ p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
   geom_rect(data = water_bands, inherit.aes = FALSE,
             aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf),
             fill = "grey90", alpha = 0.6) +
+  geom_ribbon(data = function(d) dplyr::filter(d, panel == p_imp),
+              aes(x = wavelength_nm, ymin = ymin, ymax = ymax, fill = series,
+                  group = interaction(series, segment)),
+              inherit.aes = FALSE, alpha = 0.18) +
   geom_line(aes(group = interaction(series, segment)), linewidth = 0.55) +
   facet_wrap(~ panel, ncol = 1, scales = "free_y", strip.position = "left") +
   scale_colour_manual(values = yr_cols, name = "Training data") +
+  scale_fill_manual(values = yr_cols, guide = "none") +
   labs(x = "Wavelength (nm)", y = NULL,
        title = "Per-band classification importance by campaign year",
        subtitle = paste0("Permutation importance of 20 PCs -> bands (squared loadings), ",
                          "fixed clusters, ", length(shared), " shared classes; ",
-                         "top = mean spectra (2018 & 2025, both CRBU-only). Grey = water-masked.")) +
+                         "top = mean spectra (2018 & 2025, both CRBU-only); ribbon = ±1 SD across ",
+                         "5-fold CV. Grey = water-masked.")) +
   theme_minimal(base_size = 11) +
   theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank(),
         strip.placement = "outside", strip.text.y.left = element_text(angle = 90),
