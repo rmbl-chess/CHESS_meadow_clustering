@@ -144,3 +144,4 @@ node_modules/
 .cache/
 !data/derived/band_importance.csv
 !data/derived/band_importance_regions.csv
+!data/derived/band_importance_by_year.csv
