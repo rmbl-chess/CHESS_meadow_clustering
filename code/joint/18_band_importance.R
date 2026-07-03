@@ -120,8 +120,15 @@ mean_spectrum_by_year <- function(keep_wl) {
   wm  <- (wln >= 1340 & wln <= 1450) | (wln >= 1800 & wln <= 1950) | (wln > 2400)
   keep <- rc[!wm]; stopifnot(length(keep) == length(keep_wl))
   ss <- readRDS("data/derived/shrub_veg_spectra.rds")$joined
-  refl <- dplyr::bind_rows(vs$joined[, c("Year", keep)], ss[, c("Year", keep)]) |>
+  refl <- dplyr::bind_rows(vs$joined[, c("site_number", "Year", keep)],
+                           ss[, c("site_number", "Year", keep)]) |>
     dplyr::filter(Year %in% c(2018L, 2025L))
+  # 2018 is CRBU-only, so restrict 2025 to CRBU too — the reflectance comparison
+  # is then domain-matched (year effect, not the ALMO/UPTA composition mix).
+  crbu25 <- readRDS("data/derived/spectra_2025.rds")$spectra |>
+    dplyr::filter(domain == "CRBU") |> dplyr::pull(site_number) |> unique()
+  refl <- dplyr::filter(refl, Year == 2018L |
+                          (Year == 2025L & site_number %in% crbu25))
   purrr::map_dfr(c(2018L, 2025L), function(y)
     tibble::tibble(series = as.character(y), wavelength_nm = keep_wl,
                    reflectance = colMeans(as.matrix(refl[refl$Year == y, keep]),
@@ -153,7 +160,7 @@ p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
   labs(x = "Wavelength (nm)", y = NULL,
        title = "Per-band contribution to the joint classification",
        subtitle = paste0("RF permutation importance of 20 PCs reprojected via squared loadings; ",
-                         "top = mean 2018/2025 training spectra. Grey = water-masked.")) +
+                         "top = mean training spectra (2018 & 2025, both CRBU-only). Grey = water-masked.")) +
   theme_minimal(base_size = 11) +
   theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank(),
         strip.placement = "outside", strip.text.y.left = element_text(angle = 90),

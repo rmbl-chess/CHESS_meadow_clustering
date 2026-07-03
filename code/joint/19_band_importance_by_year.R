@@ -95,8 +95,13 @@ mean_spectrum_by_year <- function(keep_wl) {
   wm  <- (wln >= 1340 & wln <= 1450) | (wln >= 1800 & wln <= 1950) | (wln > 2400)
   keep <- rc[!wm]; stopifnot(length(keep) == length(keep_wl))
   ss <- readRDS("data/derived/shrub_veg_spectra.rds")$joined
-  r  <- dplyr::bind_rows(vs$joined[, c("Year", keep)], ss[, c("Year", keep)]) |>
+  r  <- dplyr::bind_rows(vs$joined[, c("site_number", "Year", keep)],
+                         ss[, c("site_number", "Year", keep)]) |>
     dplyr::filter(Year %in% c(2018L, 2025L))
+  # 2018 is CRBU-only, so restrict 2025 to CRBU too — domain-matched comparison.
+  crbu25 <- readRDS("data/derived/spectra_2025.rds")$spectra |>
+    dplyr::filter(domain == "CRBU") |> dplyr::pull(site_number) |> unique()
+  r <- dplyr::filter(r, Year == 2018L | (Year == 2025L & site_number %in% crbu25))
   purrr::map_dfr(c(2018L, 2025L), function(y)
     tibble::tibble(series = as.character(y), wavelength_nm = keep_wl,
                    reflectance = colMeans(as.matrix(r[r$Year == y, keep]), na.rm = TRUE)))
@@ -128,7 +133,7 @@ p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
        title = "Per-band classification importance by campaign year",
        subtitle = paste0("Permutation importance of 20 PCs -> bands (squared loadings), ",
                          "fixed clusters, ", length(shared), " shared classes; ",
-                         "top = mean 2018/2025 spectra. Grey = water-masked.")) +
+                         "top = mean spectra (2018 & 2025, both CRBU-only). Grey = water-masked.")) +
   theme_minimal(base_size = 11) +
   theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank(),
         strip.placement = "outside", strip.text.y.left = element_text(angle = 90),
