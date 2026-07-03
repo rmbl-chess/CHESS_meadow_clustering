@@ -145,3 +145,4 @@ node_modules/
 !data/derived/band_importance.csv
 !data/derived/band_importance_regions.csv
 !data/derived/band_importance_by_year.csv
+!data/derived/wavelength_ablation.csv

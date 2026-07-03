@@ -1,0 +1,5 @@
+scenario,bands_excluded,oob_accuracy,bal_recall,d_accuracy,d_bal_recall
+baseline (current gaps),0,0.6951,0.6026,0,0
+exclude 2000 nm peak (1950-2050),20,0.5582,0.4552,-0.1369,-0.1474
+widen gaps +100 nm (50/side),52,0.5547,0.4609,-0.1404,-0.1417
+widen gaps +200 nm (100/side),102,0.5254,0.4317,-0.1697,-0.1709
