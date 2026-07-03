@@ -110,22 +110,53 @@ print(bands |> dplyr::arrange(dplyr::desc(importance_pct)) |>
         dplyr::transmute(wavelength_nm = round(wavelength_nm), importance_pct = round(importance_pct, 2)) |>
         utils::head(10) |> as.data.frame())
 
-# Water-masked gaps (excluded from the PCA) — shade for context, and break the
-# line/area into contiguous segments so it doesn't interpolate across the gaps.
-water_bands <- tibble::tibble(xmin = c(1340, 1800, 2400), xmax = c(1450, 1950, 2510))
-bands$segment <- findInterval(bands$wavelength_nm, c(1395, 1875))
+# --- Companion panel: mean L2-normalized reflectance per year --------------
+# Mean training spectrum (meadow + shrub) on the same 348 water-masked bands,
+# split 2018 / 2025, so importance peaks can be read against spectral features.
+mean_spectrum_by_year <- function(keep_wl) {
+  vs  <- readRDS("data/derived/veg_spectra.rds")
+  wln <- vs$wavelengths$center_wavelength_nm
+  rc  <- sprintf("rfl_band_%d", seq_along(wln))
+  wm  <- (wln >= 1340 & wln <= 1450) | (wln >= 1800 & wln <= 1950) | (wln > 2400)
+  keep <- rc[!wm]; stopifnot(length(keep) == length(keep_wl))
+  ss <- readRDS("data/derived/shrub_veg_spectra.rds")$joined
+  refl <- dplyr::bind_rows(vs$joined[, c("Year", keep)], ss[, c("Year", keep)]) |>
+    dplyr::filter(Year %in% c(2018L, 2025L))
+  purrr::map_dfr(c(2018L, 2025L), function(y)
+    tibble::tibble(series = as.character(y), wavelength_nm = keep_wl,
+                   reflectance = colMeans(as.matrix(refl[refl$Year == y, keep]),
+                                          na.rm = TRUE)))
+}
+refl <- mean_spectrum_by_year(sf$keep_wl)
 
-p <- ggplot(bands, aes(wavelength_nm, importance_pct)) +
+# --- Two-panel figure: mean spectrum (top) + band importance (bottom) -------
+water_bands <- tibble::tibble(xmin = c(1340, 1800, 2400), xmax = c(1450, 1950, 2510))
+p_ref <- "Mean reflectance (L2-normalized)"
+p_imp <- "Band importance (% of spectral)"
+plotdf <- dplyr::bind_rows(
+  refl  |> dplyr::transmute(panel = p_ref, wavelength_nm, series, value = reflectance),
+  bands |> dplyr::transmute(panel = p_imp, wavelength_nm, series = "All samples",
+                            value = importance_pct)
+) |>
+  dplyr::mutate(panel = factor(panel, levels = c(p_ref, p_imp)),
+                series = factor(series, levels = c("2018", "2025", "All samples")),
+                segment = findInterval(wavelength_nm, c(1395, 1875)))
+cols <- c("2018" = "#1b9e77", "2025" = "#7570b3", "All samples" = "#2c7fb8")
+
+p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
   geom_rect(data = water_bands, inherit.aes = FALSE,
             aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf),
             fill = "grey90", alpha = 0.6) +
-  geom_area(aes(group = segment), fill = "#2c7fb8", alpha = 0.25) +
-  geom_line(aes(group = segment), colour = "#2c7fb8", linewidth = 0.6) +
-  labs(x = "Wavelength (nm)", y = "Share of spectral importance (%)",
+  geom_line(aes(group = interaction(series, segment)), linewidth = 0.55) +
+  facet_wrap(~ panel, ncol = 1, scales = "free_y", strip.position = "left") +
+  scale_colour_manual(values = cols, name = NULL) +
+  labs(x = "Wavelength (nm)", y = NULL,
        title = "Per-band contribution to the joint classification",
-       subtitle = paste0("RF permutation importance of 20 PCs reprojected via squared loadings ",
-                         "(sum_j imp_j*v_j[b]^2). Grey = water-masked (excluded).")) +
+       subtitle = paste0("RF permutation importance of 20 PCs reprojected via squared loadings; ",
+                         "top = mean 2018/2025 training spectra. Grey = water-masked.")) +
   theme_minimal(base_size = 11) +
-  theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank())
-ggsave("docs/figures/band_importance.pdf", p, width = 10, height = 5.5, device = cairo_pdf)
+  theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank(),
+        strip.placement = "outside", strip.text.y.left = element_text(angle = 90),
+        legend.position = "top")
+ggsave("docs/figures/band_importance.pdf", p, width = 10, height = 7.5, device = cairo_pdf)
 cat("\nWrote docs/figures/band_importance.pdf\n")

@@ -87,26 +87,53 @@ readr::write_csv(w, "data/derived/band_importance_by_year.csv")
 cat(sprintf("\n2018 vs 2025 per-band profile correlation: r = %.3f\n",
             stats::cor(w$`2018`, w$`2025`)))
 
-# --- Plot: three profiles overlaid -----------------------------------------
-prof <- prof |> dplyr::mutate(segment = findInterval(wavelength_nm, c(1395, 1875)))
+# --- Companion panel: mean L2-normalized reflectance per year --------------
+mean_spectrum_by_year <- function(keep_wl) {
+  vs  <- readRDS("data/derived/veg_spectra.rds")
+  wln <- vs$wavelengths$center_wavelength_nm
+  rc  <- sprintf("rfl_band_%d", seq_along(wln))
+  wm  <- (wln >= 1340 & wln <= 1450) | (wln >= 1800 & wln <= 1950) | (wln > 2400)
+  keep <- rc[!wm]; stopifnot(length(keep) == length(keep_wl))
+  ss <- readRDS("data/derived/shrub_veg_spectra.rds")$joined
+  r  <- dplyr::bind_rows(vs$joined[, c("Year", keep)], ss[, c("Year", keep)]) |>
+    dplyr::filter(Year %in% c(2018L, 2025L))
+  purrr::map_dfr(c(2018L, 2025L), function(y)
+    tibble::tibble(series = as.character(y), wavelength_nm = keep_wl,
+                   reflectance = colMeans(as.matrix(r[r$Year == y, keep]), na.rm = TRUE)))
+}
+refl <- mean_spectrum_by_year(sf$keep_wl)
+
+# --- Two-panel plot: mean spectrum (top) + importance by year (bottom) ------
 water_bands <- tibble::tibble(xmin = c(1340, 1800, 2400), xmax = c(1450, 1950, 2510))
 yr_cols <- c("2018" = "#1b9e77", "2025" = "#7570b3", "Both years" = "grey20")
+p_ref <- "Mean reflectance (L2-normalized)"
+p_imp <- "Band importance (% of spectral)"
+plotdf <- dplyr::bind_rows(
+  refl |> dplyr::transmute(panel = p_ref, wavelength_nm, series, value = reflectance),
+  prof |> dplyr::transmute(panel = p_imp, wavelength_nm, series = as.character(subset),
+                           value = importance_pct)
+) |>
+  dplyr::mutate(panel = factor(panel, levels = c(p_ref, p_imp)),
+                series = factor(series, levels = c("2018", "2025", "Both years")),
+                segment = findInterval(wavelength_nm, c(1395, 1875)))
 
-p <- ggplot(prof, aes(wavelength_nm, importance_pct, colour = subset)) +
+p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
   geom_rect(data = water_bands, inherit.aes = FALSE,
             aes(xmin = xmin, xmax = xmax, ymin = -Inf, ymax = Inf),
             fill = "grey90", alpha = 0.6) +
-  geom_line(aes(group = interaction(subset, segment)), linewidth = 0.55) +
+  geom_line(aes(group = interaction(series, segment)), linewidth = 0.55) +
+  facet_wrap(~ panel, ncol = 1, scales = "free_y", strip.position = "left") +
   scale_colour_manual(values = yr_cols, name = "Training data") +
-  labs(x = "Wavelength (nm)", y = "Share of spectral importance (%)",
+  labs(x = "Wavelength (nm)", y = NULL,
        title = "Per-band classification importance by campaign year",
        subtitle = paste0("Permutation importance of 20 PCs -> bands (squared loadings), ",
-                         "fixed clusters, ", length(shared), " shared classes. ",
-                         "Grey = water-masked.")) +
+                         "fixed clusters, ", length(shared), " shared classes; ",
+                         "top = mean 2018/2025 spectra. Grey = water-masked.")) +
   theme_minimal(base_size = 11) +
   theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank(),
+        strip.placement = "outside", strip.text.y.left = element_text(angle = 90),
         legend.position = "top")
-ggsave("docs/figures/band_importance_by_year.pdf", p, width = 10.5, height = 6,
+ggsave("docs/figures/band_importance_by_year.pdf", p, width = 10.5, height = 7.5,
        device = cairo_pdf)
 cat("Wrote docs/figures/band_importance_by_year.pdf\n")
 cat("Wrote data/derived/band_importance_by_year.csv\n")
