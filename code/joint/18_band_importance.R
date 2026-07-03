@@ -80,34 +80,30 @@ bands <- tibble::tibble(
   communality   = communality
 ) |> dplyr::arrange(wavelength_nm)
 
-# --- CV-based uncertainty on the per-band importance ------------------------
-# Repeated stratified K-fold CV: fit on each training fold, take permutation
-# importance -> reproject -> per-band % share. The spread across the fold-models
-# is a resampling estimate of how stable each band's importance is.
-cv_band_profiles <- function(K = 5L, R = 4L) {
+# --- Bootstrap uncertainty on the per-band importance -----------------------
+# Resample sites with replacement (B times), refit, permutation importance ->
+# reproject -> per-band % share. The SD across resamples is the sampling
+# uncertainty of the importance -- wider and more honest than a CV-fold SD,
+# whose 80%-overlapping training folds are highly correlated and understate it.
+boot_band_profiles <- function(B = 40L) {
   n <- nrow(X); out <- list()
-  for (rep in seq_len(R)) {
-    set.seed(1000L + rep)
-    fold <- integer(n)
-    for (lvl in levels(y)) { ii <- which(y == lvl)
-      fold[ii] <- ((sample(seq_along(ii)) - 1L) %% K) + 1L }
-    for (k in seq_len(K)) {
-      tr <- which(fold != k); yt <- droplevels(y[tr])
-      if (nlevels(yt) < 2) next
-      fit <- ranger::ranger(x = X[tr, , drop = FALSE], y = yt, num.trees = 800,
-                            importance = "permutation", classification = TRUE,
-                            seed = 1000L + rep * 10L + k, num.threads = 0)
-      ipc <- pmax(0, fit$variable.importance[pc_cols])
-      bi  <- as.numeric(V2 %*% ipc)
-      out[[length(out) + 1L]] <- 100 * bi / sum(bi)
-    }
+  for (b in seq_len(B)) {
+    set.seed(3000L + b)
+    ii <- sample(n, n, replace = TRUE); yt <- droplevels(y[ii])
+    if (nlevels(yt) < 2) next
+    fit <- ranger::ranger(x = X[ii, , drop = FALSE], y = yt, num.trees = 800,
+                          importance = "permutation", classification = TRUE,
+                          seed = 3000L + b, num.threads = 0)
+    ipc <- pmax(0, fit$variable.importance[pc_cols])
+    bi  <- as.numeric(V2 %*% ipc)
+    out[[length(out) + 1L]] <- 100 * bi / sum(bi)
   }
-  do.call(cbind, out)                                    # 348 x (K*R)
+  do.call(cbind, out)                                    # 348 x B
 }
-cvM <- cv_band_profiles()
-bands$sd_pct <- apply(cvM, 1, stats::sd)[bands$band]     # bands arranged by wl
-cat(sprintf("CV uncertainty from %d fold-models; CV-mean vs point-estimate corr = %.3f\n",
-            ncol(cvM), stats::cor(rowMeans(cvM)[bands$band], bands$importance_pct)))
+bootM <- boot_band_profiles()
+bands$sd_pct <- apply(bootM, 1, stats::sd)[bands$band]   # bands arranged by wl
+cat(sprintf("Bootstrap uncertainty from %d resamples; boot-mean vs point corr = %.3f\n",
+            ncol(bootM), stats::cor(rowMeans(bootM)[bands$band], bands$importance_pct)))
 
 readr::write_csv(bands, "data/derived/band_importance.csv")
 cat(sprintf("\nWrote data/derived/band_importance.csv (%d bands)\n", nrow(bands)))
@@ -189,8 +185,8 @@ p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
   geom_ribbon(data = function(d) dplyr::filter(d, panel == p_imp),
               aes(x = wavelength_nm, ymin = ymin, ymax = ymax, fill = series,
                   group = interaction(series, segment)),
-              inherit.aes = FALSE, alpha = 0.22) +
-  geom_line(aes(group = interaction(series, segment)), linewidth = 0.55) +
+              inherit.aes = FALSE, alpha = 0.35) +
+  geom_line(aes(group = interaction(series, segment)), linewidth = 0.4) +
   facet_wrap(~ panel, ncol = 1, scales = "free_y", strip.position = "left") +
   scale_colour_manual(values = cols, name = NULL) +
   scale_fill_manual(values = cols, guide = "none") +
@@ -198,7 +194,7 @@ p <- ggplot(plotdf, aes(wavelength_nm, value, colour = series)) +
        title = "Per-band contribution to the joint classification",
        subtitle = paste0("RF permutation importance of 20 PCs reprojected via squared loadings; ",
                          "top = mean training spectra (2018 & 2025, both CRBU-only). ",
-                         "Ribbon = ±1 SD across 5-fold CV. Grey = water-masked.")) +
+                         "Ribbon = ±1 SD across 40 bootstrap resamples. Grey = water-masked.")) +
   theme_minimal(base_size = 11) +
   theme(plot.title = element_text(face = "bold"), panel.grid.minor = element_blank(),
         strip.placement = "outside", strip.text.y.left = element_text(angle = 90),
