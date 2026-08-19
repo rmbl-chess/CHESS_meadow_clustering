@@ -20,3 +20,10 @@ campaign,raw_name,unified_category,note
 2026,Nonvegetated Rock,Bare,Lumped with Dirt into single Bare column per user decision
 2026,Other Deciduous Shrub,Other_Deciduous_Shrub,Same handling as 2025
 2026,Other Succulent,Other_Forb,Reassigned to Other_Forb per 2025 decision
+2023,Other Forb,Other_Forb,2023 FORB code (standardized in 00_prep_2023.R)
+2023,Other Graminoid,Other_Graminoid,2023 GRAM code
+2023,Other Moss/Lichen,Other_Moss_Lichen,not recorded in 2023; row kept for schema parity
+2023,Non-Photosynthetic Vegetation,NPV,2023 LITTER code
+2023,Nonvegetated Dirt,Bare,2023 BARE code; lumped with Rock per project convention
+2023,Nonvegetated Rock,Bare,2023 ROCK code; lumped with Dirt per project convention
+2023,Other Deciduous Shrub,Other_Deciduous_Shrub,2023 SHRUB code

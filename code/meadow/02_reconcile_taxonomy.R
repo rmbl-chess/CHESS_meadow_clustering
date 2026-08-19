@@ -20,6 +20,7 @@ library(tidyverse)
 veg_2018 <- readRDS("data/derived/veg_2018.rds")
 veg_2025 <- readRDS("data/derived/veg_2025.rds")
 veg_2026 <- readRDS("data/derived/veg_2026.rds")
+veg_2023 <- readRDS("data/derived/veg_2023.rds")
 
 # --- 2018: CoverCode -> "Genus species" ------------------------------------
 # The 2018 species_list has Genus + Species columns and an AltFieldCode that
@@ -70,7 +71,26 @@ cw_2026 <- veg_2026$cover |>
     note           = NA_character_
   )
 
-crosswalk <- dplyr::bind_rows(cw_2018, cw_2025, cw_2026)
+# --- 2023: Cover_Class_Name is already a binomial --------------------------
+# 00_prep_2023.R mapped the field codes to canonical names via the
+# collaborator's crosswalk (data/small_reference/taxonomy_crosswalk_2023.csv)
+# plus two overrides (Geum rossii -> Acomastylis rossii; Veratrum -> V.
+# tenuipetalum), so — like 2026 — the token IS the canonical name.
+cw_2023 <- veg_2023$cover |>
+  dplyr::filter(Cover_Type == "Live Vegetation - Named Species",
+                !is.na(Cover_Class_Name),
+                stringr::str_squish(Cover_Class_Name) != "") |>
+  dplyr::distinct(Cover_Class_Name) |>
+  dplyr::transmute(
+    campaign       = "2023",
+    raw_name       = Cover_Class_Name,
+    canonical_name = stringr::str_squish(Cover_Class_Name),
+    gbif_id        = NA_integer_,
+    needs_review   = FALSE,
+    note           = NA_character_
+  )
+
+crosswalk <- dplyr::bind_rows(cw_2018, cw_2023, cw_2025, cw_2026)
 
 # Normalize whitespace + case on canonical so identical species across years
 # collapse to one column downstream.

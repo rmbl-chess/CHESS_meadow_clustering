@@ -23,6 +23,7 @@ library(tidyverse)
 veg_2018  <- readRDS("data/derived/veg_2018.rds")
 veg_2025  <- readRDS("data/derived/veg_2025.rds")
 veg_2026  <- readRDS("data/derived/veg_2026.rds")
+veg_2023  <- readRDS("data/derived/veg_2023.rds")
 crosswalk <- readr::read_csv("data/derived/taxonomy_crosswalk.csv",
                              show_col_types = FALSE)
 woody     <- readr::read_csv("data/small_reference/woody_taxa.csv",
@@ -100,7 +101,27 @@ long_2026 <- long_2026 |>
 message(sprintf("Dropped %d 2026 woody-pure-pixel records (cover==100 & woody).",
                 n_before_2026 - nrow(long_2026)))
 
-cover_long <- dplyr::bind_rows(long_2018, long_2025, long_2026) |>
+# --- 2023: same schema as 2025/2026 ----------------------------------------
+long_2023 <- veg_2023$cover |>
+  dplyr::filter(Cover_Type == "Live Vegetation - Named Species") |>
+  dplyr::transmute(
+    site_number, raw_name = Cover_Class_Name,
+    cover = as.numeric(Cover_Percent)
+  ) |>
+  dplyr::inner_join(cw |> dplyr::filter(campaign == "2023") |>
+                      dplyr::select(raw_name, canonical_name),
+                    by = "raw_name") |>
+  dplyr::mutate(Year = 2023L)
+
+# 2023 records a few 100%-single-shrub plots (Dasiphora / Salix /
+# Symphoricarpos / Sambucus) — same woody-pure drop as 2018/2026.
+n_before_2023 <- nrow(long_2023)
+long_2023 <- long_2023 |>
+  dplyr::filter(!(cover == 100 & is_woody(canonical_name, woody)))
+message(sprintf("Dropped %d 2023 woody-pure-pixel records (cover==100 & woody).",
+                n_before_2023 - nrow(long_2023)))
+
+cover_long <- dplyr::bind_rows(long_2018, long_2023, long_2025, long_2026) |>
   dplyr::group_by(site_number, Year, canonical_name) |>
   dplyr::summarise(cover = sum(cover, na.rm = TRUE), .groups = "drop")
 
@@ -137,7 +158,16 @@ nonsp_2026 <- veg_2026$cover |>
                     by = "raw_name") |>
   dplyr::mutate(Year = 2026L)
 
-nonsp_wide <- dplyr::bind_rows(nonsp_2018, nonsp_2025, nonsp_2026) |>
+nonsp_2023 <- veg_2023$cover |>
+  dplyr::filter(Cover_Type != "Live Vegetation - Named Species") |>
+  dplyr::transmute(site_number, raw_name = Cover_Class_Name,
+                   cover = as.numeric(Cover_Percent)) |>
+  dplyr::inner_join(nonsp_map |> dplyr::filter(campaign == "2023") |>
+                      dplyr::select(raw_name, unified_category),
+                    by = "raw_name") |>
+  dplyr::mutate(Year = 2023L)
+
+nonsp_wide <- dplyr::bind_rows(nonsp_2018, nonsp_2023, nonsp_2025, nonsp_2026) |>
   dplyr::group_by(site_number, Year, unified_category) |>
   dplyr::summarise(cover = sum(cover, na.rm = TRUE), .groups = "drop") |>
   dplyr::mutate(cat_col = paste0(unified_category, "_cover")) |>

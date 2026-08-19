@@ -1,0 +1,355 @@
+campaign,raw_name,canonical_name,gbif_id,needs_review,note,single_campaign_only
+2018,AcoRos,Acomastylis rossii,NA,FALSE,*syn. = Geum rossii,TRUE
+2018,AgaUrt,Agastache urticifolia,NA,FALSE,NA,FALSE
+2018,AgrSpp,Agrostis spp,NA,FALSE,NA,TRUE
+2018,Alder,Alnus incana,NA,FALSE,NA,FALSE
+2018,AneMul,Anemone multifida,NA,FALSE,NA,TRUE
+2018,AneNar,Anemonastrum narcissiflorum ssp. Zephyrum,NA,FALSE,NA,TRUE
+2018,AquCoe,Aquilegia coerulea var. coerulea,NA,FALSE,NA,TRUE
+2018,ArnMol,Arnica mollis,NA,FALSE,NA,FALSE
+2018,ArnPar,Arnica parryi,NA,FALSE,NA,FALSE
+2018,ArtDra,Artemisia dracunculus,NA,FALSE,NA,FALSE
+2018,ArtTri,Artemisia tridentata,NA,FALSE,NA,FALSE
+2018,Aspen,Populus tremuloides,NA,FALSE,NA,FALSE
+2018,Bare,NA,NA,TRUE,Bare soil,FALSE
+2018,BisBis,Bistorta bistortoides,NA,FALSE,NA,FALSE
+2018,Bog Birch,Betula glandulosa,NA,FALSE,orig. det. Betula pumila,FALSE
+2018,boothii,Salix boothii,NA,FALSE,NA,FALSE
+2018,brachy,Salix brachycarpa,NA,FALSE,NA,TRUE
+2018,BroIne,Bromopsis inermis,NA,FALSE,syn. = Bromus inermis,FALSE
+2018,CalStr,Calamagrostis stricta,NA,FALSE,NA,TRUE
+2018,CarAqu,Carex aquatilis,NA,FALSE,NA,FALSE
+2018,CarHoo,Carex hoodii,NA,FALSE,NA,FALSE
+2018,CarLen,Carex lenticularis,NA,FALSE,NA,TRUE
+2018,CarMic,Carex microptera,NA,FALSE,NA,TRUE
+2018,CarSic,Carex siccata,NA,FALSE,NA,TRUE
+2018,CarSpp,Carex spp,NA,FALSE,NA,TRUE
+2018,CarUtr,Carex utriculata,NA,FALSE,NA,FALSE
+2018,CasRhe,Castilleja rhexiifolia,NA,FALSE,NA,TRUE
+2018,CasSul,Castilleja sulphurea,NA,FALSE,NA,TRUE
+2018,CleRho,Clementsia rhodantha,NA,FALSE,*syn. = Rhodiola rhodantha,TRUE
+2018,CorCas,Corydalis caseana,NA,FALSE,NA,FALSE
+2018,DelBar,Delphinium barbeyi,NA,FALSE,NA,FALSE
+2018,DesCes,Deschampsia cespitosa,NA,FALSE,NA,FALSE
+2018,DisInv,Distegia involucrata,NA,FALSE,NA,TRUE
+2018,drumm,Salix drummondiana,NA,FALSE,NA,FALSE
+2018,DugHoo,Dugaldia hoopesii,NA,FALSE,*syn. = Hymenoxys hoopseii,TRUE
+2018,Elderberry,Sambucus microbotrys,NA,FALSE,NA,TRUE
+2018,ElyLan,Elymus lanceolatus,NA,FALSE,NA,TRUE
+2018,ElySpp,Elymus spp,NA,FALSE,NA,TRUE
+2018,Engelmann,Picea engelmannii,NA,FALSE,NA,FALSE
+2018,EriGla,Erigeron glacialis,NA,FALSE,NA,FALSE
+2018,EriSpe,Erigeron speciosus,NA,FALSE,NA,FALSE
+2018,EryGra,Erythronium grandiflorum,NA,FALSE,NA,TRUE
+2018,EucEng,Eucephalus engelmannii,NA,FALSE,NA,FALSE
+2018,FesIda,Festuca idahoensis,NA,FALSE,NA,TRUE
+2018,FesThu,Festuca thurberi,NA,FALSE,NA,FALSE
+2018,FestucaB,Festuca spp,NA,FALSE,NA,TRUE
+2018,Fireweed,Chamerion danielsii,NA,FALSE,syn. = Chamerion angustifolium,TRUE
+2018,FraSpe,Frasera speciosa,NA,FALSE,NA,FALSE
+2018,FraVir,Fragaria virgiana,NA,FALSE,NA,TRUE
+2018,GalBor,Galium boreale,NA,FALSE,NA,FALSE
+2018,GerRic,Geranium richardsonii,NA,FALSE,NA,TRUE
+2018,geyer,Salix geyeriana,NA,FALSE,NA,TRUE
+2018,glauca,Salix glauca,NA,FALSE,NA,FALSE
+2018,Gooseberry,Ribes montigenum,NA,FALSE,NA,FALSE
+2018,HelMul,Heliomeris multiflora,NA,FALSE,NA,FALSE
+2018,HelQui,Helianthella quinquenervis,NA,FALSE,NA,FALSE
+2018,HerMax,Heracleum maximum,NA,FALSE,NA,FALSE
+2018,HetVil,Heterotheca villosa,NA,FALSE,NA,FALSE
+2018,HydFen,Hydrophyllum fendleri,NA,FALSE,NA,TRUE
+2018,IriMis,Iris missouriensis,NA,FALSE,NA,FALSE
+2018,JunArc,Juncus arcticus,NA,FALSE,NA,FALSE
+2018,Juniper,Juniperus communis,NA,FALSE,NA,FALSE
+2018,LatLan,Lathyrus lanszwertii,NA,FALSE,NA,FALSE
+2018,LigPor,Ligusticum porteri,NA,FALSE,NA,FALSE
+2018,LinLew,Linum lewisii,NA,FALSE,NA,FALSE
+2018,Litter,NA,NA,TRUE,Litter - non photosynthetic vegetation,FALSE
+2018,Lodgepole,Pinus contorta,NA,FALSE,NA,FALSE
+2018,LupArg,Lupinus argenteus,NA,FALSE,NA,FALSE
+2018,LupBak,Lupinus bakeri,NA,FALSE,NA,FALSE
+2018,MerCil,Mertensia ciliata,NA,FALSE,NA,FALSE
+2018,MerLan,Mertensia lanceolata,NA,FALSE,NA,TRUE
+2018,Moss,NA,NA,TRUE,Unknown moss species,FALSE
+2018,OF,NA,NA,TRUE,Other Forb,FALSE
+2018,OG,NA,NA,TRUE,Other Gramanoid,FALSE
+2018,OsmOcc,Osmorhiza occidentalis,NA,FALSE,NA,FALSE
+2018,PedGro,Pedicularis groenlandica,NA,FALSE,NA,FALSE
+2018,PenFlo,Dasiphora fruticosa,5370380,FALSE,"2018 list uses segregate Pentaphylloides floribunda; 2025 uses Dasiphora fruticosa (modern accepted). Synonyms per the 2018 species_list note: *syn. = Potentilla fruticosa, Dasiphora fruticosa.",FALSE
+2018,planifolia,Salix planifolia,NA,FALSE,NA,FALSE
+2018,PoaCom,Poa compressa,NA,FALSE,NA,TRUE
+2018,PoaLep,Poa leptocoma,NA,FALSE,NA,TRUE
+2018,PoaSec,Poa secunda,NA,FALSE,NA,TRUE
+2018,PotPul,Potentilla pulcherrima,NA,FALSE,NA,FALSE
+2018,PseMon,Pseudocymopterus montanus,NA,FALSE,NA,TRUE
+2018,PsyLep,Caltha leptosepala,5371684,FALSE,2018 list uses segregate Psychrophila leptosepala; 2025 uses Caltha leptosepala (modern accepted). 2018 species_list explicitly preferred Caltha (*syn. = Caltha leptosepala).,FALSE
+2018,PyrCro,Pyrrocoma crocea,NA,FALSE,NA,FALSE
+2018,Raspberry,Rubus idaeus,NA,FALSE,NA,FALSE
+2018,TolInt,Tolmachevia integrifolia,NA,FALSE,*syn. = Rhodiola integrifolia,TRUE
+2018,RumDen,Rumex densiflorus,NA,FALSE,NA,FALSE
+2018,SenCra,Senecio crassulus,NA,FALSE,NA,FALSE
+2018,SenSer,Senecio serra,NA,FALSE,NA,FALSE
+2018,SenTri,Senecio triangularis,NA,FALSE,NA,FALSE
+2018,SibPro,Sibbaldia procumbens,NA,FALSE,NA,FALSE
+2018,Snowberry,Symphoricarpos rotundifolius,NA,FALSE,NA,FALSE
+2018,SolSpp,Solidago spp,NA,FALSE,NA,TRUE
+2018,SorSco,Sorbus scopulina,NA,FALSE,NA,TRUE
+2018,SubFir,Abies lasiocarpa,NA,FALSE,NA,FALSE
+2018,SymSpp,Symphyotrichum spp,NA,FALSE,NA,TRUE
+2018,ThaFen,Thalictrum fendleri,NA,FALSE,NA,FALSE
+2018,VacCes,Vaccinium cespitosum,NA,FALSE,NA,FALSE
+2018,ValEdu,Valeriana edulis,NA,FALSE,NA,FALSE
+2018,ValOcc,Valeriana occidentalis,NA,FALSE,NA,FALSE
+2018,VerTen,Veratrum tenuipetalum,NA,FALSE,*syn. = Veratrum californicum var. californicum,FALSE
+2018,VicAme,Vicia americana,NA,FALSE,NA,FALSE
+2018,Willow,Salix spp,NA,FALSE,NA,TRUE
+2018,wolfii,Salix wolfii,NA,FALSE,NA,FALSE
+2018,WyeAmp,Wyethia amplexicaulis,NA,FALSE,NA,FALSE
+2018,WyeSpp,Wyethia spp,NA,FALSE,NA,TRUE
+2018,NA,NA,NA,TRUE,NA,FALSE
+2025,Apiaceae-Cymopterus lemmonii,Cymopterus lemmonii,3034888,FALSE,NA,TRUE
+2025,Apiaceae-Heracleum maximum,Heracleum maximum,3034826,FALSE,NA,FALSE
+2025,Apiaceae-Ligusticum porteri,Ligusticum porteri,3034795,FALSE,NA,FALSE
+2025,Apiaceae-Osmorhiza occidentalis,Osmorhiza occidentalis,3034142,FALSE,NA,FALSE
+2025,Asteraceae-Achillea millefolium,Achillea millefolium,3120060,FALSE,NA,TRUE
+2025,Asteraceae-Agoseris glauca,Agoseris glauca,3092888,FALSE,NA,TRUE
+2025,Asteraceae-Antennaria corymbosa,Antennaria corymbosa,5385595,FALSE,NA,TRUE
+2025,Asteraceae-Antennaria parvifolia,Antennaria parvifolia,5385520,FALSE,NA,TRUE
+2025,Asteraceae-Antennaria rosea,Antennaria rosea,5385499,FALSE,NA,TRUE
+2025,Asteraceae-Arnica mollis,Arnica mollis,5405898,FALSE,NA,FALSE
+2025,Asteraceae-Arnica parryi,Arnica parryi,5406027,FALSE,NA,FALSE
+2025,Asteraceae-Artemisia campestris,Artemisia campestris,3121461,FALSE,NA,TRUE
+2025,Asteraceae-Artemisia cana,Artemisia cana,3121553,FALSE,NA,TRUE
+2025,Asteraceae-Artemisia dracunculus,Artemisia dracunculus,3121581,FALSE,NA,FALSE
+2025,Asteraceae-Artemisia frigida,Artemisia frigida,3121436,FALSE,NA,TRUE
+2025,Asteraceae-Artemisia tridentata,Artemisia tridentata,9396703,FALSE,NA,FALSE
+2025,Asteraceae-Balsamorhiza sagittata,Balsamorhiza sagittata,NA,FALSE,NA,TRUE
+2025,Asteraceae-Chrysothamnus depressus,Chrysothamnus depressus,3148662,FALSE,NA,TRUE
+2025,Asteraceae-Chrysothamnus viscidiflorus,Chrysothamnus viscidiflorus,3148638,FALSE,NA,TRUE
+2025,Asteraceae-Cirsium scariosum,Cirsium scariosum,3113127,FALSE,NA,TRUE
+2025,Asteraceae-Ericameria nauseosa,Ericameria nauseosa,3103017,FALSE,NA,TRUE
+2025,Asteraceae-Erigeron elatior,Erigeron elatior,3147056,FALSE,NA,TRUE
+2025,Asteraceae-Erigeron formosissimus,Erigeron formosissimus,3147027,FALSE,NA,TRUE
+2025,Asteraceae-Erigeron glacialis,Erigeron glacialis,7555298,FALSE,NA,FALSE
+2025,Asteraceae-Erigeron grandiflorus,Erigeron grandiflorus,3147136,FALSE,NA,TRUE
+2025,Asteraceae-Erigeron speciosus,Erigeron speciosus,3147146,FALSE,NA,FALSE
+2025,Asteraceae-Eucephalus engelmannii,Eucephalus engelmannii,5386313,FALSE,NA,FALSE
+2025,Asteraceae-Helianthella quinquenervis,Helianthella quinquenervis,5400888,FALSE,NA,FALSE
+2025,Asteraceae-Heliomeris multiflora,Heliomeris multiflora,3099317,FALSE,NA,FALSE
+2025,Asteraceae-Heterotheca villosa,Heterotheca villosa,5401977,FALSE,NA,FALSE
+2025,Asteraceae-Hymenoxys hoopesii,Hymenoxys hoopesii,3150175,FALSE,NA,TRUE
+2025,Asteraceae-Pyrrocoma crocea,Pyrrocoma crocea,3134374,FALSE,NA,FALSE
+2025,Asteraceae-Senecio crassulus,Senecio crassulus,3108477,FALSE,NA,FALSE
+2025,Asteraceae-Senecio serra,Senecio serra,4218419,FALSE,NA,FALSE
+2025,Asteraceae-Senecio triangularis,Senecio triangularis,3108906,FALSE,NA,FALSE
+2025,Asteraceae-Solidago multiradiata,Solidago multiradiata,5389132,FALSE,NA,TRUE
+2025,Asteraceae-Solidago simplex,Solidago simplex,5389158,FALSE,NA,TRUE
+2025,Asteraceae-Solidago velutina,Solidago velutina,5389038,FALSE,NA,TRUE
+2025,Asteraceae-Taraxacum officinale,Taraxacum officinale,5394163,FALSE,NA,TRUE
+2025,Asteraceae-Tetradymia canescens,Tetradymia canescens,3119986,FALSE,NA,TRUE
+2025,Asteraceae-Wyethia amplexicaulis,Wyethia amplexicaulis,3091462,FALSE,NA,FALSE
+2025,Berberidaceae-Mahonia repens,Mahonia repens,3033850,FALSE,NA,TRUE
+2025,Betulaceae-Alnus incana,Alnus incana,9148577,FALSE,NA,FALSE
+2025,Betulaceae-Betula glandulosa,Betula glandulosa,5331640,FALSE,NA,FALSE
+2025,Boraginaceae-Mertensia ciliata,Mertensia ciliata,5341240,FALSE,NA,FALSE
+2025,Caprifoliaceae-Lonicera involucrata,Lonicera involucrata,5334253,FALSE,NA,TRUE
+2025,Caprifoliaceae-Symphoricarpos rotundifolius,Symphoricarpos rotundifolius,2888638,FALSE,NA,FALSE
+2025,Caprifoliaceae-Valeriana edulis,Valeriana edulis,2888746,FALSE,NA,FALSE
+2025,Caprifoliaceae-Valeriana occidentalis,Valeriana occidentalis,2888753,FALSE,NA,FALSE
+2025,Caryophyllaceae-Eremogone congesta,Eremogone congesta,6364619,FALSE,NA,TRUE
+2025,Cornaceae-Cornus sericea,Cornus sericea,3082244,FALSE,NA,TRUE
+2025,Crassulaceae-Rhodiola integrifolia,Rhodiola integrifolia,2985695,FALSE,NA,TRUE
+2025,Crassulaceae-Rhodiola rhodantha,Rhodiola rhodantha,2985692,FALSE,NA,TRUE
+2025,Cupressaceae-Juniperus communis,Juniperus communis,2684709,FALSE,NA,FALSE
+2025,Cupressaceae-Juniperus scopulorum,Juniperus scopulorum,2684773,FALSE,NA,TRUE
+2025,Cyperaceae-Carex aquatilis,Carex aquatilis,2724150,FALSE,NA,FALSE
+2025,Cyperaceae-Carex ebenea,Carex ebenea,2727361,FALSE,NA,TRUE
+2025,Cyperaceae-Carex geyeri,Carex geyeri,2729323,FALSE,NA,TRUE
+2025,Cyperaceae-Carex hoodii,Carex hoodii,2721912,FALSE,NA,FALSE
+2025,Cyperaceae-Carex macloviana,Carex macloviana,2724790,FALSE,NA,TRUE
+2025,Cyperaceae-Carex pachystachya,Carex pachystachya,2724825,FALSE,NA,TRUE
+2025,Cyperaceae-Carex praticola,Carex praticola,2726082,FALSE,NA,TRUE
+2025,Cyperaceae-Carex saxatilis,Carex saxatilis,2727697,FALSE,NA,TRUE
+2025,Cyperaceae-Carex sp.,Carex sp.,NA,FALSE,NA,TRUE
+2025,Cyperaceae-Carex utriculata,Carex utriculata,2726268,FALSE,NA,FALSE
+2025,Ericaceae-Arctostaphylos uva-ursi,Arctostaphylos uva-ursi,NA,FALSE,NA,TRUE
+2025,Ericaceae-Vaccinium cespitosum,Vaccinium cespitosum,2882861,FALSE,NA,FALSE
+2025,Ericaceae-Vaccinium scoparium,Vaccinium scoparium,8383191,FALSE,NA,TRUE
+2025,Fabaceae-Astragalus alpinus,Astragalus alpinus,5345014,FALSE,NA,TRUE
+2025,Fabaceae-Lathyrus lanszwertii,Lathyrus lanszwertii,5356432,FALSE,NA,FALSE
+2025,Fabaceae-Lupinus argenteus,Lupinus argenteus,2964374,FALSE,NA,FALSE
+2025,Fabaceae-Lupinus bakeri,Lupinus bakeri,NA,FALSE,NA,FALSE
+2025,Fabaceae-Oxytropis deflexa,Oxytropis deflexa,5361424,FALSE,NA,TRUE
+2025,Fabaceae-Trifolium pratense,Trifolium pratense,8324121,FALSE,NA,TRUE
+2025,Fabaceae-Vicia americana,Vicia americana,2975204,FALSE,NA,FALSE
+2025,Gentianaceae-Frasera speciosa,Frasera speciosa,7948050,FALSE,NA,FALSE
+2025,Grossulariaceae-Ribes cereum,Ribes cereum,2986127,FALSE,NA,TRUE
+2025,Grossulariaceae-Ribes inerme,Ribes inerme,2986112,FALSE,NA,TRUE
+2025,Grossulariaceae-Ribes montigenum,Ribes montigenum,10137876,FALSE,NA,FALSE
+2025,Grossulariaceae-Ribes wolfii,Ribes wolfii,2986125,FALSE,NA,TRUE
+2025,Iridaceae-Iris missouriensis,Iris missouriensis,5298923,FALSE,NA,FALSE
+2025,Juncaceae-Juncus arcticus,Juncus arcticus,NA,FALSE,NA,FALSE
+2025,Juncaceae-Juncus cf. drummondii,Juncus cf. drummondii,NA,FALSE,NA,TRUE
+2025,Juncaceae-Juncus parryi,Juncus parryi,2701746,FALSE,NA,TRUE
+2025,Lamiaceae-Agastache urticifolia,Agastache urticifolia,2926403,FALSE,NA,FALSE
+2025,Linaceae-Linum lewisii,Linum lewisii,2873876,FALSE,NA,FALSE
+2025,Melanthiaceae-Anticlea elegans,Anticlea elegans,5295813,FALSE,NA,TRUE
+2025,Melanthiaceae-Veratrum californicum,Veratrum tenuipetalum,NA,FALSE,V. californicum and V. tenuipetalum are synonymized in the RMBL flora; the 2018 list explicitly notes *syn. = V. californicum var. californicum. Treat all Veratrum samples as V. tenuipetalum.,FALSE
+2025,Onagraceae-Chamaenerion angustifolium,Chamaenerion angustifolium,6428353,FALSE,NA,TRUE
+2025,Orobanchaceae-Castilleja septentrionalis,Castilleja septentrionalis,3170627,FALSE,NA,TRUE
+2025,Orobanchaceae-Pedicularis groenlandica,Pedicularis groenlandica,3171729,FALSE,NA,FALSE
+2025,Papaveraceae-Corydalis caseana,Corydalis caseana,5334203,FALSE,NA,FALSE
+2025,Pinaceae-Abies lasiocarpa,Abies lasiocarpa,2685313,FALSE,NA,FALSE
+2025,Pinaceae-Picea engelmannii,Picea engelmannii,5284917,FALSE,NA,FALSE
+2025,Pinaceae-Pinus contorta,Pinus contorta,5285750,FALSE,NA,FALSE
+2025,Pinaceae-Pinus flexilis,Pinus flexilis,5285551,FALSE,NA,TRUE
+2025,Pinaceae-Pinus ponderosa,Pinus ponderosa,NA,FALSE,NA,TRUE
+2025,Pinaceae-Pseudotsuga menziessii,Pseudotsuga menziessii,NA,FALSE,NA,TRUE
+2025,Poaceae-Achnatherium hymenoides,Achnatherium hymenoides,NA,FALSE,NA,TRUE
+2025,Poaceae-Achnatherum lettermanii,Achnatherum lettermanii,NA,FALSE,NA,TRUE
+2025,Poaceae-Bromopsis ciliata,Bromopsis ciliata,NA,FALSE,NA,TRUE
+2025,Poaceae-Bromopsis inermis,Bromopsis inermis,NA,FALSE,NA,FALSE
+2025,Poaceae-Bromopsis sp.,Bromopsis sp.,NA,FALSE,NA,TRUE
+2025,Poaceae-Bromus carinatus,Bromus carinatus,2703712,FALSE,NA,TRUE
+2025,Poaceae-Calamagrostis canadensis,Calamagrostis canadensis,2704895,FALSE,NA,TRUE
+2025,Poaceae-Deschampsia cespitosa,Deschampsia cespitosa,8059811,FALSE,NA,FALSE
+2025,Poaceae-Elymus glaucus,Elymus glaucus,5290269,FALSE,NA,TRUE
+2025,Poaceae-Festuca saximontana,Festuca saximontana,4270593,FALSE,NA,TRUE
+2025,Poaceae-Festuca thurberi,Festuca thurberi,2704945,FALSE,NA,FALSE
+2025,Poaceae-Phleum pratense,Phleum pratense,9014945,FALSE,NA,TRUE
+2025,Poaceae-Poa pratensis,Poa pratensis,2704178,FALSE,NA,TRUE
+2025,Poaceae-Unknown sp.,Unknown sp.,NA,FALSE,NA,TRUE
+2025,Polemoniaceae-Ipomopsis aggregata,Ipomopsis aggregata,2927979,FALSE,NA,TRUE
+2025,Polemoniaceae-Phlox multiflora,Phlox multiflora,2927741,FALSE,NA,TRUE
+2025,Polygonaceae-Bistorta bistortoides,Bistorta bistortoides,2889291,FALSE,NA,FALSE
+2025,Polygonaceae-Eriogonum umbellatum,Eriogonum umbellatum,2889574,FALSE,NA,TRUE
+2025,Polygonaceae-Rumex densiflorus,Rumex densiflorus,2888957,FALSE,NA,FALSE
+2025,Ranunculaceae-Aconitum columbianum,Aconitum columbianum,3033668,FALSE,NA,TRUE
+2025,Ranunculaceae-Aquilegia coerulea,Aquilegia coerulea,3033188,FALSE,NA,TRUE
+2025,Ranunculaceae-Caltha leptosepala,Caltha leptosepala,5371684,FALSE,NA,FALSE
+2025,Ranunculaceae-Delphinium barbeyi,Delphinium barbeyi,3033713,FALSE,NA,FALSE
+2025,Ranunculaceae-Thalictrum fendleri,Thalictrum fendleri,3033120,FALSE,NA,FALSE
+2025,Rosaceae-Amelanchier alnifolia,Amelanchier alnifolia,8168485,FALSE,NA,TRUE
+2025,Rosaceae-Dasiphora fruticosa,Dasiphora fruticosa,5370380,FALSE,NA,FALSE
+2025,Rosaceae-Fragaria virginiana,Fragaria virginiana,7950792,FALSE,NA,TRUE
+2025,Rosaceae-Geum aleppicum,Geum aleppicum,NA,FALSE,NA,TRUE
+2025,Rosaceae-Geum macrophyllum,Geum macrophyllum,5369784,FALSE,NA,TRUE
+2025,Rosaceae-Geum triflorum,Geum triflorum,5369703,FALSE,NA,TRUE
+2025,Rosaceae-Holodiscus discolor,Holodiscus discolor,2987780,FALSE,NA,TRUE
+2025,Rosaceae-Potentilla gracilis,Potentilla gracilis,5365416,FALSE,NA,TRUE
+2025,Rosaceae-Potentilla hippiana,Potentilla hippiana,5367733,FALSE,NA,TRUE
+2025,Rosaceae-Potentilla pulcherrima,Potentilla pulcherrima,5365568,FALSE,NA,FALSE
+2025,Rosaceae-Prunus virginiana,Prunus virginiana,3022668,FALSE,NA,TRUE
+2025,Rosaceae-Purshia tridentata,Purshia tridentata,5370313,FALSE,NA,TRUE
+2025,Rosaceae-Rosa woodsii,Rosa woodsii,3004072,FALSE,NA,TRUE
+2025,Rosaceae-Rubus idaeus,Rubus idaeus,2993094,FALSE,NA,FALSE
+2025,Rosaceae-Sibbaldia procumbens,Sibbaldia procumbens,3025029,FALSE,NA,FALSE
+2025,Rubiaceae-Galium boreale,Galium boreale,2914338,FALSE,NA,FALSE
+2025,Salicaceae-Populus angustifolia,Populus angustifolia,3040196,FALSE,NA,TRUE
+2025,Salicaceae-Populus tremuloides,Populus tremuloides,3040215,FALSE,NA,FALSE
+2025,Salicaceae-Salix boothii,Salix boothii,5372946,FALSE,NA,FALSE
+2025,Salicaceae-Salix drummondiana,Salix drummondiana,7404613,FALSE,NA,FALSE
+2025,Salicaceae-Salix glauca,Salix glauca,5372963,FALSE,NA,FALSE
+2025,Salicaceae-Salix monticola,Salix monticola,5372897,FALSE,NA,TRUE
+2025,Salicaceae-Salix planifolia,Salix planifolia,5372987,FALSE,NA,FALSE
+2025,Salicaceae-Salix scouleriana,Salix scouleriana,7587287,FALSE,NA,TRUE
+2025,Salicaceae-Salix wolfii,Salix wolfii,5372872,FALSE,NA,FALSE
+2025,Sapindaceae-Acer glabrum,Acer glabrum,3189864,FALSE,NA,TRUE
+2025,Viburnaceae-Sambucus racemosa,Sambucus racemosa,2888723,FALSE,NA,TRUE
+2018,RibMon,Ribes montigenum,10137876,FALSE,2018 cover used RibMon; missing from 2018 species_list but present in 2025 as Ribes montigenum.,FALSE
+2018,RubIda,Rubus idaeus,2993094,FALSE,2018 cover used RubIda; missing from 2018 species_list but present in 2025 as Rubus idaeus.,FALSE
+2018,engelmann,Picea engelmannii,5284917,FALSE,"2018 cover used lowercase ""engelmann""; species_list has ""Engelmann"" — case mismatch.",FALSE
+2023,ACHMIL,Achillea millefolium,,,,
+2023,ACOCOL,Aconitum columbianum,,,,
+2023,AGAURT,Agastache urticifolia,,,,
+2023,AGOGLA,Agoseris glauca,,,,
+2023,AGOSPP,Agoseris spp,,,,
+2023,AMEALN,Amelanchier alnifolia,,,,
+2023,ANTELA,Anticlea elegans,,,,
+2023,ANTROS,Antennaria rosea,,,,
+2023,ARCUVA,Arctostaphylos uva-ursi,,,,
+2023,ARECON,Eremogone congesta,,,,
+2023,ARNMOL,Arnica mollis,,,,
+2023,ARTDRA,Artemisia dracunculus,,,,
+2023,ARTTRI,Artemisia tridentata,,,,
+2023,BARE,,,,,
+2023,BISBIS,Bistorta bistortoides,,,,
+2023,BROINE,Bromopsis inermis,,,,
+2023,CALLEP,Caltha leptosepala,,,,
+2023,CARSPP,Carex spp,,,,
+2023,CARURT,Carex utriculata,,,,
+2023,CASLIN,Castilleja linariifolia,,maybe,,
+2023,CASSEP,Castilleja septentrionalis,,,,
+2023,CHRVIS,Chrysothamnus viscidiflorus,,,,
+2023,CIRSPP,Cirsium spp,,,,
+2023,COLLIN,Collomia linearis,,maybe,,
+2023,DELBAR,Delphinium barbeyi,,,,
+2023,DESCES,Deschampsia cespitosa,,,,
+2023,ERIFLA,Erigeron flagellaris,,maybe,,
+2023,ERIGLA,Erigeron glacialis,,,,
+2023,ERISPE,Erigeron speciosus,,,,
+2023,ERISUB,Eriogonum umbellatum,,,,
+2023,ERIUMB,Eriogonum umbellatum,,,,
+2023,EUCENG,Eucephalus engelmannii,,,,
+2023,FESTHU,Festuca thurberi,,,,
+2023,FORB,,,,,
+2023,FRASPE,Frasera speciosa,,,,
+2023,FRAVIR,Fragaria virginiana,,,,
+2023,GALBOR,Galium boreale,,,,
+2023,GERRIC,Geranium richardsonii,,maybe,,
+2023,GEUROS,Geum rossi,,,,
+2023,GEUTRI,Geum triflorum,,,,
+2023,GRAM,,,,,
+2023,HELMUL,Heliomeris multiflora,,,,
+2023,HELQUI,Helianthella quinquenervis,,,,
+2023,HERMAX,Heracleum maximum,,,,
+2023,HETVIL,Heterotheca villosa,,,,
+2023,HYDFEN,Hydrophyllum fendleri,,maybe,,
+2023,HYMHOO,Hymenoxys hoopesii,,,,
+2023,JUNCOM,Juniperus communis,,,,
+2023,JUNDRU,Juncus cf. drummondii,,,,
+2023,JUNSPP,Juncus spp,,,,
+2023,LATLAN,Lathyrus lanszwertii,,,,
+2023,LIGPOR,Ligusticum porteri,,,,
+2023,LINLEW,Linum lewisii,,,,
+2023,LINVUL,Linaria vulgaris,,maybe,,
+2023,LITTER,,,,,
+2023,LOMDIS,Lomatium dissectum,,maybe,,
+2023,LUPARG,Lupinus argenteus,,,,
+2023,MAHREP,Mahonia repens,,,,
+2023,MERCIL,Mertensia ciliata,,,,
+2023,OSMOCC,Osmorhiza occidentalis,,,,
+2023,PEDGRO,Pedicularis groenlandica,,,,
+2023,PHLPRA,Phleum pratense,,,,
+2023,POAPRA,Poa pratensis,,,,
+2023,POTFRU,Dasiphora fruticosa,,,,
+2023,POTHIP,Potentilla hippiana,,,,
+2023,POTPUL,Potentilla pulcherrima,,,,
+2023,PRUVIR,Prunus virginiana,,,,
+2023,PSEMON,Pseudocymopterus montanus,,,,
+2023,PYRCRO,Pyrrocoma crocea,,,,
+2023,RANALI,Ranunculus alismifolius,,maybe,,
+2023,RHOINT,Rhodiola integrifolia,,,,
+2023,RHORHO,Rhodiola rhodantha,,,,
+2023,RIBMON,Ribes montigenum,,,,
+2023,ROCK,,,,,
+2023,ROSWOO,Rosa woodsii,,,,
+2023,RUMDEN,Rumex densiflorus,,,,
+2023,SALSPP,Salix spp,,,,
+2023,SAMRAC,Sambucus racemosa,,,,
+2023,SENCRA,Senecio crassulus,,,,
+2023,SENINT,Senecio integerrimus,,maybe,,
+2023,SENSER,Senecio serra,,,,
+2023,SENTRI,Senecio triangularis,,,,
+2023,SHRUB,,,,,
+2023,SIBPRO,Sibbaldia procumbens,,,,
+2023,SYMROT,Symphoricarpos rotundifolius,,,,
+2023,TAROFF,Taraxacum officinale,,,,
+2023,THAFEN,Thalictrum fendleri,,,,
+2023,THLARV,Thlaspi arvense,,,,
+2023,VACCES,Vaccinium cespitosum,,,,
+2023,VALEDU,Valeriana edulis,,,,
+2023,VALOCC,Valeriana occidentalis,,,,
+2023,VERCAL,Veratrum californicum,,,,
+2023,VICAME,Vicia americana,,,,
+2023,WYEAMP,Wyethia amplexicaulis,,,,

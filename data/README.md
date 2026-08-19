@@ -25,6 +25,19 @@ CHESS 2025 field campaign — cover + site metadata, parallel structure to 2018.
 | `dd.csv`, `flmd.csv` | ESS-DIVE data dictionary + file-level metadata. |
 | `CHESS_2025_Field_collected_vegetation_attributes.xml` | FGDC metadata. |
 
+## `raw/Vegmap_2023/`
+
+2023 UER vegmap campaign (collaborator) — 238 ~1 m² plots, all within CRBU, sampled Jun–Aug 2023. Working copies from
+`Google Drive: BreckheimerLab2025/Projects/CHESS/Projects/Vegmap_2023/data`. Standardized into the pipeline by `code/meadow/00_prep_2023.R`; spectra come from the **2025 AOP** (no 2023 CRBU flight — assumes 2023→2025 composition stability).
+
+| File | Purpose |
+|---|---|
+| `vegmap_2023_cover.csv` | Plot × species cover (6-letter codes; totals = 100%). |
+| `vegmap_2023_wgs_utm_pixel_select.geojson` | AOP-pixel-snapped plot polygons, EPSG:32613; `pix_sel` = reviewed. |
+| `uer_vegmap_locations_2023.csv` | Raw GNSS corner points (provenance only). |
+
+The code → canonical crosswalk is committed at `small_reference/taxonomy_crosswalk_2023.csv` (collaborator's 3-campaign file, dated 2026-08-06); the stable site-number lookup (3001+) at `small_reference/site_numbers_2023.csv`. Known open issue: SH-1..4 have cover but no polygon, JF-13..17 the reverse — awaiting collaborator resolution.
+
 ## `raw/ESS-DIVE-Spectra/`
 
 NEON AOP spectra extracted at crown footprints for both campaign years. Spectral matrices and wavelengths are year-specific.

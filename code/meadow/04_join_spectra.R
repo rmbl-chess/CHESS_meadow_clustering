@@ -32,6 +32,9 @@ sp_2025        <- readRDS("data/derived/spectra_2025.rds")
 # Hub extraction has run. Optional so the pipeline still runs without it.
 sp_2026_path   <- "data/derived/spectra_2026.rds"
 sp_2026        <- if (file.exists(sp_2026_path)) readRDS(sp_2026_path) else NULL
+# 2023 UER vegmap spectra (also extracted from 2025 AOP); same optional guard.
+sp_2023_path   <- "data/derived/spectra_2023.rds"
+sp_2023        <- if (file.exists(sp_2023_path)) readRDS(sp_2023_path) else NULL
 
 # Wavelength grids: 2018 and 2025 are nearly identical (426 bands, 0.384-2.510
 # μm) but drift up to 10 nm in bands 81-135 (NIR plateau) — likely a NEON
@@ -149,7 +152,11 @@ spectra_combined <- dplyr::bind_rows(
                          2018L, correction_path, wavelengths),
   agg_spectra(sp_2025$spectra, 2025L),
   # 2026 extracted from 2025 AOP -> no year correction (same basis as 2025).
-  if (!is.null(sp_2026)) agg_spectra(sp_2026$spectra, 2026L) else NULL
+  if (!is.null(sp_2026)) agg_spectra(sp_2026$spectra, 2026L) else NULL,
+  # 2023 likewise extracted from 2025 AOP (no 2023 CRBU flight exists) -> no
+  # correction; the 2-year composition-stability assumption is documented in
+  # 00_prep_2023.R / data/README.md.
+  if (!is.null(sp_2023)) agg_spectra(sp_2023$spectra, 2023L) else NULL
 )
 
 # Inner join on (site_number, Year) so only sites with both cover and spectra
@@ -159,9 +166,10 @@ joined <- dplyr::inner_join(
   by = c("site_number", "Year")
 )
 
-message(sprintf("veg_spectra: %d sites (%d 2018, %d 2025, %d 2026), %d cover cols, %d bands",
+message(sprintf("veg_spectra: %d sites (%d 2018, %d 2023, %d 2025, %d 2026), %d cover cols, %d bands",
                 nrow(joined),
                 sum(joined$Year == 2018L),
+                sum(joined$Year == 2023L),
                 sum(joined$Year == 2025L),
                 sum(joined$Year == 2026L),
                 sum(grepl("_cover$", names(joined))),

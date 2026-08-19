@@ -39,6 +39,11 @@ raw_2018 <- "data/raw/ESS-DIVE-Vegetation-Field-2018"
 raw_2025 <- "data/raw/ESS-DIVE-Vegetation-Field-2025"
 raw_2026 <- "data/raw/Supplemental_field_2026"
 raw_spec <- "data/raw/ESS-DIVE-Spectra"
+# 2023 UER vegmap campaign: standardized by code/meadow/00_prep_2023.R (run it
+# first). Same logical schema as 2026: Cover_Class_Name is the canonical
+# binomial (or 2025-style non-species token), no species list.
+std_2023_cover <- "data/derived/vegmap_2023_cover_std.csv"
+std_2023_polys <- "data/derived/vegmap_2023_polygons_std.geojson"
 
 dir.create("data/derived", showWarnings = FALSE, recursive = TRUE)
 
@@ -77,6 +82,13 @@ cover_2026 <- readr::read_csv(
   dplyr::rename(site_number = Site_Number) |>
   dplyr::mutate(site_number = as.integer(site_number))
 
+# --- 2023 UER vegmap vegetation --------------------------------------------
+if (!file.exists(std_2023_cover))
+  stop("Missing ", std_2023_cover, " — run code/meadow/00_prep_2023.R first.")
+cover_2023 <- readr::read_csv(std_2023_cover, show_col_types = FALSE) |>
+  dplyr::rename(site_number = Site_Number) |>
+  dplyr::mutate(site_number = as.integer(site_number))
+
 # --- Crown polygons --------------------------------------------------------
 # Both GeoJSONs are already EPSG:32613; transform is defensive (no-op when matched).
 crowns_2018 <- sf::st_read(file.path(raw_2018, "CRBU2018_AOP_Crowns.geojson"),
@@ -98,6 +110,12 @@ crowns_2026 <- sf::st_read(
   sf::st_zm(drop = TRUE) |>
   sf::st_transform(32613) |>
   dplyr::transmute(site_number = as.integer(Label_of_F))
+
+# 2023 plot polygons (pixel-snapped, already EPSG:32613 from 00_prep). Like
+# 2026, domain + site_type are backfilled from the extracted spectra below.
+crowns_2023 <- sf::st_read(std_2023_polys, quiet = TRUE) |>
+  sf::st_transform(32613) |>
+  dplyr::transmute(site_number = as.integer(site_number), site_name)
 
 # --- Spectra (pre-extracted at crown footprints) ---------------------------
 spectra_2018 <- readr::read_csv(file.path(raw_spec, "site_extraction_spectra_2018 (1).csv"),
@@ -130,6 +148,25 @@ if (have_2026_spectra) {
           "Skipping spectra_2026.rds; 2026 sites will not enter clustering yet.")
 }
 
+# 2023 spectra (extracted from 2025 AOP — nearest flight to the 2023 campaign;
+# same guard-and-backfill pattern as 2026).
+spectra_2023_path <- file.path(raw_spec, "site_extraction_spectra_2023.csv")
+have_2023_spectra <- file.exists(spectra_2023_path)
+if (have_2023_spectra) {
+  spectra_2023 <- readr::read_csv(spectra_2023_path, show_col_types = FALSE) |>
+    dplyr::mutate(site_number = as.integer(site_number))
+  site_meta_2023 <- spectra_2023 |>
+    dplyr::distinct(site_number, domain, site_type)
+  crowns_2023 <- crowns_2023 |>
+    dplyr::left_join(site_meta_2023, by = "site_number")
+} else {
+  message("No 2023 spectra at ", spectra_2023_path,
+          " — run code/python/extract_supplemental_spectra.py on the Hub ",
+          "(--polygons ", std_2023_polys, " --cover ", std_2023_cover,
+          " --site-field site_number --fid-prefix V23 --year 2025). ",
+          "Skipping spectra_2023.rds; 2023 sites will not enter clustering yet.")
+}
+
 # --- Persist ---------------------------------------------------------------
 saveRDS(list(cover = cover_2018, species = species_2018, colkey = colkey_2018),
         "data/derived/veg_2018.rds")
@@ -138,11 +175,16 @@ saveRDS(list(cover = cover_2025, species = species_2025, sites = sites_2025),
 # 2026 has no species_list; Cover_Class_Name is already the binomial.
 saveRDS(list(cover = cover_2026, species = NULL, sites = NULL),
         "data/derived/veg_2026.rds")
+# 2023: same shape as 2026 (canonical names standardized in 00_prep_2023.R).
+saveRDS(list(cover = cover_2023, species = NULL, sites = NULL),
+        "data/derived/veg_2023.rds")
 sf::st_write(crowns_2018, "data/derived/crowns_2018.gpkg",
              delete_dsn = TRUE, quiet = TRUE)
 sf::st_write(crowns_2025, "data/derived/crowns_2025.gpkg",
              delete_dsn = TRUE, quiet = TRUE)
 sf::st_write(crowns_2026, "data/derived/crowns_2026.gpkg",
+             delete_dsn = TRUE, quiet = TRUE)
+sf::st_write(crowns_2023, "data/derived/crowns_2023.gpkg",
              delete_dsn = TRUE, quiet = TRUE)
 saveRDS(list(spectra = spectra_2018, wavelengths = wl_2018),
         "data/derived/spectra_2018.rds")
@@ -152,4 +194,9 @@ saveRDS(list(spectra = spectra_2025, wavelengths = wl_2025),
 if (have_2026_spectra) {
   saveRDS(list(spectra = spectra_2026, wavelengths = wl_2025),
           "data/derived/spectra_2026.rds")
+}
+# 2023 likewise (extracted from 2025 AOP).
+if (have_2023_spectra) {
+  saveRDS(list(spectra = spectra_2023, wavelengths = wl_2025),
+          "data/derived/spectra_2023.rds")
 }

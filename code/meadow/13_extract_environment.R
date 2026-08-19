@@ -36,15 +36,22 @@ crowns_2026 <- if (file.exists(crowns_2026_path)) {
     dplyr::mutate(Year = 2026L) |>
     dplyr::select(site_number, Year)
 } else NULL
+# 2023 UER vegmap plots (same treatment).
+crowns_2023_path <- "data/derived/crowns_2023.gpkg"
+crowns_2023 <- if (file.exists(crowns_2023_path)) {
+  sf::st_read(crowns_2023_path, quiet = TRUE) |>
+    dplyr::mutate(Year = 2023L) |>
+    dplyr::select(site_number, Year)
+} else NULL
 
-crowns <- dplyr::bind_rows(crowns_2018, crowns_2025, crowns_2026) |>
+crowns <- dplyr::bind_rows(crowns_2018, crowns_2023, crowns_2025, crowns_2026) |>
   sf::st_centroid() |>
   sf::st_transform(32613)
 
-cat(sprintf("Total crown centroids: %d (2018=%d, 2025=%d, 2026=%d)\n",
+cat(sprintf("Total crown centroids: %d (2018=%d, 2023=%d, 2025=%d, 2026=%d)\n",
             nrow(crowns),
-            sum(crowns$Year == 2018L), sum(crowns$Year == 2025L),
-            sum(crowns$Year == 2026L)))
+            sum(crowns$Year == 2018L), sum(crowns$Year == 2023L),
+            sum(crowns$Year == 2025L), sum(crowns$Year == 2026L)))
 
 # Convert to terra SpatVector for raster extraction.
 crowns_vect <- terra::vect(crowns)

@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 """
-extract_supplemental_spectra.py — extract per-pixel NEON AOP reflectance at the
-2026 supplemental field-crown polygons, producing a CSV that matches the
-delivered `site_extraction_spectra_2025 (1).csv` schema so the R meadow/shrub
-pipeline can read it with no format changes.
+extract_supplemental_spectra.py — extract per-pixel NEON AOP reflectance at
+supplemental field polygons (2026 crowns, 2023 UER vegmap plots), producing a
+CSV that matches the delivered `site_extraction_spectra_2025 (1).csv` schema so
+the R meadow/shrub pipeline can read it with no format changes.
+
+2023 UER vegmap usage (after code/meadow/00_prep_2023.R; all-CRBU, 2025 AOP):
+    python code/python/extract_supplemental_spectra.py \\
+        --polygons data/derived/vegmap_2023_polygons_std.geojson \\
+        --cover    data/derived/vegmap_2023_cover_std.csv \\
+        --site-field site_number --fid-prefix V23 --year 2025 \\
+        --output   data/raw/ESS-DIVE-Spectra/site_extraction_spectra_2023.csv
 
 Companion to data/raw/Supplemental_field_2026/ (69 plots, sites 2001-2069).
 The polygons carry only a site label; this script derives `domain` (by
@@ -169,7 +176,7 @@ def run(args: argparse.Namespace) -> int:
     gj = json.load(open(args.polygons))
     polys: dict[int, object] = {}
     for f in gj["features"]:
-        sid = int(f["properties"]["Label_of_F"])
+        sid = int(float(f["properties"][args.site_field]))
         polys[sid] = shape(f["geometry"])
     logger.info("Polygons: %d sites", len(polys))
 
@@ -209,7 +216,7 @@ def run(args: argparse.Namespace) -> int:
                 row = {
                     "site_number": sid, "domain": dom, "sampling_area": "",
                     "site_type": site_type.get(sid, "Meadow"),
-                    "fid": f"AUG{sid}", "row": "", "col": "",
+                    "fid": f"{args.fid_prefix}{sid}", "row": "", "col": "",
                     "x_utm": float(xs[k]), "y_utm": float(ys[k]), "shade": "",
                 }
                 row.update({c: float(v) for c, v in zip(band_cols, spec[k])})
@@ -235,7 +242,7 @@ def run(args: argparse.Namespace) -> int:
                   .groupby(["site_number", "domain", "site_type"])
                   .agg(n_pixels=("x_utm", "size"), ndvi=("ndvi", "mean"))
                   .reset_index())
-        summ_path = Path(args.output).with_name("site_extraction_spectra_2026_summary.csv")
+        summ_path = Path(args.output).with_name(Path(args.output).stem + "_summary.csv")
         summ.to_csv(summ_path, index=False)
         logger.info("Wrote %s (per-site pixel counts + mean NDVI)", summ_path)
         logger.info("Per-site pixels: min=%d median=%d max=%d",
@@ -249,6 +256,11 @@ def build_parser() -> argparse.ArgumentParser:
         description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--polygons", type=Path, required=True)
     p.add_argument("--cover", type=Path, required=True)
+    p.add_argument("--site-field", default="Label_of_F",
+                   help="polygon property holding the integer site number "
+                        "(2026: Label_of_F; 2023 standardized: site_number)")
+    p.add_argument("--fid-prefix", default="AUG",
+                   help="prefix for the synthetic fid (2026: AUG; 2023: V23)")
     p.add_argument("--year", type=int, default=2025)
     p.add_argument("--output", type=Path,
                    default=Path("data/raw/ESS-DIVE-Spectra/site_extraction_spectra_2026.csv"))

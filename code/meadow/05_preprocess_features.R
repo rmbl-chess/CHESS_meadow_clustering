@@ -48,8 +48,8 @@ spec_mat <- as.matrix(joined[, keep_cols])
 #
 # Fit the basis on the 2025 rows ONLY so it matches JPL's pre-computed
 # 3 m PC mosaics (which were generated on the 2025-only basis the
-# original aop_classifier_pca.csv was exported on). 2018 + 2026 spectra
-# (2018 year-corrected in 04; 2026 extracted directly from 2025 AOP) are
+# original aop_classifier_pca.csv was exported on). 2018 + 2023 + 2026 spectra
+# (2018 year-corrected in 04; 2023/2026 extracted directly from 2025 AOP) are
 # PROJECTED onto this basis so they contribute to clustering and the joint
 # training set without dragging the basis itself. This keeps the inference
 # COGs (data/derived/aop_classified/) coherent with the new RF.
@@ -68,8 +68,9 @@ message(sprintf(
   "Spectral PCA fit on %d 2025 rows; top %d PCs explain %.1f%% of fit variance.",
   sum(is_2025), n_pc, 100 * varexp[n_pc]
 ))
-message(sprintf("Projected %d sites onto basis (%d 2018 + %d 2025 + %d 2026).",
-                nrow(spec_mat), sum(joined$Year == 2018L), sum(is_2025),
+message(sprintf("Projected %d sites onto basis (%d 2018 + %d 2023 + %d 2025 + %d 2026).",
+                nrow(spec_mat), sum(joined$Year == 2018L),
+                sum(joined$Year == 2023L), sum(is_2025),
                 sum(joined$Year == 2026L)))
 
 # Narrow-band indices. Pick the band whose center is closest to each target.

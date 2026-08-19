@@ -90,11 +90,23 @@ crowns_2026 <- if (file.exists(crowns_2026_path)) {
   } else NULL
 } else NULL
 
-centroids <- dplyr::bind_rows(crowns_2018, crowns_2025, crowns_2026) |>
+# 2023 UER vegmap plots (all CRBU); domain backfilled in 01_load.R from the
+# extracted spectra, same guard as 2026. Reuses the 2025 CHM for its domain.
+crowns_2023_path <- "data/derived/crowns_2023.gpkg"
+crowns_2023 <- if (file.exists(crowns_2023_path)) {
+  c23 <- sf::st_read(crowns_2023_path, quiet = TRUE)
+  if ("domain" %in% names(c23)) {
+    c23 |> dplyr::mutate(Year = 2023L) |>
+      dplyr::select(site_number, Year, domain)
+  } else NULL
+} else NULL
+
+centroids <- dplyr::bind_rows(crowns_2018, crowns_2023, crowns_2025, crowns_2026) |>
   sf::st_transform(32613) |>
   sf::st_centroid()
-cat(sprintf("\nCrown centroids: %d (2018=%d, 2025=%d, 2026=%d)\n",
+cat(sprintf("\nCrown centroids: %d (2018=%d, 2023=%d, 2025=%d, 2026=%d)\n",
             nrow(centroids), sum(centroids$Year == 2018L),
+            sum(centroids$Year == 2023L),
             sum(centroids$Year == 2025L), sum(centroids$Year == 2026L)))
 
 extract_chm_for_domain <- function(centroids_dom, chm_path_3m) {
@@ -129,9 +141,10 @@ chm_per_site <- per_crown |>
     .groups         = "drop"
   )
 
-cat(sprintf("\nPer-site CHM table: %d sites (2018=%d, 2025=%d, 2026=%d)\n",
+cat(sprintf("\nPer-site CHM table: %d sites (2018=%d, 2023=%d, 2025=%d, 2026=%d)\n",
             nrow(chm_per_site),
             sum(chm_per_site$Year == 2018L),
+            sum(chm_per_site$Year == 2023L),
             sum(chm_per_site$Year == 2025L),
             sum(chm_per_site$Year == 2026L)))
 cat("\n3m max canopy height summary (m):\n")
