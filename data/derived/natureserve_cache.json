@@ -2,7 +2,7 @@
  "fetch_date": "2026-08-27",
  "api_base": "https://explorer.natureserve.org/api/data",
  "citation": "NatureServe. NatureServe Explorer. https://explorer.natureserve.org",
- "n_search_tokens": 107,
+ "n_search_tokens": 127,
  "species_search": {
   "Achillea millefolium": [
    685019,
@@ -838,6 +838,66 @@
    689720,
    683643,
    788017
+  ],
+  "Aconitum columbianum": [],
+  "Anemonastrum narcissiflorum ssp. Zephyrum": [],
+  "Bromus carinatus": [
+   1110204,
+   969555,
+   686951,
+   689568,
+   683284,
+   689306,
+   969513,
+   964196,
+   728853,
+   969517,
+   1277684,
+   683339,
+   688131,
+   684803,
+   689645
+  ],
+  "Carex pachystachya": [],
+  "Carex siccata": [
+   1041701,
+   1270972,
+   899156,
+   814348,
+   836338,
+   1309285,
+   685297,
+   689037,
+   835326,
+   688449,
+   685993,
+   689065,
+   685616,
+   685604,
+   827935,
+   685402,
+   686291,
+   683240,
+   688804,
+   689506,
+   689487,
+   687067
+  ],
+  "Castilleja septentrionalis": [],
+  "Collomia linearis": [],
+  "Fragaria virgiana": [
+   690077,
+   687701,
+   1222805,
+   684019
+  ],
+  "Frasera speciosa": [],
+  "Galium boreale": [],
+  "Pulsatilla nuttalliana": [],
+  "Senecio integerrimus": [],
+  "Solidago spp": [],
+  "Vicia americana": [
+   687003
   ]
  },
  "ecosystems": {
@@ -1059,7 +1119,9 @@
    "name_species": [
     "Caltha leptosepala",
     "Picea sitchensis",
-    "Tsuga mertensiana"
+    "Tsuga mertensiana",
+    "Vaccinium alaskaense",
+    "Vaccinium ovalifolium"
    ],
    "conceptSentence": null,
    "summary": null,
@@ -2775,7 +2837,9 @@
    "in_colorado": true,
    "name_species": [
     "Abies lasiocarpa",
-    "Picea engelmannii"
+    "Picea engelmannii",
+    "Salix brachycarpa",
+    "Salix glauca"
    ],
    "conceptSentence": null,
    "summary": "This shrubland association occurs as krummholz near treeline in the southern Rocky Mountains and possibly the Uinta Mountains in Utah. Elevation range is between 3350 and 3750 m (10,990-12,200 feet). Stands are often found on moderate to steep, windswept upper slopes on cooler northerly aspects in relatively moist areas, but they occur on all aspects in or near seepage areas from melting snowbeds. Stands also occur in alpine valleys often near small streams or wetlands. Sites are exposed to high winds that stunt and deform trees by killing branches that extend above snowpack. Soils are shallow, lithic, gravelly or sandy loam. Rock outcrop and colluvium are common. The vegetation is characterized by patchy, moderate to dense shrubby tree and willow cover (0.5-3.0 m high) that often forms a mosaic with wet meadow communities. The shrub layer is codominated by dwarfed, wind-deformed <i>Abies lasiocarpa</i> and <i>Picea engelmannii</i> trees and short shrubs <i>Salix brachycarpa</i> or <i>Salix glauca</i>, which usually occur in clumps or along edges of dense conifer patches. <i>Betula glandulosa</i> and <i>Salix planifolia</i> are usually associated with wetter microsites along snowmelt channels and in seeps. Other dwarf-trees, shrubs and dwarf-shrubs, such as <i>Pinus flexilis, Dasiphora fruticosa ssp. floribunda, Ribes montigenum, Salix nivalis, Vaccinium cespitosum, Vaccinium myrtillus</i>, and <i>Vaccinium scoparium</i>, may also be present. The herbaceous layer is continuous except under dense shrubs. Species are a mixture of forbs and graminoids typical of alpine mesic and wet meadows, but they may include dry turf as well as wet subalpine species depending on the site.",
@@ -2816,7 +2880,9 @@
    "in_colorado": false,
    "name_species": [
     "Caltha leptosepala",
-    "Tsuga mertensiana"
+    "Tsuga mertensiana",
+    "Vaccinium alaskaense",
+    "Vaccinium ovalifolium"
    ],
    "conceptSentence": null,
    "summary": null,
@@ -3864,6 +3930,8 @@
    ],
    "in_colorado": false,
    "name_species": [
+    "Calamagrostis deschampsioides",
+    "Calamagrostis stricta",
     "Dupontia fisheri"
    ],
    "conceptSentence": null,
@@ -4726,7 +4794,10 @@
     "US-WY"
    ],
    "in_colorado": true,
-   "name_species": [],
+   "name_species": [
+    "Vaccinium cespitosum",
+    "Vaccinium scoparium"
+   ],
    "conceptSentence": null,
    "summary": "This dwarf-shrub association occurs near treeline in the mountains of northern Colorado and northwestern Wyoming. It has also been reported from the Ruby Mountains of northeastern Nevada and Banff National Park in Alberta, Canada. Slopes range from gentle to steep (1-100%), and sites may be oriented to any aspect. Sites are generally on lee slopes and are snow-covered throughout the winter and into the late spring, but one Colorado stand was on an exposed ridgetop below treeline. Sites generally remain mesic throughout the growing season. This vegetation is characterized by a moderate to dense carpet of either <i>Vaccinium cespitosum</i> and/or <i>Vaccinium scoparium</i>. Herbaceous species reflect the subalpine/low alpine character of the association and vary greatly across the range of this association. Because of the late snowmelt and mesic soil conditions, some wetland species may be present. Herbaceous species that are abundant may include <i>Polygonum bistortoides, Danthonia intermedia, Sibbaldia procumbens, Penstemon whippleanus, Poa cusickii, Carex pyrenaica, Geum rossii, Erigeron peregrinus, Caltha leptosepala</i>, and <i>Juncus drummondii</i>. <i>Abies lasiocarpa, Picea engelmannii</i>, and/or <i>Pinus albicaulis</i> seedlings may be scattered through the community.",
    "macrogroup": null
@@ -5025,7 +5096,10 @@
    "in_colorado": false,
    "name_species": [
     "Calamagrostis stricta",
-    "Cornus sericea"
+    "Cornus sericea",
+    "Salix bebbiana",
+    "Salix discolor",
+    "Salix petiolaris"
    ],
    "conceptSentence": null,
    "summary": "This wet shrub meadow type is found in the northern prairie-forest border area of the midwestern United States. Stands may occur along stream courses or adjacent to lakes or in upland depressions. Soils are wet mineral, muck, or shallow peat (&lt;0.5 m). Standing water is present in the spring and after heavy rains, but the water table draws down by mid-summer. Seepage areas may also occur. Shrub cover is at least 25% but does not become thick. Dominant species include <i>Cornus sericea, Salix bebbiana, Salix discolor, Salix petiolaris</i>, and <i>Spiraea alba</i>. Herbaceous species are typical of wet herbaceous meadows, and include the sedges <i>Carex aquatilis, Carex atherodes, Carex haydenii, Carex lacustris, Carex pellita, Carex rostrata, Carex stricta</i>, or grasses <i>Calamagrostis canadensis</i> and <i>Calamagrostis stricta</i>. Forbs include <i>Asclepias incarnata, Symphyotrichum lanceolatum, Symphyotrichum lateriflorum, Symphyotrichum novae-angliae, Symphyotrichum puniceum, Chelone glabra, Eutrochium maculatum</i>, and <i>Mentha arvensis</i>. In northern Illinois prairie meadow species may include <i>Asclepias purpurascens, Coreopsis tripteris, Gentianella quinquefolia</i>, and <i>Heliopsis helianthoides</i>.",
@@ -9890,7 +9964,10 @@
     "US-WA"
    ],
    "in_colorado": false,
-   "name_species": [],
+   "name_species": [
+    "Arctostaphylos nevadensis",
+    "Arctostaphylos uva-ursi"
+   ],
    "conceptSentence": null,
    "summary": "This alliance consists of vegetated montane balds of the East Cascades dominated by mat-forming <i>Arctostaphylos nevadensis </i>or, less frequently, <i>A. uva-ursi. Calamagrostis rubescens, Pseud</i>or<i>oegneria spicata</i>, and <i>Paxistima myrsinites </i>are characteristic associates. These communities occur within a matrix of mixed <i>Pinus ponderosa-Pseudotsuga menziesii</i> forests and woodlands.",
    "macrogroup": null
@@ -11538,6 +11615,8 @@
    ],
    "in_colorado": false,
    "name_species": [
+    "Eucephalus engelmannii",
+    "Eucephalus ledophyllus",
     "Festuca viridula"
    ],
    "conceptSentence": null,
@@ -11800,6 +11879,8 @@
    ],
    "in_colorado": false,
    "name_species": [
+    "Carya glabra",
+    "Carya pallida",
     "Pinus clausa",
     "Quercus virginiana",
     "Serenoa repens"
@@ -12770,7 +12851,11 @@
     "US-UT"
    ],
    "in_colorado": false,
-   "name_species": [],
+   "name_species": [
+    "Opuntia fragilis",
+    "Opuntia phaeacantha",
+    "Opuntia polyacantha"
+   ],
    "conceptSentence": null,
    "summary": "This succulent-dominated dwarf-shrubland is known only from Canyon de Chelly National Monument in northeastern Arizona in the southern Colorado Plateau. It occurs in canyons on terraces and alluvial fans at the base of cliffs from 1755 to 1787 m (5758-5863 feet) elevation. Stands occur on gentle slopes (1-11%) with generally hot, south-facing aspects. One stand is seasonally flooded. The soils are sandy loam in texture. There is moderate to high cover of bare ground. The vegetation is characterized by an open to moderately dense succulent dwarf-shrub layer dominated by <i>Opuntia</i> species. <i>Opuntia phaeacantha, Opuntia polyacantha</i>, or <i>Cylindropuntia whipplei</i> may dominate solely or in combination with the others. Other shrubs may be present, including <i>Artemisia filifolia, Artemisia tridentata</i>, and <i>Gutierrezia sarothrae</i>. The sparse to moderately dense herbaceous layer has a diversity of species. Common herbaceous species are <i>Astragalus lentiginosus, Bouteloua gracilis, Chaetopappa ericoides, Conyza canadensis, Croton texensis, Hesperostipa comata ssp. comata, Heterotheca villosa, Lappula occidentalis, Solanum elaeagnifolium</i>, and <i>Sphaeralcea fendleri</i>. The native annual forb <i>Plantago patagonica</i> may dominate after good spring precipitation. The annual exotic grass <i>Bromus tectorum</i> is generally abundant with 1-5% cover. Other exotic species include <i>Cynodon dactylon, Erodium cicutarium</i>, and <i>Salsola kali</i>.",
    "macrogroup": null
@@ -13099,7 +13184,9 @@
    "in_colorado": false,
    "name_species": [
     "Juniperus osteosperma",
-    "Pinus monophylla"
+    "Pinus monophylla",
+    "Poa fendleriana",
+    "Poa secunda"
    ],
    "conceptSentence": null,
    "summary": null,
@@ -13118,7 +13205,9 @@
    ],
    "in_colorado": false,
    "name_species": [
-    "Ericameria discoidea"
+    "Ericameria discoidea",
+    "Ribes cereum",
+    "Ribes montigenum"
    ],
    "conceptSentence": null,
    "summary": "This association is currently only described from Great Basin National Park, Nevada. Additional global information will be added as it becomes available. This high-elevation shrubland association is known from 3107-3462 m (10,190-11,355 feet) on moderate to somewhat steep slopes. Sites include high slopes and avalanche chutes on rocky substrates that include colluvium, bedrock and till. Soils are well-drained to rapidly drained soils composed of loamy sand and silt loam. This association is characterized by a sparse to open short- or dwarf-shrub layer dominated by <i>Ribes montigenum, Ribes cereum</i>, and <i>Ericameria discoidea</i>. Scattered trees, including <i>Picea engelmannii</i> and <i>Pinus flexilis</i>, may be present. The only other shrubs documented include <i>Juniperus communis</i> and <i>Ceanothus martinii</i>. The herbaceous layer is sparse to open and diverse. Common species include <i>Arenaria congesta, Artemisia michauxiana, Astragalus kentrophyta var. tegetarius, Elymus elymoides, Erigeron tener, Eriogonum umbellatum, Monardella odoratissima, Phlox pulvinata, Poa fendleriana, Poa secunda, Trifolium gymnocarpon</i>, and <i>Trisetum spicatum</i>.",
@@ -14764,6 +14853,814 @@
    ],
    "conceptSentence": "This mesic alvar grassland and shrubland association of the western boreal region is dominated by low shrubs and graminoids including <i>Dasiphora fruticosa, Juniperus horizontalis, Deschampsia cespitosa</i>, and <i>Carex scirpoidea</i>.",
    "summary": "This mesic alvar grassland and shrubland association of the western boreal region is dominated by low shrubs and graminoids. Dominant and constant low shrubs and graminoids include <i>Dasiphora fruticosa, Juniperus horizontalis, Carex scirpoidea </i>and <i>Deschampsia cespitosa. Dasiphora fruticosa </i>occurs at higher levels of cover here than in CEGL009470. Other constant graminoids occurring at low cover include <i>Elymus trachycaulus, Poa alpina</i> and <i>Carex praegracilis</i>. Forbs occur at low cover; constant species include <i>Galium boreale, Symphyotrichum laeve, Packera plattensis, Achillea millefolium, Solidago ptarmicoides, Campanula rotundifolia</i>, and <i>Geum triflorum</i>. When compared with other associations in G659, indicator species for this association include <i>Deschampsia cespitosa </i>and<i> Carex praegracilis. </i>Sites occur on flat dolomite or limestone bedrock with shallow mineral soils in an otherwise forested landscape. These alvars are slightly more mesic than CEGL009470 and are likely affected by drought and flooding. The effect of fire on this type is unknown.",
+   "macrogroup": null
+  },
+  "683240": {
+   "elementGlobalId": 683240,
+   "scientificName": "Carex siccata - Geum rossii Alpine Turf",
+   "primaryCommonName": null,
+   "elcode": "CEGL001808",
+   "roundedGRank": "GU",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.683240/Carex_siccata_-_Geum_rossii_Alpine_Turf",
+   "subnations": [
+    "US-CO"
+   ],
+   "in_colorado": true,
+   "name_species": [
+    "Carex siccata",
+    "Geum rossii"
+   ],
+   "conceptSentence": null,
+   "summary": "This southern Rocky Mountain association is found in upper subalpine and lower alpine environments. Sites are typically dry meadows and alpine turf near treeline, often occurring on stabilized fine talus slopes (5-35%). Snowmelt is relatively early, and sites are relatively dry and warm. Substrates are shallow, well-drained, loamy-skeletal soils. Vegetation is characterized by a moderately dense to dense (&gt;50% cover) herbaceous layer dominated by <i>Carex siccata</i> often with <i>Geum rossii</i> codominant. Other important species with lower cover include graminoids <i>Carex heteroneura var. chalciolepis, Deschampsia cespitosa, Elymus trachycaulus, Festuca idahoensis, Trisetum spicatum</i>, and forbs <i>Achillea millefolium, Artemisia scopulorum, Cerastium arvense, Arenaria fendleri, Poa alpina, Potentilla diversifolia, Solidago simplex var. nana</i>, and <i>Trifolium parryi</i>. Stands often occur in patches between wooded areas. <i>Carex siccata</i> commonly occurs as the herbaceous layer in coniferous associations of <i>Abies lasiocarpa, Pinus contorta</i>, and <i>Picea engelmannii</i>.",
+   "macrogroup": null
+  },
+  "683284": {
+   "elementGlobalId": 683284,
+   "scientificName": "Populus tremuloides / Symphoricarpos oreophilus / Bromus carinatus Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000611",
+   "roundedGRank": "G5",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.683284/Populus_tremuloides_-_Symphoricarpos_oreophilus_-_Bromus_carinatus_Forest",
+   "subnations": [
+    "US-ID",
+    "US-NV",
+    "US-UT"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus carinatus",
+    "Populus tremuloides",
+    "Symphoricarpos oreophilus"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "683339": {
+   "elementGlobalId": 683339,
+   "scientificName": "Artemisia tridentata ssp. spiciformis / Bromus carinatus Shrubland",
+   "primaryCommonName": null,
+   "elcode": "CEGL002989",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.683339/Artemisia_tridentata_ssp_spiciformis_-_Bromus_carinatus_Shrubland",
+   "subnations": [
+    "US-ID",
+    "US-MT"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Artemisia tridentata",
+    "Bromus carinatus"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "684803": {
+   "elementGlobalId": 684803,
+   "scientificName": "Artemisia tridentata ssp. vaseyana / Festuca idahoensis - Bromus carinatus Shrubland",
+   "primaryCommonName": null,
+   "elcode": "CEGL001023",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.684803/Artemisia_tridentata_ssp_vaseyana_-_Festuca_idahoensis_-_Bromus_carinatus_Shrubland",
+   "subnations": [
+    "US-ID",
+    "US-NV",
+    "US-OR",
+    "US-WY"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Artemisia tridentata",
+    "Bromus carinatus",
+    "Festuca idahoensis"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "685297": {
+   "elementGlobalId": 685297,
+   "scientificName": "Abies concolor - Pseudotsuga menziesii / Carex siccata Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000244",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.685297/Abies_concolor_-_Pseudotsuga_menziesii_-_Carex_siccata_Forest",
+   "subnations": [
+    "US-AZ"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Abies concolor",
+    "Carex siccata",
+    "Pseudotsuga menziesii"
+   ],
+   "conceptSentence": null,
+   "summary": "This plant association is known only from a 370-m elevational band near the summits of mountains in two small mountain ranges in southeastern Arizona, the Pinaleno and Santa Catalina mountains. This high-elevation forest is codominated by <i>Abies concolor</i> and <i>Pseudotsuga menziesii</i> with infrequent <i>Abies lasiocarpa</i>. Shrub cover is usually low, but <i>Acer glabrum</i> can be common on moister sites. The ground is covered by a dense sod dominated by <i>Carex siccata</i> often with <i>Bromus ciliatus var. richardsonii, Poa pratensis, Carex rossii</i>. Common forbs include <i>Achillea millefolium var. occidentalis, Campanula rotundifolia, Fragaria virginiana ssp. glauca, Geranium richardsonii, Hymenoxys hoopesii, Lathyrus lanszwertii var. leucanthus, Pteridium aquilinum, Pseudocymopterus montanus, Senecio wootonii</i>, and <i>Vicia americana</i>.",
+   "macrogroup": null
+  },
+  "685402": {
+   "elementGlobalId": 685402,
+   "scientificName": "Pseudoroegneria spicata - Carex filifolia Grassland",
+   "primaryCommonName": "Bluebunch Wheatgrass - Threadleaf Sedge Mixed Prairie",
+   "elcode": "CEGL001665",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.685402/Pseudoroegneria_spicata_-_Carex_filifolia_Grassland",
+   "subnations": [
+    "US-MT",
+    "US-WY"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex filifolia",
+    "Pseudoroegneria spicata"
+   ],
+   "conceptSentence": null,
+   "summary": "Stands of this association occur on level or gently sloping upland sites with loam or silt loam soils. This is an herbaceous vegetation type in which graminoids contribute most of the cover. A number of forbs may be present, but forbs and shrubs contribute little cover to the vegetation. <i>Pseudoroegneria spicata</i> dominates the vegetation, and <i>Carex filifolia</i> contributes substantial cover. Small amounts of <i>Bouteloua gracilis</i> may be present.",
+   "macrogroup": null
+  },
+  "685604": {
+   "elementGlobalId": 685604,
+   "scientificName": "Saxifraga michauxii - Carex misera - Danthonia spicata - Krigia montana Rocky Summit",
+   "primaryCommonName": "Southern Appalachian High-Elevation Rocky Summit (Typic Type)",
+   "elcode": "CEGL004279",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.685604/Saxifraga_michauxii_-_Carex_misera_-_Danthonia_spicata_-_Krigia_montana_Rocky_Summit",
+   "subnations": [
+    "US-NC",
+    "US-TN"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex misera",
+    "Danthonia spicata",
+    "Krigia montana",
+    "Saxifraga michauxii"
+   ],
+   "conceptSentence": null,
+   "summary": "This association consists of rock outcrops with sparse vegetative cover of forbs, grasses and shrubs which are rooted in rock fissures. This vegetation occurs in the Southern Appalachians of Tennessee and North Carolina at 1350-1870 m elevation within a matrix of <i>Quercus rubra</i> forest or high-elevation grasslands and shrublands. Typical species include <i>Saxifraga michauxii, Danthonia spicata, Krigia montana, Carex misera, Angelica triquinata, Athyrium filix-femina ssp. asplenioides, Rhododendron catawbiense</i>, and <i>Heuchera villosa</i>. Other characteristic species are <i>Sanguisorba canadensis, Sibbaldiopsis tridentata, Hylotelephium telephioides, Houstonia purpurea var. montana, Geum radiatum, Solidago spithamaea</i>, and <i>Huperzia appalachiana</i>.",
+   "macrogroup": null
+  },
+  "685616": {
+   "elementGlobalId": 685616,
+   "scientificName": "Schizachyrium scoparium - Danthonia spicata - Carex pensylvanica / Cladonia spp. Grassland",
+   "primaryCommonName": "Low- to Mid-Elevation Little Bluestem - Poverty Oatgrass Outcrop Opening",
+   "elcode": "CEGL006544",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.685616/Schizachyrium_scoparium_-_Danthonia_spicata_-_Carex_pensylvanica_-_Cladonia_spp_Grassland",
+   "subnations": [
+    "US-CT",
+    "US-MA",
+    "US-NJ",
+    "US-NY",
+    "US-PA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex pensylvanica",
+    "Cladonia spp",
+    "Danthonia spicata",
+    "Schizachyrium scoparium"
+   ],
+   "conceptSentence": null,
+   "summary": "These grassy openings are found on rock outcrops and summits at 365-1220 m (1200-4000 feet) elevation in the Central Appalachians and adjacent regions. Settings include flat summits, outcrops, plateaus and southwest-facing upper slopes. Bare rock (acidic sandstone and conglomerates) typically makes up a large part of the cover. <i>Danthonia spicata, Schizachyrium scoparium</i>, and <i>Deschampsia flexuosa</i> are all typical. Total herbaceous cover is usually 25-50%. Other associates include <i>Carex pensylvanica, Piptatheropsis pungens, Patis racemosa, Prunus pumila, Rumex acetosella, Rubus</i> spp., <i>Sibbaldiopsis tridentata, Cladonia</i> sp., and <i>Umbilicaria</i> sp. There may be small patches of shrubs within the graminoid matrix, including <i>Vaccinium</i> spp., <i>Gaylussacia baccata</i>, and <i>Aronia melanocarpa</i>.",
+   "macrogroup": null
+  },
+  "685993": {
+   "elementGlobalId": 685993,
+   "scientificName": "Populus tremuloides / Carex siccata Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000578",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.685993/Populus_tremuloides_-_Carex_siccata_Forest",
+   "subnations": [
+    "US-AZ",
+    "US-CO"
+   ],
+   "in_colorado": true,
+   "name_species": [
+    "Carex siccata",
+    "Populus tremuloides"
+   ],
+   "conceptSentence": null,
+   "summary": "This quaking aspen forest association occurs on the Colorado Plateau and Rocky Mountains of Arizona and Colorado. This description is based on information from Great Sand Dunes National Park and Preserve in Colorado. Additional global information will be added as it becomes available. This association is known from stream terraces at 2998 to 3079 m elevation. Terrain is gently sloping to steep with warmer southeast- to west-facing aspects. Soils are moderately well- to well-drained sandy loams derived from fluvial deposition. Ground cover is dominated by litter and duff, but there is a significant amount of large rock cover. These are moderately open thickets with 30-40% cover of <i>Populus tremuloides</i> and occasional <i>Picea engelmannii</i>. The short-shrub layer is dominated by <i>Rosa woodsii</i> and <i>Juniperus communis</i>. The herbaceous layer is dominated by <i>Carex siccata</i> with 10-30% cover. <i>Thermopsis montana</i> and <i>Fragaria virginiana</i> are the dominant forbs with 10-30% cover, although forb cover may be diverse.",
+   "macrogroup": null
+  },
+  "686291": {
+   "elementGlobalId": 686291,
+   "scientificName": "Schizachyrium scoparium - Danthonia spicata - Carex pensylvanica - (Viola pedata) Sand Grassland",
+   "primaryCommonName": "Midwest Dry Sand Prairie",
+   "elcode": "CEGL002318",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.686291/Schizachyrium_scoparium_-_Danthonia_spicata_-_Carex_pensylvanica_-_(Viola_pedata)_Sand_Grassland",
+   "subnations": [
+    "US-IA",
+    "US-IL",
+    "US-IN",
+    "US-MI",
+    "US-MN",
+    "US-MO",
+    "US-WI"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex pensylvanica",
+    "Danthonia spicata",
+    "Schizachyrium scoparium",
+    "Viola pedata"
+   ],
+   "conceptSentence": null,
+   "summary": "This dry sand prairie community is widespread throughout the midwestern region of the United States and adjacent Canada. Stands occur on steep slopes, sandy outwash, sandy lake plains, and alluvial deposits. They may occur on sand ridges (including inland dunes and sandy areas of coarse-textured end moraines), where, particularly if blowouts have occurred, they may resemble sand barrens. Soils are well-drained to excessively drained, coarse-textured sands, loamy sands, and sandy loams. Gravels are very minor. Graminoids dominate the herbaceous layer, which can be open to closed. Dominant species include <i>Carex pensylvanica, Danthonia spicata, Koeleria macrantha, Schizachyrium scoparium</i>, and <i>Hesperostipa spartea</i>. Other graminoids include <i>Bouteloua hirsuta, Digitaria cognata</i> and <i>Dichanthelium acuminatum var. fasciculatum</i>. In more open dune-like habitats <i>Calamovilfa longifolia</i> may be present. A wide variety of forbs are present including <i>Asclepias verticillata, Ambrosia psilostachya, Artemisia frigida, Pseudognaphalium obtusifolium, Euphorbia corollata, Hieracium longipilum, Lechea tenuifolia, Liatris aspera, Liatris cylindracea, Nuttallanthus canadensis, Lithospermum canescens, Lupinus perennis, Oenothera rhombipetala, Polygala polygama, Packera plattensis, Solidago nemoralis, Tephrosia virginiana</i> and <i>Viola pedata</i>. <i>Hudsonia tomentosa</i>, and other sand barrens species, are more often restricted to local disturbances such as blowouts or slipfaces.",
+   "macrogroup": null
+  },
+  "686951": {
+   "elementGlobalId": 686951,
+   "scientificName": "Populus tremuloides - Abies lasiocarpa / Symphoricarpos oreophilus / Bromus carinatus Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000530",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.686951/Populus_tremuloides_-_Abies_lasiocarpa_-_Symphoricarpos_oreophilus_-_Bromus_carinatus_Forest",
+   "subnations": [
+    "US-UT"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Abies lasiocarpa",
+    "Bromus carinatus",
+    "Populus tremuloides",
+    "Symphoricarpos oreophilus"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "687067": {
+   "elementGlobalId": 687067,
+   "scientificName": "Carex lyngbyei - (Distichlis spicata, Triglochin maritima) Salt Marsh",
+   "primaryCommonName": null,
+   "elcode": "CEGL003285",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.687067/Carex_lyngbyei_-_(Distichlis_spicata_Triglochin_maritima)_Salt_Marsh",
+   "subnations": [
+    "CA-BC",
+    "US-AK",
+    "US-OR",
+    "US-WA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex lyngbyei",
+    "Distichlis spicata",
+    "Triglochin maritima"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "688131": {
+   "elementGlobalId": 688131,
+   "scientificName": "Artemisia tridentata ssp. vaseyana - Symphoricarpos oreophilus / Bromus carinatus Shrubland",
+   "primaryCommonName": null,
+   "elcode": "CEGL001035",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.688131/Artemisia_tridentata_ssp_vaseyana_-_Symphoricarpos_oreophilus_-_Bromus_carinatus_Shrubland",
+   "subnations": [
+    "US-ID",
+    "US-NV",
+    "US-OR",
+    "US-WY"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Artemisia tridentata",
+    "Bromus carinatus",
+    "Symphoricarpos oreophilus"
+   ],
+   "conceptSentence": null,
+   "summary": "This sagebrush shrubland is described from the mountains of northeastern Nevada and eastern Idaho. It occurs on moderate to steep slopes (15-45%), on deep soils (110-162 cm), at elevations ranging from 1768 to 2499 m (5800-8200 feet). It is one of the most productive sagebrush types in northeastern Nevada, occupying higher elevations than those of other sagebrush types in the area. <i>Artemisia tridentata ssp. vaseyana</i> is the dominant sagebrush. <i>Symphoricarpos oreophilus</i> is conspicuously present, usually with a canopy cover greater than 3%. <i>Amelanchier alnifolia</i> may also be present (0-5%) and can replace <i>Symphoricarpos oreophilus</i> on some sites. Other shrubs include <i>Prunus virginiana, Purshia tridentata, Ribes</i> spp., and <i>Rosa woodsii</i>. <i>Bromus carinatus</i> is the dominant grass. <i>Festuca idahoensis, Elymus trachycaulus</i>, and <i>Leymus cinereus</i> are conspicuously present and may replace <i>Bromus carinatus</i> in dominance on some sites. Forb species occur with the same abundance as grasses on most sites. Common forb species include <i>Balsamorhiza sagittata, Helianthella uniflora, Lupinus caudatus</i>, and <i>Eurybia conspicua</i>.",
+   "macrogroup": null
+  },
+  "688449": {
+   "elementGlobalId": 688449,
+   "scientificName": "Abies lasiocarpa - Picea engelmannii / Carex siccata Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000303",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.688449/Abies_lasiocarpa_-_Picea_engelmannii_-_Carex_siccata_Forest",
+   "subnations": [
+    "US-AZ"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Abies lasiocarpa",
+    "Carex siccata",
+    "Picea engelmannii"
+   ],
+   "conceptSentence": null,
+   "summary": "This plant association is restricted to elevations above 3050 m on the western side of Mount Graham, ridgelines and moderately steep southern aspect slopes in the Pinaleno Mountains in southeastern Arizona. It may also occur in the White Mountains of Arizona. This high-elevation forest is codominated by <i>Abies lasiocarpa</i> and <i>Picea engelmannii</i> with occasional <i>Pseudotsuga menziesii</i> and <i>Populus tremuloides</i> trees. Shrub cover is sparse. Herbaceous cover is abundant but patchy near rock outcrops. Cover is dominated by graminoids, mostly <i>Carex siccata</i> with <i>Poa fendleriana</i> or <i>Poa pratensis</i>. Forb cover is relatively low, usually consisting of <i>Campanula rotundifolia, Lathyrus lanszwertii var. leucanthus, Mertensia franciscana, Oreochrysum parryi</i>, and <i>Vicia americana</i>.",
+   "macrogroup": null
+  },
+  "688804": {
+   "elementGlobalId": 688804,
+   "scientificName": "Carex helleri - Saxifraga tolmiei - Luzula spicata Alpine Meadow",
+   "primaryCommonName": null,
+   "elcode": "CEGL003139",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.688804/Carex_helleri_-_Saxifraga_tolmiei_-_Luzula_spicata_Alpine_Meadow",
+   "subnations": [
+    "US-CA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex helleri",
+    "Luzula spicata",
+    "Saxifraga tolmiei"
+   ],
+   "conceptSentence": null,
+   "summary": "This herbaceous association is currently only known from Yosemite National Park in California, and the following description is based on occurrences there. Additional information will be added as it becomes available. This alpine herbaceous/grassland association grows in sheltered cold concavities that retain snowpatches, often persisting until late July. Elevations average about 3100 m (10,200 feet). Stands are found on moderately steep to steep midslopes, and aspects are north to east. Soils are rapidly drained sands derived from granitic and metamorphic parent materials. Much of the substrate is broken talus or bedrock. This sparse herbaceous/grassland association forms an open canopy less than 0.5 m in height. Total vegetative cover is less than 20%. Stands are codominated by the graminoid <i>Carex helleri</i> and the forb <i>Saxifraga tolmiei</i>. <i>Luzula divaricata</i> is also diagnostic but has lower constancy than the dominant species. This vegetation is not very diverse; only nine species were recorded from a plot. Other graminoids recorded at trace amounts include <i>Carex breweri</i> and/or <i>Trisetum spicatum</i>. Forbs present in trace amounts may include <i>Arabis lyallii, Arabis platysperma, Lupinus lepidus</i>, and/or <i>Silene sargentii</i>. Traces of emergent krummholz <i>Pinus albicaulis</i> may be present.",
+   "macrogroup": null
+  },
+  "689037": {
+   "elementGlobalId": 689037,
+   "scientificName": "Picea pungens / Carex siccata Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000387",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689037/Picea_pungens_-_Carex_siccata_Forest",
+   "subnations": [
+    "US-AZ",
+    "US-CO",
+    "US-NM"
+   ],
+   "in_colorado": true,
+   "name_species": [
+    "Carex siccata",
+    "Picea pungens"
+   ],
+   "conceptSentence": null,
+   "summary": "This blue spruce forest association occurs in Arizona and New Mexico. This description is based on information from Grand Canyon National Park in Arizona, and additional global information will be added as it becomes available. This high-elevation association occurs on the North Rim from 2347 to 2683 m (7700-8802 feet) elevation in mesic environments. It occurs in canyons, cold-air drainage channels, and on adjacent sideslopes. Slopes are low to moderate (up to 30\u00b0) and are usually west- or south-facing. Soils are primarily silt loams. Stands have a high cover of litter, some bare soil, and occasionally significant moss cover. There is minor evidence of fire in several stands; however, the mesic nature of this association and its typical positioning along cold-air drainages have precluded any significant influence from fire. <i>Picea pungens, Pinus ponderosa</i>, and occasionally low cover of <i>Populus tremuloides</i> dominate the canopy of this mesic, mixed-conifer community. <i>Picea pungens, Populus tremuloides</i>, and <i>Abies concolor</i> are common components of the subcanopy. Shrub layers are typically sparse. <i>Juniperus communis</i> is the most frequent and abundant short shrub, while <i>Rosa woodsii</i> occurs occasionally as a dwarf-shrub with extremely low cover. <i>Carex siccata</i> clearly dominates the herbaceous layer. <i>Poa fendleriana</i> and <i>Bromus ciliatus</i> are also common graminoids, typically at low cover. Forb cover is very sparse in this vegetation type. <i>Antennaria parvifolia, Achillea millefolium</i>, and <i>Fragaria virginiana</i> are common components of the understory. Seedlings of <i>Populus tremuloides</i> are ubiquitous and seedlings of <i>Abies concolor</i> and <i>Picea pungens</i> are also very common. This association essentially hosts the highest species richness of all high-elevation, forested community types in Grand Canyon National Park, with 32 species per 400-square-meter plot. This may be a result of the vicinity of this vegetation type, which occurs in cold-air drainages, to the adjacent meadow communities (which are often particularly species-rich).",
+   "macrogroup": null
+  },
+  "689065": {
+   "elementGlobalId": 689065,
+   "scientificName": "Aronia melanocarpa - Gaylussacia baccata / Carex pensylvanica Shrubland",
+   "primaryCommonName": "High-Elevation Outcrop Barrens (Black Chokeberry Igneous / Metamorphic Type)",
+   "elcode": "CEGL008508",
+   "roundedGRank": "G1",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689065/Aronia_melanocarpa_-_Gaylussacia_baccata_-_Carex_pensylvanica_Shrubland",
+   "subnations": [
+    "US-VA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Aronia melanocarpa",
+    "Carex pensylvanica",
+    "Gaylussacia baccata"
+   ],
+   "conceptSentence": null,
+   "summary": "This community type is known from scattered localities along nearly the full length of the Blue Ridge in Virginia and could potentially occur in North Carolina, West Virginia, Maryland, and Pennsylvania. This vegetation type is associated with medium- to high-elevation exposed outcrops of igneous and metamorphic rocks, including metabasalt (greenstone), porphyritic leucocharnockite, amphibolite, and rhyolite. Elevation ranges from about 880 to 1400 m (2900-4600 feet). Habitats are typically on strongly convex, upper slopes and rocky summits with west to northwest or flat aspects. The community is a patchwork of shrub thickets, small herbaceous mats, and exposed, lichen-covered rock surfaces. <i>Aronia melanocarpa</i> is the dominant shrub, or is codominant with <i>Gaylussacia baccata, Hamamelis virginiana, Smilax tamnoides</i>, and/or <i>Kalmia latifolia</i>. Minor woody components include <i>Sorbus americana, Rhododendron catawbiense</i>, and <i>Menziesia pilosa</i>, as well as severely stunted <i>Betula alleghaniensis</i> and <i>Quercus rubra</i>.",
+   "macrogroup": null
+  },
+  "689487": {
+   "elementGlobalId": 689487,
+   "scientificName": "Deschampsia cespitosa - (Carex lyngbyei, Distichlis spicata) Salt Marsh",
+   "primaryCommonName": null,
+   "elcode": "CEGL003357",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689487/Deschampsia_cespitosa_-_(Carex_lyngbyei_Distichlis_spicata)_Salt_Marsh",
+   "subnations": [
+    "US-CA",
+    "US-OR",
+    "US-WA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex lyngbyei",
+    "Deschampsia cespitosa",
+    "Distichlis spicata"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "689506": {
+   "elementGlobalId": 689506,
+   "scientificName": "Carex exsiccata Marsh",
+   "primaryCommonName": null,
+   "elcode": "CEGL003312",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689506/Carex_exsiccata_Marsh",
+   "subnations": [
+    "US-OR",
+    "US-WA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex exsiccata"
+   ],
+   "conceptSentence": null,
+   "summary": "This herbaceous vegetation occupies small to large shallow basins on a variety of soil types, mostly seasonally flooded to perennially saturated organic, silt loam, or sand. This association is widely distributed in northwestern Oregon and Washington at elevations ranging from 30 to 1525 m (100-5000 feet). The association is present but uncommon at lower elevations along the coast and in interior valleys of western Oregon, and becomes more common at higher elevations in the Coast and Cascade ranges. The composition is diverse with no obvious segregate types. Stands are usually flooded seasonally to a depth of 30 to 90 cm (1-3 feet) and may dry out by midsummer with the water table just below the soil surface. <i>Thuja plicata</i> and <i>Pseudotsuga menziesii</i> were recorded from plots but are peripheral or restricted to elevated microsites. Eleven different shrub species are reported, depending on elevation, but most occur in trace amounts except for <i>Spiraea douglasii, Vaccinium uliginosum</i>, and <i>Alnus incana</i>. Stands are usually nearly monotypic reed swamp of <i>Carex exsiccata</i> in standing water or bare mud, but sometimes it occurs with other species in wet lawns. Average cover of <i>Carex exsiccata</i> is 69%, with cover in some plots as much as 100%. More than 90 other species are present in the herb layer, the great diversity due mainly to the variety of elevations at which the association occurs. Most of the other species occur only in trace amounts. Those forming significant patches include <i>Veronica scutellata, Nuphar polysepala, Deschampsia cespitosa, Lysichiton americanus, Torreyochloa pallida var. pauciflora, Juncus patens</i>, and <i>Carex hystericina</i>. Some stands were no doubt grazed by livestock in the past, and elk and deer use may be high locally.",
+   "macrogroup": null
+  },
+  "689568": {
+   "elementGlobalId": 689568,
+   "scientificName": "Populus tremuloides / Bromus carinatus Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL000573",
+   "roundedGRank": "G5",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689568/Populus_tremuloides_-_Bromus_carinatus_Forest",
+   "subnations": [
+    "US-ID",
+    "US-MT",
+    "US-NV",
+    "US-OR",
+    "US-UT",
+    "US-WY"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus carinatus",
+    "Populus tremuloides"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "689645": {
+   "elementGlobalId": 689645,
+   "scientificName": "Juglans major - Pinus edulis / Bromus carinatus Flooded Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL001101",
+   "roundedGRank": "GU",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689645/Juglans_major_-_Pinus_edulis_-_Bromus_carinatus_Flooded_Forest",
+   "subnations": [
+    "US-NM"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus carinatus",
+    "Juglans major",
+    "Pinus edulis"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "728853": {
+   "elementGlobalId": 728853,
+   "scientificName": "Bromus marginatus - Pseudoroegneria spicata Grassland",
+   "primaryCommonName": null,
+   "elcode": "CEGL005861",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.728853/Bromus_marginatus_-_Pseudoroegneria_spicata_Grassland",
+   "subnations": [
+    "CA-AB"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus marginatus",
+    "Pseudoroegneria spicata"
+   ],
+   "conceptSentence": null,
+   "summary": "This is a mesic to subhygric, diverse grassland found uncommonly in the lower subalpine region of Waterton Lakes National Park, Alberta. This association occurs on moderately steep midslopes at elevations near 1725 m (5650 feet) on easterly aspects. Soils are derived from coarse fluvial or hard rock calcareous parent material and are characterized as either Cumulic Humic Regosols or Eluviated Eutric Brunisols. These are generally moderately well-drained, coarse-textured soils developed on morainal or rock landforms. Litter and small rock dominate the ground surface. This herbaceous association is dominated by several grass and forb species. Overall herbaceous cover ranges between 90-100% with heights less than 0.5 m. Dominant species, averaging between 8-25% cover, include <i>Pseudoroegneria spicata, Bromus marginatus, Lomatium triternatum, Phleum pratense, Poa palustris</i>, and <i>Eurybia conspicua</i>. Other common herbaceous species include <i>Lupinus sericeus, Osmorhiza occidentalis, Calochortus apiculatus, Valeriana dioica, Achillea millefolium, Aquilegia flavescens, Fragaria virginiana, Galium boreale, Hedysarum sulphurescens, Thalictrum occidentale</i>, and <i>Zigadenus elegans</i>. Cover of <i>Erigeron peregrinus, Anemone multifida</i>, and <i>Geranium viscosissimum</i> may be conspicuous in certain areas. Low shrubs may also be present with very low cover. Cover of nonvascular species averages 5%.",
+   "macrogroup": null
+  },
+  "814348": {
+   "elementGlobalId": 814348,
+   "scientificName": "Quercus muehlenbergii - (Quercus sinuata) - Carya spp. / Sabal minor / Carex cherokeensis Forest",
+   "primaryCommonName": "South Atlantic Coastal Plain Limestone Forest",
+   "elcode": "CEGL004023",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.814348/Quercus_muehlenbergii_-_(Quercus_sinuata)_-_Carya_spp_-_Sabal_minor_-_Carex_cherokeensis_Forest",
+   "subnations": [
+    "US-GA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex cherokeensis",
+    "Carya spp",
+    "Quercus muehlenbergii",
+    "Quercus sinuata",
+    "Sabal minor"
+   ],
+   "conceptSentence": null,
+   "summary": "This mesic, calcareous oak-hickory forest is known from the Atlantic Coastal Plain of Georgia in sheltered sites and in small stream bottoms in a rolling landscape that includes blackland prairies. The substrate for these forests is a complex of calcareous rock including Ocala and Suwannee limestone, as well as Copper marl. Canopy composition is variable, but dominant tree species usually include <i>Quercus muehlenbergii, Quercus pagoda, Quercus shumardii, Carya carolinae-septentrionalis, Carya cordiformis</i>, and <i>Carya glabra</i>. Other less frequent species in the canopy or subcanopy include <i>Tilia americana var. heterophylla, Celtis laevigata, Fraxinus americana, Juglans nigra, Morus rubra, Quercus alba</i>, and <i>Quercus velutina</i>. <i>Quercus sinuata</i> (rare in Georgia) varies considerably in abundance (sometimes dominant) but is indicative of this type. <i>Acer floridanum</i> and <i>Ostrya virginiana</i> are often dominant subcanopy and understory species. Other understory and tall-shrub species can include <i>Cercis canadensis, Cornus asperifolia, Crataegus triflora, Frangula caroliniana, Asimina triloba, Callicarpa americana</i>, and <i>Ptelea trifoliata</i>. <i>Sabal minor</i> and <i>Rhapidophyllum hystrix</i> are often frequent and characteristic low shrubs. The herb cover and composition vary considerably but often include dominance by <i>Carex cherokeensis, Dicliptera brachiata</i>, and <i>Chasmanthium sessiliflorum</i>. Other important and characteristics herbaceous species are <i>Cynoglossum virginianum, Collinsonia serotina, Asarum canadense, Smallanthus uvedalius, Ruellia caroliniensis, Polystichum acrostichoides</i>, and <i>Phryma leptostachya</i>. Vines can be abundant, with <i>Berchemia scandens, Nekemias arborea, Cocculus carolinus</i>, and <i>Matelea</i> sp. typical. <i>Cayaponia quinqueloba</i> is sometimes an unusual vine component.",
+   "macrogroup": null
+  },
+  "827935": {
+   "elementGlobalId": 827935,
+   "scientificName": "Carex siccata - Carex rossii Grassland",
+   "primaryCommonName": null,
+   "elcode": "CEGL005388",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.827935/Carex_siccata_-_Carex_rossii_Grassland",
+   "subnations": [
+    "US-AZ"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex rossii",
+    "Carex siccata"
+   ],
+   "conceptSentence": null,
+   "summary": "This high-elevation sedge herbaceous association is currently described from Grand Canyon National Park in Arizona. More survey and classification work are needed to fully characterize this type. It occurs from 2467 to 2688 m (8094-8819 feet) elevation, predominantly on the high-level plateau, on south- and west-facing slopes. Slopes are quite gentle, averaging 7\u00b0. Soils are well-drained or rapidly-drained silt loams. There is evidence of fairly recent, high-severity fire in all observed stands. This is a somewhat variable association but is characterized by a lack of tree cover, a very sparse shrub layer, and the dominance of <i>Carex rossii</i> and <i>Carex siccata</i> in the understory. Short shrubs are very uncommon and sparse, with the occasional small patch of <i>Robinia neomexicana</i>. Dwarf-shrubs are also sparse; however, <i>Ceanothus fendleri</i> is quite frequent. <i>Carex rossii</i> dominates the understory. <i>Bromus tectorum</i> and <i>Elymus elymoides</i> are also common at very low cover. Disturbance-adapted <i>Erigeron divergens, Chenopodium</i> sp., <i>Gayophytum diffusum, Pseudognaphalium macounii</i>, and <i>Conyza canadensis</i> are common forbs.",
+   "macrogroup": null
+  },
+  "835326": {
+   "elementGlobalId": 835326,
+   "scientificName": "Pinus ponderosa / Carex siccata Woodland",
+   "primaryCommonName": null,
+   "elcode": "CEGL005506",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.835326/Pinus_ponderosa_-_Carex_siccata_Woodland",
+   "subnations": [
+    "US-AZ"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex siccata",
+    "Pinus ponderosa"
+   ],
+   "conceptSentence": null,
+   "summary": "This ponderosa pine / sedge woodland is currently described from Grand Canyon National Park in Arizona. More survey and classification work are needed to fully characterize this type. It occurs from 2351 to 2695 m (7713-8842 feet) elevation on various landforms, but most commonly on gentle, east- or south-facing sideslopes that range from 1-18\u00b0 and are usually fairly gentle. Soils are well-drained sandy loams or silty loams. Litter ubiquitously dominates the ground cover, but a small amount of downed wood does exist. This association occurs in areas with a low-intensity fire regime, and some stands have burned recently. Open stands of <i>Pinus ponderosa</i> dominate the canopy and subcanopy. <i>Abies concolor</i> occurs sporadically. <i>Ceanothus fendleri</i> and <i>Mahonia repens</i> are occasionally present, but the shrub strata are notably sparse. <i>Carex siccata</i> is the most dominant and abundant component of the understory. Forb composition is variable, and at least 70 different species can occur at low covers. Notable species include <i>Achillea millefolium, Lotus utahensis, Lupinus argenteus</i>, and <i>Geranium richardsonii</i>. <i>Pteridium aquilinum</i> occurs occasionally. <i>Populus tremuloides</i> seedlings are ubiquitous at low cover.",
+   "macrogroup": null
+  },
+  "836338": {
+   "elementGlobalId": 836338,
+   "scientificName": "Pinus rigida - Quercus montana / Gaylussacia baccata / Carex pensylvanica Woodland",
+   "primaryCommonName": "Appalachian Pitch Pine Pavement Woodland",
+   "elcode": "CEGL004821",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.836338/Pinus_rigida_-_Quercus_montana_-_Gaylussacia_baccata_-_Carex_pensylvanica_Woodland",
+   "subnations": [
+    "US-MD",
+    "US-VA",
+    "US-WV"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex pensylvanica",
+    "Gaylussacia baccata",
+    "Pinus rigida",
+    "Quercus montana"
+   ],
+   "conceptSentence": null,
+   "summary": "This association grows on massive, gently to steeply sloping pavements of Silurian, Devonian, and Pennsylvanian sandstones that occur locally on the middle to upper sideslopes of ridges in the Ridge and Valley and Cumberland Mountains of Virginia and possibly West Virginia. It also occurs on the Allegheny Plateau and Ridge and Valley physiographic provinces in Maryland. Most stands occur in the elevational range of 760 to 1100 m (2500-3600 feet); Maryland stands are much lower in elevation at 245 to 305 m (800-1000 feet) than stands documented in Virginia and West Virginia. Aspect varies from east to northwest, and moisture conditions are generally xeric. Surface substrate cover of exposed bedrock averages 75 to 80%. Soil development in these habitats is negligible, consisting of shallow organic-rich accumulations in cracks, crevices, and shallow depressions. Occasional ledges support very thin veneers of soil material, which is extremely acidic and nutrient-poor. Summer drought and strong winter winds and ice are major stressors of this community type. Vegetation is characterized by a sparse, stunted woodland of short (often &lt;6 m tall), widely spaced <i>Pinus rigida</i>, often in association with <i>Quercus montana</i>. Occasional canopy associates include <i>Quercus rubra, Pinus virginiana</i>, and <i>Pinus echinata</i>. Total canopy cover is usually &lt;25% and often &lt;10%, with trees rooted in larger cracks and crevices. Total shrub cover is typically 10-15%, with <i>Betula lenta, Smilax glauca, Gaylussacia baccata, Kalmia latifolia, Amelanchier arborea, Acer rubrum, Sassafras albidum</i>, and <i>Vaccinium pallidum</i> the most frequent species. The herb layer is sparse (generally &lt;5% total cover), with only occasional, continuous patches of <i>Carex pensylvanica, Danthonia spicata</i>, or <i>Deschampsia flexuosa</i> covering a few square meters. Lithophytic species such as <i>Corydalis sempervirens, Dicentra eximia, Polypodium appalachianum</i>, and <i>Saxifraga michauxii</i> are characteristic but occur at very low cover. Lichens and bryophytes usually cover much of the exposed pavement surfaces. The glades over Pottsville in the Ridge and Valley of Maryland are characterized as sparse woodlands with a strong dominance of <i>Pinus virginiana</i> and/or <i>Pinus rigida</i> in variable proportions. Oaks such as <i>Quercus montana</i> and <i>Quercus velutina</i> are also present but minor.",
+   "macrogroup": null
+  },
+  "899156": {
+   "elementGlobalId": 899156,
+   "scientificName": "Pteridium aquilinum - Carex siccata - Elymus trachycaulus Sand Grassland Alliance",
+   "primaryCommonName": "Laurentian Sand Barren",
+   "elcode": "A1599",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Alliance",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.899156/Pteridium_aquilinum_-_Carex_siccata_-_Elymus_trachycaulus_Sand_Grassland_Alliance",
+   "subnations": [
+    "CA-ON",
+    "US-WI"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex siccata",
+    "Elymus trachycaulus",
+    "Pteridium aquilinum"
+   ],
+   "conceptSentence": "This alliance, currently documented from the Great Lakes region and adjacent Canada, comprises meadows dominated by <i>Pteridium aquilinum</i> on level plains or rolling uplands and in depressions (\"frost pockets\") in pitted outwash topography. It is often of anthropogenic origin.",
+   "summary": "This alliance, currently documented from the Great Lakes region and adjacent Canada, comprises meadows dominated by <i>Pteridium aquilinum</i> on level plains or rolling uplands and in depressions (\"frost pockets\") in pitted outwash topography. It is often of anthropogenic origin. Stands may have originated after severe slash fires following logging that destroyed or reduced the humus in the soil. In some cases the sites may have originally been <i>Pinus resinosa</i> or <i>Pinus banksiana</i> barrens, where the pines occurred as a sparse layer over the grassland. This vegetation is fairly stable, slowly invaded by <i>Populus tremuloides</i> and <i>Abies balsamea</i>, but frost and other factors may slow their invasion. Stands are dominated by ferns, forbs, and graminoids, with tree cover less than 10%. <i>Pteridium aquilinum</i> may form an almost continuous cover of fronds. Graminoid diversity is high, including <i>Bromus kalmii, Danthonia spicata, Elymus trachycaulus</i>, and <i>Poa compressa</i>. Associated forbs include <i>Symphyotrichum ciliolatum, Solidago nemoralis</i>, and <i>Fragaria virginiana</i>. Exotic species composition can be high, including <i>Hieracium aurantiacum, Lactuca serriola, Phleum pratense, Poa compressa, Poa pratensis, Rumex acetosella</i>, and <i>Verbascum thapsus</i>.",
+   "macrogroup": null
+  },
+  "964196": {
+   "elementGlobalId": 964196,
+   "scientificName": "Baccharis pilularis / Bromus carinatus - Ranunculus californicus Mesic Shrubland",
+   "primaryCommonName": null,
+   "elcode": "CEGL005664",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.964196/Baccharis_pilularis_-_Bromus_carinatus_-_Ranunculus_californicus_Mesic_Shrubland",
+   "subnations": [
+    "US-CA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Baccharis pilularis",
+    "Bromus carinatus",
+    "Ranunculus californicus"
+   ],
+   "conceptSentence": "A scrub association occurring in southern coastal California and the Channel Islands, dominated by <i>Baccharis pilularis</i> and a mix of native herbaceous species.",
+   "summary": "This coastal scrub has a shrub cover of <i>Baccharis pilularis</i> with 3-36% canopy coverage. The understory is a mix of native herbaceous species often with a high cover of non-native grasses. A suite of native herbaceous species, such as <i>Bromus carinatus, Corethrogyne filaginifolia, Nassella pulchra, Festuca idahoensis, Elymus glaucus, Agoseris grandiflora, Ranunculus californicus, Gamochaeta ustulata, Leymus triticoides</i>, and others, can be present. The non-native introduced grasses <i>Bromus diandrus, Bromus hordeaceus, Briza maxima</i>, and <i>Avena</i> species can be abundant with up to 20% relative cover. However, this is not considered a ruderal type because of the mix of native herbaceous species that in combination provide greater relative cover than the non-native species. This association occurs on the southern California Channel Islands, and along the central California coast mainland.",
+   "macrogroup": null
+  },
+  "969513": {
+   "elementGlobalId": 969513,
+   "scientificName": "Artemisia californica / Bromus carinatus Shrubland",
+   "primaryCommonName": null,
+   "elcode": "CEGL005710",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.969513/Artemisia_californica_-_Bromus_carinatus_Shrubland",
+   "subnations": [
+    "US-CA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Artemisia californica",
+    "Bromus carinatus"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "969517": {
+   "elementGlobalId": 969517,
+   "scientificName": "Bromus carinatus Coastal Grassland",
+   "primaryCommonName": "California Brome Coastal Grassland",
+   "elcode": "CEGL005711",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.969517/Bromus_carinatus_Coastal_Grassland",
+   "subnations": [
+    "US-CA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus carinatus"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "969555": {
+   "elementGlobalId": 969555,
+   "scientificName": "Bromus carinatus - Elymus glaucus Mesic Meadow Alliance",
+   "primaryCommonName": "California Brome - Blue Wildrye Coastal Grassland",
+   "elcode": "A4244",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Alliance",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.969555/Bromus_carinatus_-_Elymus_glaucus_Mesic_Meadow_Alliance",
+   "subnations": [
+    "US-CA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus carinatus",
+    "Elymus glaucus"
+   ],
+   "conceptSentence": "This mesic meadow alliance is characterized by an open to patchy herbaceous layer of grasses, dominated by <i>Bromus carinatus, Bromus maritimus, Elymus glaucus</i>, and/or <i>Pteridium aquilinum</i>. It occurs in coastal foothills and on the Channel Islands of California.",
+   "summary": "This mesic meadow alliance is characterized by an open to patchy herbaceous layer of grasses, dominated by <i>Bromus carinatus, Bromus maritimus, Elymus glaucus</i>, and/or <i>Pteridium aquilinum</i>. Associate species include <i>Bromus diandrus, Bromus hordeaceus, Calamagrostis canadensis, Nassella pulchra, Achillea millefolium, Corethrogyne filaginifolia, Danthonia californica, Eschscholzia californica, Glyceria striata</i>, and <i>Heracleum maximum</i>. The overall composition of these meadows is similar, with each of the nominal species serving individually or in various combinations as the dominant. The overall herbaceous cover ranges from 25-90%. It occurs generally on steep upper slopes on clay and clay loam soils, and is found in the coastal foothills and on the Channel Islands of California.",
+   "macrogroup": null
+  },
+  "1041701": {
+   "elementGlobalId": 1041701,
+   "scientificName": "Western North American Alnus viridis ssp. sinuata / Carex utriculata Montane Marsh, Wet Meadow & Shrubland Macrogroup",
+   "primaryCommonName": "Western North American Montane Marsh, Wet Meadow & Shrubland",
+   "elcode": "M893",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Macrogroup",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1041701/Western_North_American_Alnus_viridis_ssp_sinuata_-_Carex_utriculata_Montane_Marsh_Wet_Meadow_Shrubland_Macrogroup",
+   "subnations": [
+    "CA-AB",
+    "CA-BC",
+    "US-AK",
+    "US-AZ",
+    "US-CA",
+    "US-CO",
+    "US-ID",
+    "US-MT",
+    "US-NE",
+    "US-NM",
+    "US-NV",
+    "US-OR",
+    "US-SD",
+    "US-UT",
+    "US-WA",
+    "US-WY"
+   ],
+   "in_colorado": true,
+   "name_species": [
+    "Alnus viridis",
+    "Carex utriculata"
+   ],
+   "conceptSentence": "This wetland macrogroup contains wet meadows, marshes, and wet shrublands found along streams, in depressions, and in areas of groundwater discharge throughout the mountains of the temperate western U.S and Canada. Dominant species include graminoids such as <i>Calamagrostis canadensis, Carex scopulorum, Carex utriculata, Glyceria striata</i>, forbs such as <i>Caltha leptosepala, Dodecatheon jeffreyi, Sibbaldia procumbens</i>, and various shrub species, including <i>Alnus incana, Betula occidentalis, Betula glandulosa</i>, and many <i>Salix</i> species.",
+   "summary": "This wetland macrogroup contains foothill, montane, subalpine, and alpine wet meadows, marshes, and wet shrublands throughout the Cascade Range, Olympic Mountains, California Transverse, Peninsular, and Sierra Nevada Ranges, mountain ranges within the Basin and Range, and throughout the Rocky Mountains of the U.S. and Canada, at elevations ranging from 780-3600 m (2560-12,000 feet). Wet meadows can be graminoid- or forb-dominated. Dominant graminoids include <i>Calamagrostis canadensis, Calamagrostis stricta, Carex aquatilis, Carex bolanderi, Carex exsiccata, Carex illota, Carex lachenalii, Carex lenticularis, Carex microptera, Carex nigricans, Carex scopulorum, Carex utriculata, Carex vernacula, Deschampsia cespitosa, Eleocharis quinqueflora, Glyceria striata, Juncus drummondii</i>, and <i>Juncus nevadensis</i>. Dominant forb species include <i>Caltha leptosepala, Camassia quamash, Cardamine cordifolia, Dodecatheon jeffreyi, Phippsia algida, Rorippa alpina, Senecio triangularis, Sibbaldia procumbens, Trifolium parryi, Trollius laxus</i>, and <i>Veratrum californicum</i>. Wet shrublands are tall to dwarf in stature, forming open to closed canopies and include dominant species such as <i>Alnus incana, Alnus oblongifolia, Alnus alnobetula</i> (=<i>Alnus viridis </i>var.<i> sinuata</i>), <i>Betula occidentalis, Betula glandulosa, Cornus sericea, Salix barclayi, Salix bebbiana, Salix boothii, Salix brachycarpa, Salix commutata, Salix drummondiana, Salix eriocephala, Salix farriae, Salix geyeriana, Salix lasiolepis, Salix monticola, Salix planifolia, Salix sitchensis</i>, and <i>Salix wolfii</i>. Sites are generally wet all season long but some dry out by summer's end, others remain saturated for much of the year. Montane marshes, from beaver dams and along shorelines, can be quite common, and are dominated by <i>Carex aquatilis, Carex atherodes, Carex lenticularis, Carex rostrata</i> (although rare), <i>Carex utriculata</i>, and <i>Schoenoplectus</i> spp.",
+   "macrogroup": "Western North American Alnus viridis ssp. sinuata / Carex utriculata Montane Marsh, Wet Meadow & Shrubland Macrogroup"
+  },
+  "1110204": {
+   "elementGlobalId": 1110204,
+   "scientificName": "Carex inops ssp. inops - Achnatherum occidentale - Bromus carinatus Grassland Alliance",
+   "primaryCommonName": "Cascadian Subalpine-Montane Grassland",
+   "elcode": "A4254",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Alliance",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1110204/Carex_inops_ssp_inops_-_Achnatherum_occidentale_-_Bromus_carinatus_Grassland_Alliance",
+   "subnations": [
+    "US-OR"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Achnatherum occidentale",
+    "Bromus carinatus",
+    "Carex inops"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "1270972": {
+   "elementGlobalId": 1270972,
+   "scientificName": "Pinus ponderosa / Carex siccata - Carex rossii Woodland Alliance",
+   "primaryCommonName": "Southern Rockies Mountain Ponderosa Pine Herbaceous Forest",
+   "elcode": "A2253",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Alliance",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1270972/Pinus_ponderosa_-_Carex_siccata_-_Carex_rossii_Woodland_Alliance",
+   "subnations": [
+    "US-AZ",
+    "US-CO",
+    "US-NM",
+    "US-NV",
+    "US-TX",
+    "US-UT",
+    "US-WY"
+   ],
+   "in_colorado": true,
+   "name_species": [
+    "Carex rossii",
+    "Carex siccata",
+    "Pinus ponderosa"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "1277684": {
+   "elementGlobalId": 1277684,
+   "scientificName": "Thermopsis californica - Bromus carinatus - Bromus spp. Grassland",
+   "primaryCommonName": null,
+   "elcode": "CEGL008892",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1277684/Thermopsis_californica_-_Bromus_carinatus_-_Bromus_spp_Grassland",
+   "subnations": [
+    "US-CA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Bromus carinatus",
+    "Bromus spp",
+    "Thermopsis californica"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "1309285": {
+   "elementGlobalId": 1309285,
+   "scientificName": "Populus tremuloides / Juniperus horizontalis / Carex siccata Dry Woodland",
+   "primaryCommonName": "Aspen Parkland Dry Aspen Woodland",
+   "elcode": "CEGL009044",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1309285/Populus_tremuloides_-_Juniperus_horizontalis_-_Carex_siccata_Dry_Woodland",
+   "subnations": [
+    "CA-AB",
+    "CA-SK",
+    "US-MT"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex siccata",
+    "Juniperus horizontalis",
+    "Populus tremuloides"
+   ],
+   "conceptSentence": null,
+   "summary": null,
    "macrogroup": null
   }
  }

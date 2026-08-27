@@ -12,6 +12,6 @@
     "bands_retained": 348,
     "n_pcs": 20
   },
-  "training_label_levels": ["Caltha leptosepala", "Corydalis caseana", "Ligusticum porteri", "Osmorhiza occidentalis", "S01", "S02", "S03", "S04", "S05.a", "S05.b", "S06", "S07", "S08", "S09.a", "S09.b", "S10", "S11", "S12", "S13", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24.a", "S24.b", "S25", "S26", "Veratrum tenuipetalum"],
+  "training_label_levels": ["Caltha leptosepala", "Corydalis caseana", "Ligusticum porteri", "Osmorhiza occidentalis", "S01.a", "S01.b", "S01.c", "S02.a", "S02.b", "S02.c", "S03", "S04.a", "S04.b", "S04.c", "S05.a", "S05.b", "S06.a", "S06.b", "S06.c", "S07", "S08.a", "S08.b", "S08.c", "S09.a", "S09.b", "S10.a", "S10.b", "S10.c", "S11", "S12", "S13.a", "S13.b", "S14", "S15", "S16", "S17", "S18", "S19", "S20", "S21", "S22", "S23", "S24.a", "S24.b", "S25", "S26", "Veratrum tenuipetalum"],
   "notes": "Classifier trained on training_samples_sites.csv with final_label as target. Features: spec_PC01..PC20, ndvi, ndwi, pri, red_edge_slope, cai, ndli, snow_free_doy."
 }

@@ -58,6 +58,18 @@ UA = "CHESS-meadow-crosswalk/0.1 (RMBL; respectful cached pull)"
 NONSP_PREFIX = ("Other", "NPV", "Bare")
 # species binomial in an IVC community name: "Genus epithet" (epithet lowercase)
 SPECIES_RE = re.compile(r"\b([A-Z][a-z]+ [a-z][a-z-]+)\b")
+# "Vaccinium (cespitosum, scoparium)" -> Vaccinium cespitosum + V. scoparium.
+# IVC names use parenthesized epithet alternatives; without expansion these
+# communities get an empty name_species list and can never match.
+PAREN_ALT_RE = re.compile(r"\b([A-Z][a-z]+) \(([a-z][a-z, -]*)\)")
+
+
+def name_species_of(name: str) -> list[str]:
+    expanded = list(SPECIES_RE.findall(name))
+    for genus, alts in PAREN_ALT_RE.findall(name):
+        expanded += [f"{genus} {sp.strip()}" for sp in alts.split(",")
+                     if sp.strip()]
+    return sorted(set(expanded))
 
 
 # ---------- API client -----------------------------------------------------
@@ -134,7 +146,7 @@ def fetch_detail(eid, sleep: float) -> dict | None:
         "in_colorado": any(s.endswith("-CO") or s == "CO" for s in subnats),
         # diagnostic species parsed from the IVC community NAME (compositions
         # are empty at Group level; the name encodes the diagnostics).
-        "name_species": sorted(set(SPECIES_RE.findall(name))),
+        "name_species": name_species_of(name),
         "conceptSentence": eg.get("conceptSentence"),
         "summary": eg.get("summary"),
         "macrogroup": ((eg.get("macrogroupHierarchy") or {})

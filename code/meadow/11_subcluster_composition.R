@@ -48,6 +48,15 @@ primary_variant  <- "variant_G"  # PCs 2,4-12 + DOY z-scaled (drop PC1 brightnes
 recall_bar       <- 0.25   # keep a split if min sub-class recall clears this
 ancillary_recall <- 0.40   # below this, flag sub-classes as needs_ancillary
 min_sub_size     <- 8L     # don't create a sub-class smaller than this
+# Tier-2 floristic fallback (user decision 2026-08-27): when no split clears
+# the RF gate, keep the best composition split anyway if its mean silhouette
+# width on the Hellinger distance clears this bar. Rationale: the final
+# pipeline will be an ML ensemble with additional covariates, so floristically
+# real sub-classes that don't map on today's 22 features are preferred over a
+# large heterogeneous "everything bucket" (S06 was absorbing the tall-forb
+# monotypics). Tier-2 sub-classes are always flagged needs_ancillary and may
+# be merged later.
+floristic_sil_bar <- 0.30
 chm_for_gate     <- readRDS("data/derived/canopy_height.rds")
 k_col            <- sprintf("k%02d", primary_k)
 spec_summary    <- sc[[primary_variant]]$characterizations[[k_col]]
@@ -162,6 +171,7 @@ gate_min_recall <- function(site_year_sub) {
 }
 
 split_min_rec <- c()   # spec_cluster -> kept split's min sub-class recall
+split_basis   <- c()   # spec_cluster -> "mappable" (tier 1) | "floristic" (tier 2)
 cat(sprintf("\nGated subclustering (recall_bar = %.2f, try k=3 then k=2):\n",
             recall_bar))
 for (sc_id in candidates) {
@@ -173,11 +183,10 @@ for (sc_id in candidates) {
     dplyr::select(site_number, Year, dplyr::all_of(named_cols))
   n <- nrow(hell_subset)
   if (n < 2 * min_sub_size) next
-  hc <- hclust(dist(as.matrix(hell_subset[, named_cols]), method = "euclidean"),
-               method = "ward.D2")
+  d_hell <- dist(as.matrix(hell_subset[, named_cols]), method = "euclidean")
+  hc <- hclust(d_hell, method = "ward.D2")
 
-  # Try the finest split first; keep the first k that is big enough, present
-  # in both years, and clears the recall bar.
+  # Tier 1: finest split that is big enough and clears the RF recall bar.
   chosen <- NULL
   for (k in c(3L, 2L)) {
     if (n < k * min_sub_size) next
@@ -186,27 +195,51 @@ for (sc_id in candidates) {
     mr <- gate_min_recall(hell_subset |> dplyr::select(site_number, Year) |>
                             dplyr::mutate(sub = tags))
     if (!is.na(mr) && mr >= recall_bar) {
-      chosen <- list(k = k, tags = tags, min_rec = mr); break
+      chosen <- list(k = k, tags = tags, min_rec = mr, basis = "mappable",
+                     sil = mean(cluster::silhouette(cutree(hc, k = k),
+                                                    d_hell)[, 3]))
+      break
+    }
+  }
+  # Tier 2: no mappable split -> keep the best floristically supported one
+  # (highest mean silhouette across valid k) if it clears floristic_sil_bar.
+  if (is.null(chosen)) {
+    best <- NULL
+    for (k in c(3L, 2L)) {
+      if (n < k * min_sub_size) next
+      tags <- letters[cutree(hc, k = k)]
+      if (any(table(tags) < min_sub_size)) next
+      sil <- mean(cluster::silhouette(cutree(hc, k = k), d_hell)[, 3])
+      if (is.null(best) || sil > best$sil) best <- list(k = k, tags = tags, sil = sil)
+    }
+    if (!is.null(best) && best$sil >= floristic_sil_bar) {
+      mr <- gate_min_recall(hell_subset |> dplyr::select(site_number, Year) |>
+                              dplyr::mutate(sub = best$tags))
+      chosen <- c(best, list(min_rec = if (is.na(mr)) 0 else mr,
+                             basis = "floristic"))
     }
   }
   if (is.null(chosen)) {
-    cat(sprintf("  %s: n=%d -> keep whole (no split clears %.2f)\n",
-                sc_id, n, recall_bar))
+    cat(sprintf("  %s: n=%d -> keep whole (no split clears recall %.2f or silhouette %.2f)\n",
+                sc_id, n, recall_bar, floristic_sil_bar))
     next
   }
-  flag <- if (chosen$min_rec < ancillary_recall) "  [needs_ancillary]" else ""
-  cat(sprintf("  %s: n=%d -> SPLIT k=%d (%s), min sub-recall %.2f%s\n",
+  flag <- if (chosen$basis == "floristic") "  [floristic; needs_ancillary]"
+          else if (chosen$min_rec < ancillary_recall) "  [needs_ancillary]" else ""
+  cat(sprintf("  %s: n=%d -> SPLIT k=%d (%s), min sub-recall %.2f, silhouette %.2f%s\n",
               sc_id, n, chosen$k, paste(table(chosen$tags), collapse = "/"),
-              chosen$min_rec, flag))
+              chosen$min_rec, chosen$sil, flag))
   split_passed <- c(split_passed, sc_id)
   split_min_rec[sc_id] <- chosen$min_rec
+  split_basis[sc_id]   <- chosen$basis
   for (i in seq_along(chosen$tags)) {
     mask <- asg$site_number == hell_subset$site_number[i] &
             asg$Year        == hell_subset$Year[i]
     asg$sub_cluster[mask] <- chosen$tags[i]
   }
-  sub_details[[sc_id]] <- list(hclust = hc, k = chosen$k,
-                               n = n, min_recall = chosen$min_rec)
+  sub_details[[sc_id]] <- list(hclust = hc, k = chosen$k, n = n,
+                               min_recall = chosen$min_rec,
+                               basis = chosen$basis, silhouette = chosen$sil)
 }
 cat(sprintf("=> %d/%d candidate clusters split: %s\n",
             length(split_passed), length(candidates),
@@ -424,6 +457,7 @@ asg <- asg |> dplyr::select(-dplyr::any_of(monotypic_table$species_col))
 asg <- asg |>
   dplyr::mutate(
     map_recall      = unname(split_min_rec[sub("\\..*$", "", final_label)]),
+    split_basis     = unname(split_basis[sub("\\..*$", "", final_label)]),
     needs_ancillary = !is.na(map_recall) & map_recall < ancillary_recall)
 cat(sprintf("\nSub-classes flagged needs_ancillary (recall < %.2f): %s\n",
             ancillary_recall,
@@ -505,14 +539,16 @@ final_summary <- sizes |>
   mutate(spec_cluster = stringr::str_extract(final_label, "^S\\d+"),
          recall = as.numeric(final_eval$recall[final_label])) |>
   left_join(per_label, by = "final_label") |>
-  left_join(asg |> dplyr::distinct(final_label, map_recall, needs_ancillary),
+  left_join(asg |> dplyr::distinct(final_label, map_recall, split_basis,
+                                   needs_ancillary),
             by = "final_label") |>
   arrange(spec_cluster, final_label)
 
 # Standalone record of which sub-classes need ancillary data to map.
 readr::write_csv(
   final_summary |> dplyr::filter(!is.na(map_recall)) |>
-    dplyr::select(final_label, n, map_recall, needs_ancillary, indicator_species),
+    dplyr::select(final_label, n, map_recall, split_basis, needs_ancillary,
+                  indicator_species),
   "data/derived/subclass_mappability.csv")
 
 cat(sprintf("\n=== FINAL CLUSTERING (Architecture B, k_spec=%d) ===\n", primary_k))
@@ -546,5 +582,7 @@ saveRDS(list(
   recall_bar     = recall_bar,
   ancillary_recall = ancillary_recall,
   split_passed   = split_passed,
-  split_min_rec  = split_min_rec
+  split_min_rec  = split_min_rec,
+  split_basis    = split_basis,
+  floristic_sil_bar = floristic_sil_bar
 ), "data/derived/final_clusters_B.rds")
