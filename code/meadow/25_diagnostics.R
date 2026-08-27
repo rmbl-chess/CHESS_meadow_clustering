@@ -482,13 +482,22 @@ joined_for_sweep <- spec_variant$assignments |>
   dplyr::inner_join(env,       by = c("site_number", "Year"))
 X_sweep <- as.matrix(joined_for_sweep[, c(spec_cols, "snow_free_doy")])
 
-eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
+# Order-invariant folds keyed on (site_number, Year) — mirrors
+# 11_subcluster_composition.R so diagnostics CV matches the gate's.
+fold_hash <- function(site_number, year) {
+  (as.numeric(site_number) * 2654435761 + as.numeric(year) * 40503) %% 2147483647
+}
+sweep_h <- fold_hash(joined_for_sweep$site_number, joined_for_sweep$Year)
+
+eval_rf_cv <- function(labels, X, h = sweep_h, n_folds = 5, seed = 42,
+                       n_trees = 500) {
   y <- factor(labels); n <- length(y)
-  set.seed(seed)
+  set.seed(seed)   # pins prediction tie-breaking only; folds are hash-based
   fold <- integer(n)
   for (lvl in levels(y)) {
     idx <- which(y == lvl)
-    fold[idx] <- ((sample(seq_along(idx)) - 1L) %% n_folds) + 1L
+    ord <- idx[order(h[idx], idx)]
+    fold[ord] <- ((seq_along(ord) - 1L) %% n_folds) + 1L
   }
   preds <- factor(rep(NA_character_, n), levels = levels(y))
   for (f in seq_len(n_folds)) {

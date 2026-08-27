@@ -14,11 +14,14 @@
 #
 # This script:
 #   1. Normalizes site names on both sides (LT4 -> LT-4, SN-01 -> SN-1,
-#      uu-1 -> UU-1) and reports cover<->polygon mismatches (known open issue:
-#      SH-1..4 have cover but no polygon; JF-13..17 the reverse).
-#   2. Assigns stable integer site_numbers (3001+) via a committed lookup
-#      (data/small_reference/site_numbers_2023.csv) — existing assignments are
-#      reused, new names appended, so numbers never shift across re-runs.
+#      uu-1 -> UU-1) and DROPS cover<->polygon mismatches from the outputs
+#      (user decision 2026-08-25: SH-01..04 have cover but no polygon,
+#      JF-13..17 the reverse — ambiguous, excluded until resolved upstream).
+#   2. Adopts the collaborator's `site_number` column (2500-2736, added in her
+#      2026-08-19 cover update) as the authoritative site key; the committed
+#      mirror data/small_reference/site_numbers_2023.csv records the adopted
+#      mapping. (The earlier interim 3001+ scheme is retired; the range is
+#      collision-free vs 2018 [1-453], 2025 [1006-1354], 2026 [2000-2117].)
 #   3. Maps species codes -> canonical binomials (two overrides below align
 #      2023 with project conventions) and morphotype codes -> the 2025-style
 #      non-species tokens, emitting a 2026-schema cover table.
@@ -85,38 +88,34 @@ polys     <- polys_raw  |> dplyr::mutate(site_name = norm_site(Name))
 
 stopifnot(!anyDuplicated(polys$site_name))
 
-# --- Report cover <-> polygon mismatches (do not drop either side) ---------
+# --- Adopt the collaborator's site numbering -------------------------------
+stopifnot("site_number" %in% names(cover_raw))
+lookup <- cover_raw |>
+  dplyr::distinct(site_name, site_number) |>
+  dplyr::mutate(site_number = as.integer(site_number))
+stopifnot(!anyDuplicated(lookup$site_name),
+          !anyDuplicated(lookup$site_number),
+          all(lookup$site_number >= 2500 & lookup$site_number <= 2999))
+lookup_path <- "data/small_reference/site_numbers_2023.csv"
+readr::write_csv(dplyr::arrange(lookup, site_number), lookup_path)
+message(sprintf("Adopted collaborator site numbers for %d sites (%d-%d) -> %s",
+                nrow(lookup), min(lookup$site_number), max(lookup$site_number),
+                lookup_path))
+
+# --- Drop cover <-> polygon mismatches from both sides ---------------------
 cov_sites  <- unique(cover_raw$site_name)
 poly_sites <- unique(polys$site_name)
 no_poly  <- setdiff(cov_sites, poly_sites)
 no_cover <- setdiff(poly_sites, cov_sites)
 if (length(no_poly))
-  message("Cover without polygon (awaiting collaborator resolution): ",
+  message("DROPPING cover-only sites (no polygon): ",
           paste(sort(no_poly), collapse = ", "))
 if (length(no_cover))
-  message("Polygon without cover (awaiting collaborator resolution): ",
+  message("DROPPING polygon-only sites (no cover): ",
           paste(sort(no_cover), collapse = ", "))
-
-# --- Stable site-number assignment (3001+) ---------------------------------
-lookup_path <- "data/small_reference/site_numbers_2023.csv"
-lookup <- if (file.exists(lookup_path)) {
-  readr::read_csv(lookup_path, show_col_types = FALSE) |>
-    dplyr::mutate(site_number = as.integer(site_number))
-} else {
-  tibble::tibble(site_name = character(), site_number = integer())
-}
-new_names <- setdiff(sort(union(cov_sites, poly_sites)), lookup$site_name)
-if (length(new_names)) {
-  start <- max(3000L, suppressWarnings(max(lookup$site_number)))
-  lookup <- dplyr::bind_rows(
-    lookup,
-    tibble::tibble(site_name = new_names,
-                   site_number = start + seq_along(new_names))
-  )
-  readr::write_csv(dplyr::arrange(lookup, site_number), lookup_path)
-  message(sprintf("Assigned %d new site numbers (now %d total) -> %s",
-                  length(new_names), nrow(lookup), lookup_path))
-}
+keep <- intersect(cov_sites, poly_sites)
+cover_raw <- cover_raw |> dplyr::filter(site_name %in% keep)
+polys     <- polys     |> dplyr::filter(site_name %in% keep)
 
 # --- Standardized cover table (2026 schema) --------------------------------
 unmapped <- setdiff(unique(cover_raw$Species),
@@ -132,6 +131,7 @@ code_to_canonical <- crosswalk_2023 |>
 code_to_canonical[names(canonical_overrides)] <- canonical_overrides
 
 cover_std <- cover_raw |>
+  dplyr::select(-site_number) |>
   dplyr::inner_join(lookup, by = "site_name") |>
   dplyr::transmute(
     Site_Number      = site_number,

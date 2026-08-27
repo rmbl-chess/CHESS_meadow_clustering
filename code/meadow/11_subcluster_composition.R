@@ -119,6 +119,24 @@ gate_feats <- spec_feat |>
   dplyr::left_join(chm_for_gate, by = c("site_number", "Year"))
 gate_cols <- c(sprintf("spec_PC%02d", 1:20), "snow_free_doy", "canopy_height_m")
 
+# Order-invariant stratified CV folds: within each class level, rank members
+# by a deterministic hash of (site_number, Year) and deal folds round-robin.
+# Positional sample() here made borderline gate decisions flip when the 2023
+# renumbering changed row order; hash-ranking keeps exact per-class balance
+# while making folds a pure function of site identity.
+fold_hash <- function(site_number, year) {
+  (as.numeric(site_number) * 2654435761 + as.numeric(year) * 40503) %% 2147483647
+}
+assign_folds <- function(y, h, n_folds = 5L) {
+  fold <- integer(length(y))
+  for (lvl in levels(y)) {
+    idx <- which(y == lvl)
+    ord <- idx[order(h[idx], idx)]
+    fold[ord] <- ((seq_along(ord) - 1L) %% n_folds) + 1L
+  }
+  fold
+}
+
 # Min per-sub-class 5-fold RF CV recall for a proposed split (NA if untestable).
 gate_min_recall <- function(site_year_sub) {
   df <- site_year_sub |>
@@ -126,9 +144,11 @@ gate_min_recall <- function(site_year_sub) {
   X  <- as.matrix(df[, gate_cols]); ok <- stats::complete.cases(X)
   X  <- X[ok, , drop = FALSE]; y <- factor(df$sub[ok])
   if (nlevels(y) < 2 || any(table(y) < 2)) return(NA_real_)
-  set.seed(42); n <- length(y); fold <- integer(n)
-  for (lvl in levels(y)) { idx <- which(y == lvl)
-    fold[idx] <- ((sample(seq_along(idx)) - 1L) %% 5L) + 1L }
+  # Folds are order-invariant (hash-ranked); the seed only pins R's RNG for
+  # ranger prediction tie-breaking (200/200 votes), which is otherwise
+  # session-dependent and flips borderline gate decisions.
+  set.seed(42); n <- length(y)
+  fold <- assign_folds(y, fold_hash(df$site_number[ok], df$Year[ok]))
   preds <- factor(rep(NA_character_, n), levels = levels(y))
   for (f in 1:5) {
     tr <- which(fold != f); te <- which(fold == f)
@@ -424,14 +444,10 @@ joined <- asg_clustered |>
 rf_feature_cols <- c(spec_cols, "snow_free_doy")
 X <- as.matrix(joined[, rf_feature_cols])
 
-eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
+eval_rf_cv <- function(labels, X, h, n_folds = 5, seed = 42, n_trees = 500) {
   y <- factor(labels); n <- length(y)
-  set.seed(seed)
-  fold <- integer(n)
-  for (lvl in levels(y)) {
-    idx <- which(y == lvl)
-    fold[idx] <- ((sample(seq_along(idx)) - 1L) %% n_folds) + 1L
-  }
+  set.seed(seed)   # pins prediction tie-breaking only; folds are hash-based
+  fold <- assign_folds(y, h, n_folds)
   preds <- factor(rep(NA_character_, n), levels = levels(y))
   for (f in seq_len(n_folds)) {
     tr <- which(fold != f); te <- which(fold == f)
@@ -448,7 +464,8 @@ eval_rf_cv <- function(labels, X, n_folds = 5, seed = 42, n_trees = 500) {
   list(accuracy = mean(truth == pred), recall = recall, confusion = cm)
 }
 
-final_eval <- eval_rf_cv(joined$final_label, X)
+final_eval <- eval_rf_cv(joined$final_label, X,
+                         fold_hash(joined$site_number, joined$Year))
 
 # --- Per-final-label characterization ---------------------------------------
 # Characterization uses CLUSTERED (2025) sites only: the cluster is defined

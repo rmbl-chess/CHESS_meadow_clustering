@@ -32,11 +32,11 @@ CHESS 2025 field campaign — cover + site metadata, parallel structure to 2018.
 
 | File | Purpose |
 |---|---|
-| `vegmap_2023_cover.csv` | Plot × species cover (6-letter codes; totals = 100%). |
+| `vegmap_2023_cover.csv` | Plot × species cover (6-letter codes; totals = 100%). 2026-08-19 update added her authoritative `site_number` column (2500–2736). |
 | `vegmap_2023_wgs_utm_pixel_select.geojson` | AOP-pixel-snapped plot polygons, EPSG:32613; `pix_sel` = reviewed. |
 | `uer_vegmap_locations_2023.csv` | Raw GNSS corner points (provenance only). |
 
-The code → canonical crosswalk is committed at `small_reference/taxonomy_crosswalk_2023.csv` (collaborator's 3-campaign file, dated 2026-08-06); the stable site-number lookup (3001+) at `small_reference/site_numbers_2023.csv`. Known open issue: SH-1..4 have cover but no polygon, JF-13..17 the reverse — awaiting collaborator resolution.
+The code → canonical crosswalk is committed at `small_reference/taxonomy_crosswalk_2023.csv` (collaborator's 3-campaign file, dated 2026-08-06); the adopted site-number mapping is mirrored at `small_reference/site_numbers_2023.csv`. The 9 ambiguous plots (cover-only SH-01..04, polygon-only JF-13..17) are dropped by `00_prep_2023.R` — 233 clean sites enter the pipeline.
 
 ## `raw/ESS-DIVE-Spectra/`
 
