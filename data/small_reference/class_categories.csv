@@ -1,56 +1,52 @@
-"final_label","moisture","elevation"
-"Alnus incana","wet","montane"
-"Amelanchier alnifolia","mesic","montane"
-"Artemisia tridentata","dry","montane"
-"Betula glandulosa","mesic","subalpine"
-"Caltha leptosepala","wet","subalpine"
-"Cornus sericea","wet","montane"
-"Corydalis caseana","wet","subalpine"
-"Dasiphora fruticosa","mesic","subalpine"
-"Juniperus sp.","dry","montane"
-"Ligusticum porteri","wet","subalpine"
-"Lonicera involucrata","mesic","subalpine"
-"Osmorhiza occidentalis","mesic","subalpine"
-"Prunus virginiana","mesic","montane"
-"Purshia tridentata","dry","montane"
-"Ribes sp.","dry","subalpine"
-"S01.a","mesic","montane"
-"S01.b","mesic","subalpine"
-"S02","dry","subalpine"
-"S03","wet","subalpine"
-"S04","dry","montane"
-"S05","mesic","subalpine"
-"S06","dry","alpine"
-"S07.a","wet","subalpine"
-"S07.b","mesic","subalpine"
-"S07.c","wet","subalpine"
-"S08.a","dry","subalpine"
-"S08.b","mesic","subalpine"
-"S08.c","mesic","subalpine"
-"S09","disturbed","disturbed"
-"S10","dry","alpine"
-"S11","dry","subalpine"
-"S12","wet","subalpine"
-"S13","wet","subalpine"
-"S14","wet","alpine"
-"S15","mesic","montane"
-"S16","dry","montane"
-"S17","dry","montane"
-"S18","mesic","montane"
-"S19","dry","montane"
-"S20","mesic","montane"
-"S21","mesic","subalpine"
-"S22","wet","alpine"
-"S23.a","dry","montane"
-"S23.b","dry","montane"
-"S24","mesic","subalpine"
-"S25.a","dry","montane"
-"S25.b","mesic","montane"
-"S26","mesic","montane"
-"Salix boothii","wet","subalpine"
-"Salix other","wet","subalpine"
-"Salix planifolia","wet","subalpine"
-"Salix wolfii","wet","subalpine"
-"Sambucus racemosa","mesic","subalpine"
-"Symphoricarpos rotundifolius","mesic","montane"
-"Veratrum tenuipetalum","wet","subalpine"
+final_label,moisture,elevation
+Alnus incana,wet,montane
+Amelanchier alnifolia,mesic,montane
+Artemisia tridentata,dry,montane
+Betula glandulosa,mesic,subalpine
+Caltha leptosepala,wet,subalpine
+Cornus sericea,wet,montane
+Corydalis caseana,wet,subalpine
+Dasiphora fruticosa,mesic,subalpine
+Juniperus sp.,dry,montane
+Ligusticum porteri,wet,subalpine
+Lonicera involucrata,mesic,subalpine
+Osmorhiza occidentalis,mesic,subalpine
+Prunus virginiana,mesic,montane
+Purshia tridentata,dry,montane
+Ribes sp.,dry,subalpine
+S01,dry,montane
+S02,mesic,montane
+S03,wet,subalpine
+S04,dry,montane
+S05.a,dry,montane
+S05.b,dry,montane
+S06,mesic,subalpine
+S07,wet,alpine
+S08,mesic,subalpine
+S09.a,mesic,subalpine
+S09.b,mesic,subalpine
+S10,mesic,montane
+S11,mesic,montane
+S12,dry,subalpine
+S13,mesic,subalpine
+S14,wet,alpine
+S15,wet,subalpine
+S16,wet,alpine
+S17,dry,montane
+S18,dry,montane
+S19,dry,montane
+S20,dry,montane
+S21,mesic,subalpine
+S22,dry,montane
+S23,mesic,subalpine
+S24.a,dry,montane
+S24.b,dry,montane
+S25,dry,montane
+S26,mesic,montane
+Salix boothii,wet,subalpine
+Salix other,wet,subalpine
+Salix planifolia,wet,subalpine
+Salix wolfii,wet,subalpine
+Sambucus racemosa,mesic,subalpine
+Symphoricarpos rotundifolius,mesic,montane
+Veratrum tenuipetalum,wet,subalpine
