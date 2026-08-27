@@ -1,0 +1,11 @@
+merged_label,member_label,short_label,rationale
+M01,S06.c,Bilberry heath,"Same top-1 NS community (Vaccinium (cespitosum, scoparium) Dwarf-shrubland G4); Hellinger centroid ratios 0.28-0.83; three spectral clusters of one dwarf-bilberry heath community (2026-08-27 merge pass)"
+M01,S08.c,Bilberry heath,
+M01,S13.a,Bilberry heath,
+M02,S06.a,Osha tall-forb meadow,"Same top-1 NS community (Ligusticum porteri - Vicia americana Meadow G3?); ratios 0.37-0.67; osha-led tall-forb facies split across spectral clusters"
+M02,S08.b,Osha tall-forb meadow,
+M02,S09.b,Osha tall-forb meadow,
+M03,S04.c,Sagebrush-fescue shrubland,"Same top-1 NS community (Artemisia tridentata ssp. vaseyana / Festuca thurberi Shrubland); ratio 0.89"
+M03,S05.b,Sagebrush-fescue shrubland,
+M04,S01.c,Lupine meadow,"Same top-1 NS community (Elymus lanceolatus - Lupinus argenteus Grassland); ratio 0.90"
+M04,S02.c,Lupine meadow,

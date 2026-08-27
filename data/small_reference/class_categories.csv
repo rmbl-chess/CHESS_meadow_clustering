@@ -10,37 +10,31 @@ Dasiphora fruticosa,mesic,subalpine
 Juniperus sp.,dry,montane
 Ligusticum porteri,wet,subalpine
 Lonicera involucrata,mesic,subalpine
+M01,mesic,subalpine
+M02,mesic,subalpine
+M03,dry,montane
+M04,dry,montane
 Osmorhiza occidentalis,mesic,subalpine
 Prunus virginiana,mesic,montane
 Purshia tridentata,dry,montane
 Ribes sp.,dry,subalpine
 S01.a,dry,montane
 S01.b,dry,montane
-S01.c,dry,montane
 S02.a,mesic,montane
 S02.b,mesic,montane
-S02.c,mesic,montane
 S03,wet,subalpine
 S04.a,dry,montane
 S04.b,dry,montane
-S04.c,dry,montane
 S05.a,dry,montane
-S05.b,dry,montane
-S06.a,mesic,subalpine
 S06.b,mesic,subalpine
-S06.c,mesic,subalpine
 S07,wet,alpine
 S08.a,mesic,subalpine
-S08.b,mesic,subalpine
-S08.c,mesic,alpine
 S09.a,mesic,subalpine
-S09.b,mesic,subalpine
 S10.a,mesic,montane
 S10.b,mesic,montane
 S10.c,mesic,montane
 S11,mesic,montane
 S12,dry,subalpine
-S13.a,mesic,subalpine
 S13.b,mesic,subalpine
 S14,wet,alpine
 S15,wet,subalpine

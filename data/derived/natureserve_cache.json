@@ -2,7 +2,7 @@
  "fetch_date": "2026-08-27",
  "api_base": "https://explorer.natureserve.org/api/data",
  "citation": "NatureServe. NatureServe Explorer. https://explorer.natureserve.org",
- "n_search_tokens": 127,
+ "n_search_tokens": 122,
  "species_search": {
   "Achillea millefolium": [
    685019,
@@ -898,6 +898,25 @@
   "Solidago spp": [],
   "Vicia americana": [
    687003
+  ],
+  "Vaccinium caespitosum; Vaccinium cespitosum": [
+   899992,
+   899079,
+   683258,
+   728663,
+   728657,
+   732561,
+   685296,
+   731884,
+   731786,
+   731466,
+   685688,
+   688285,
+   688777,
+   686746,
+   683955,
+   688728,
+   686775
   ]
  },
  "ecosystems": {

@@ -450,6 +450,32 @@ print(tibble::tibble(label = names(n_overridden_per_species),
 # Drop the temporary cover columns (we keep monotypic_species as the flag).
 asg <- asg |> dplyr::select(-dplyr::any_of(monotypic_table$species_col))
 
+# --- Curated floristic merges (user decision 2026-08-27) --------------------
+# The inverse of the tier-2 split: classes from DIFFERENT spectral clusters
+# that are floristically one community (low Hellinger centroid distance AND
+# same top-1 NatureServe candidate) are merged into M## classes via the
+# committed table. Candidates are proposed by the merge-candidates analysis
+# (data/derived/merge_candidates.csv); only both-criteria pairs are merged.
+# Merged classes span spectral clusters, so map_recall/split_basis do not
+# apply (they key on the parent spectral cluster) — final_eval below reports
+# their actual mappability.
+merges_path <- "data/small_reference/class_merges.csv"
+if (file.exists(merges_path)) {
+  merges <- readr::read_csv(merges_path, show_col_types = FALSE)
+  merge_map <- setNames(merges$merged_label, merges$member_label)
+  n_merged <- sum(asg$final_label %in% names(merge_map))
+  asg <- asg |>
+    dplyr::mutate(final_label = dplyr::if_else(final_label %in% names(merge_map),
+                                               unname(merge_map[final_label]),
+                                               final_label))
+  cat(sprintf("\nApplied %d curated merges (%d sites relabeled): %s\n",
+              dplyr::n_distinct(merges$merged_label), n_merged,
+              paste(sprintf("%s<-{%s}", unique(merges$merged_label),
+                            tapply(merges$member_label, merges$merged_label,
+                                   paste, collapse = ",")[unique(merges$merged_label)]),
+                    collapse = "  ")))
+}
+
 # --- Mappability annotation -------------------------------------------------
 # Tag each split sub-class with its gate recall, and flag the ones below
 # `ancillary_recall` as needing ancillary data (topographic wetness /
