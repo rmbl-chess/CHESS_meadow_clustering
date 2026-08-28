@@ -2,52 +2,62 @@ class_code,final_label
 1,Alnus incana
 2,Amelanchier alnifolia
 3,Artemisia tridentata
-4,Betula glandulosa
-5,Caltha leptosepala
-6,Cornus sericea
-7,Corydalis caseana
+4,AW43
+5,AW44
+6,Betula glandulosa
+7,Cornus sericea
 8,Dasiphora fruticosa
 9,Juniperus sp.
-10,Ligusticum porteri
-11,Lonicera involucrata
-12,Osmorhiza occidentalis
-13,Prunus virginiana
-14,Purshia tridentata
-15,Ribes sp.
-16,S01.a
-17,S01.b
-18,S02
-19,S03
-20,S04.a
-21,S04.b
-22,S05
-23,S06
-24,S07
-25,S08
-26,S09
-27,S10
-28,S11
-29,S12
-30,S13
-31,S14
-32,S15
-33,S16
-34,S17
-35,S18.a
-36,S18.b
-37,S19
-38,S20
-39,S21
-40,S22
-41,S23
-42,S24
-43,S25.a
-44,S25.b
-45,S26
-46,Salix boothii
-47,Salix other
-48,Salix planifolia
-49,Salix wolfii
-50,Sambucus racemosa
-51,Symphoricarpos rotundifolius
-52,Veratrum tenuipetalum
+10,Lonicera involucrata
+11,MD01
+12,MD02
+13,MD03
+14,MD04
+15,MD05
+16,MD06
+17,MD08
+18,MD09
+19,MD11
+20,MD13
+21,MD14
+22,MD15
+23,MD17
+24,MD18
+25,MD21
+26,MD22
+27,MD23
+28,MD24
+29,MM07
+30,MM10
+31,MM12
+32,MM16
+33,MM19
+34,MM20
+35,MM25
+36,MM26
+37,Prunus virginiana
+38,Purshia tridentata
+39,Ribes sp.
+40,Salix boothii
+41,Salix other
+42,Salix planifolia
+43,Salix wolfii
+44,Sambucus racemosa
+45,SD42
+46,SM27
+47,SM28
+48,SM30
+49,SM33
+50,SM34
+51,SM35
+52,SM38
+53,SM40
+54,SM41
+55,SM45
+56,SW29
+57,SW31
+58,SW32
+59,SW36
+60,SW37
+61,SW39
+62,Symphoricarpos rotundifolius

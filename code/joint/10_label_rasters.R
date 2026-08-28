@@ -57,22 +57,26 @@ ns_draft <- if (file.exists(ns_path)) {
 }
 
 # --- 1. Build the RAT (one row per class code) ---------------------------
-# Parent-inheritance fallback: a split sub-class (e.g. S01.a) with no explicit
-# class_categories row inherits its PARENT's (S01) moisture/elevation, so the
-# categories table need not be re-curated every time the splits change. The
-# color *category* is still derived per sub-class from its own indicator
-# (below), so e.g. S01.c Artemisia still resolves to shrubland. Explicit
-# sub-class rows in class_categories.csv override the inherited values.
+# Meadow classes are keyed by <Elev><Moist><NN> codes; their moisture/
+# elevation come from class_codes.csv (written by meadow/11, the authoritative
+# code<->internal map). Shrub classes keep species-name labels and resolve
+# through class_categories.csv directly (with parent-prefix fallback retained
+# for any legacy dotted labels).
+code_tbl <- readr::read_csv("data/derived/class_codes.csv",
+                            show_col_types = FALSE) |>
+  dplyr::select(final_label = code, moisture_c = moisture,
+                elevation_c = elevation)
 cats_resolved <- tibble::tibble(final_label = lookup$final_label,
                                 parent = sub("\\..*$", "", lookup$final_label)) |>
+  dplyr::left_join(code_tbl, by = "final_label") |>
   dplyr::left_join(cats, by = "final_label") |>
   dplyr::left_join(cats |> dplyr::transmute(parent = final_label,
                                             moisture_p = moisture,
                                             elevation_p = elevation),
                    by = "parent") |>
   dplyr::transmute(final_label,
-                   moisture  = dplyr::coalesce(moisture, moisture_p),
-                   elevation = dplyr::coalesce(elevation, elevation_p))
+                   moisture  = dplyr::coalesce(moisture_c, moisture, moisture_p),
+                   elevation = dplyr::coalesce(elevation_c, elevation, elevation_p))
 
 rat <- lookup |>
   dplyr::left_join(csum, by = "final_label") |>
