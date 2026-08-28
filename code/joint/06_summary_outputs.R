@@ -147,13 +147,20 @@ class_summ <- summary_tbl |>
 train <- train |> dplyr::select(-class_type)
 train_enriched <- train |> dplyr::left_join(class_summ, by = "final_label")
 
-crowns_2018 <- sf::st_read("data/derived/crowns_2018.gpkg", quiet = TRUE) |>
-  dplyr::mutate(Year = 2018L) |>
-  dplyr::select(site_number, Year)
-crowns_2025 <- sf::st_read("data/derived/crowns_2025.gpkg", quiet = TRUE) |>
-  dplyr::mutate(Year = 2025L) |>
-  dplyr::select(site_number, Year)
-crowns <- dplyr::bind_rows(crowns_2018, crowns_2025) |>
+# All four campaigns' footprints (2023 plots + 2026 supplemental crowns were
+# missing here, silently dropping 346 training rows from the gpkg).
+read_crowns <- function(path, year) {
+  if (!file.exists(path)) return(NULL)
+  sf::st_read(path, quiet = TRUE) |>
+    dplyr::mutate(Year = year) |>
+    dplyr::select(site_number, Year)
+}
+crowns <- dplyr::bind_rows(
+  read_crowns("data/derived/crowns_2018.gpkg", 2018L),
+  read_crowns("data/derived/crowns_2023.gpkg", 2023L),
+  read_crowns("data/derived/crowns_2025.gpkg", 2025L),
+  read_crowns("data/derived/crowns_2026.gpkg", 2026L)
+) |>
   sf::st_transform(32613)
 
 # Union multi-crown sites so the polygon layer is one row per (site, Year).
