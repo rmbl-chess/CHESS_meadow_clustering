@@ -178,13 +178,15 @@ def species_from_descriptions(path: Path) -> list[str]:
 
 
 def reconciled_tokens(species: list[str], crosswalk: dict) -> dict:
-    """our_name -> search token (reconciled; identity if not in crosswalk)."""
+    """our_name -> list of search tokens (reconciled; identity if not in
+    crosswalk). A ';'-separated natureserve_name yields one token PER alias —
+    searching the joined string literally returns nothing, so alias-only
+    communities (e.g. Wyethia arizonica, Veratrum viride) never reached the
+    cache before this split."""
     out = {}
     for s in species:
-        if s in crosswalk:
-            out[s] = crosswalk[s][0]          # natureserve_name (species|genus)
-        else:
-            out[s] = s
+        raw = crosswalk[s][0] if s in crosswalk else s
+        out[s] = [t.strip() for t in raw.split(";") if t.strip()]
     return out
 
 
@@ -194,7 +196,7 @@ def run(args: argparse.Namespace) -> int:
     crosswalk = load_crosswalk(args.crosswalk)
     species = species_from_descriptions(args.species_source)
     tokens = reconciled_tokens(species, crosswalk)
-    uniq_tokens = sorted(set(tokens.values()))
+    uniq_tokens = sorted({t for toks in tokens.values() for t in toks})
     if args.max_species:
         uniq_tokens = uniq_tokens[: args.max_species]
     logger.info("%d class species -> %d unique reconciled search tokens",

@@ -2,7 +2,7 @@
  "fetch_date": "2026-08-27",
  "api_base": "https://explorer.natureserve.org/api/data",
  "citation": "NatureServe. NatureServe Explorer. https://explorer.natureserve.org",
- "n_search_tokens": 122,
+ "n_search_tokens": 125,
  "species_search": {
   "Achillea millefolium": [
    685019,
@@ -917,7 +917,41 @@
    683955,
    688728,
    686775
-  ]
+  ],
+  "Vaccinium cespitosum": [
+   899992,
+   899079,
+   683258,
+   728663,
+   728657,
+   732561,
+   685296,
+   731884,
+   731786,
+   731466,
+   685688,
+   688285,
+   688777,
+   686746,
+   683955,
+   688792,
+   688728,
+   686775
+  ],
+  "Veratrum viride": [
+   1176973,
+   1225209,
+   1230030,
+   1230028,
+   683307,
+   687138,
+   689612,
+   979494,
+   787623,
+   1176987,
+   1176993
+  ],
+  "Wyethia arizonica": []
  },
  "ecosystems": {
   "683097": {
@@ -15677,6 +15711,232 @@
     "Carex siccata",
     "Juniperus horizontalis",
     "Populus tremuloides"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "683307": {
+   "elementGlobalId": 683307,
+   "scientificName": "Valeriana sitchensis - Veratrum viride Meadow",
+   "primaryCommonName": null,
+   "elcode": "CEGL001998",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.683307/Valeriana_sitchensis_-_Veratrum_viride_Meadow",
+   "subnations": [
+    "CA-AB",
+    "CA-BC",
+    "US-MT",
+    "US-OR",
+    "US-WA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Valeriana sitchensis",
+    "Veratrum viride"
+   ],
+   "conceptSentence": null,
+   "summary": "This is a lush subalpine meadow association of the northern Cascades (Washington) and northern Rockies (Montana and Alberta). It is a small-patch type best described as a forb meadow associated with mesic sites of the upper subalpine to lower alpine zones; the observed elevation range in the Cascades was 1738 to 2150 m (5700-7050 feet), while in the northern Rocky Mountains it has been documented from 1555 to 2270 m (5100-7445 feet). In the Cascades it occurs on southerly exposures of moderate to steep, well-drained slopes. In the northern Rockies it occupies a wider variety of environments, including steep northeast slopes and glacio-fluvial flats and swales that lose their snow cover relatively late in the season. Substrates in the Rockies range from glacial till and drift to scree slopes, almost all of which are composed of noncalcareous sedimentary rock. These are lush, tall-forb communities, often highly diverse. The Cascadian and Rocky Mountain expressions of this type are dominated by <i>Valeriana sitchensis</i> and usually <i>Veratrum viride</i>, but the Cascadian has <i>Lupinus latifolius</i> and <i>Carex spectabilis</i> as major associates, and the Rocky Mountain examples have quite a different suite of associated forbs, none of which attain more than modest cover. The most constant forbs of the northern Rockies are <i>Angelica arguta, Heracleum maximum, Hypericum scouleri, Chamerion angustifolium, Erigeron peregrinus, Erythronium grandiflorum</i>, and <i>Senecio triangularis</i>. In the Cascades, <i>Heracleum maximum, Erythronium</i> spp., and <i>Chamerion angustifolium</i> are also common, along with <i>Mitella breweri, Polygonum bistortoides</i>, and <i>Pulsatilla occidentalis</i>. A number of forbs with less demanding moisture requirements, such as <i>Thalictrum occidentale</i> and <i>Potentilla diversifolia</i>, also regularly occur. Graminoids are a minor component of these sites with <i>Poa alpina, Phleum alpinum, Juncus drummondii, Luzula parviflora</i>, and <i>Carex microptera</i> having the greatest constancy but only infrequently exceed a few percent cover.",
+   "macrogroup": null
+  },
+  "687138": {
+   "elementGlobalId": 687138,
+   "scientificName": "Tsuga canadensis - Betula alleghaniensis / Veratrum viride - Carex scabrata - Oclemena acuminata Swamp",
+   "primaryCommonName": "High-Elevation Hemlock - Yellow Birch Seepage Swamp",
+   "elcode": "CEGL008533",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.687138/Tsuga_canadensis_-_Betula_alleghaniensis_-_Veratrum_viride_-_Carex_scabrata_-_Oclemena_acuminata_Swamp",
+   "subnations": [
+    "US-MD",
+    "US-VA"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Betula alleghaniensis",
+    "Carex scabrata",
+    "Oclemena acuminata",
+    "Tsuga canadensis",
+    "Veratrum viride"
+   ],
+   "conceptSentence": null,
+   "summary": "This community is currently known from scattered sites in the Northern Blue Ridge and Ridge and Valley provinces of Virginia. Similar communities have been observed in the High Allegheny Mountains of Virginia and West Virginia, the Maryland Blue Ridge, and the Ridge and Valley of east-central West Virginia. Occurrences in Pennsylvania also seem likely. The type appears to be limited to higher-elevation montane wetlands in a portion of the Central Appalachians where <i>Rhododendron maximum</i> is infrequent to absent. Sites are usually located in high-elevation valleys or slope concavities, in diffuse stream headwaters and lateral, groundwater-saturated flats along larger streams. Occasionally, stands occupy gentle depressions or basins influenced by seasonally perched groundwater but without flowing streams. Elevation ranges from 670-1170 m (2200-3840 feet), though most occurrences are above 900 m (3000 feet). Habitats are flat to moderately sloping and typically have &gt;20% surface cover of boulders and stones weathered from metabasalt, granitic rocks, or sandstone. Stream-bottom habitats have pronounced hummock-and-hollow microtopography, with moss-covered mounds and intertwining roots of <i>Betula alleghaniensis</i>, mucky pools, and braided drainage channels. Canopy dominance is shared by <i>Tsuga canadensis</i> and <i>Betula alleghaniensis</i> in variable proportions. Minor canopy associates include <i>Acer rubrum, Fraxinus americana, Pinus strobus, Quercus alba</i>, and <i>Quercus rubra</i>. Small-tree and shrub layers are open to sparse, with <i>Acer pensylvanicum, Hamamelis virginiana, Ilex verticillata</i>, and <i>Kalmia latifolia</i> the most frequent species. <i>Alnus incana ssp. rugosa</i> is a dominant shrub in one sampled plot. <i>Rhododendron catawbiense</i> is scattered in some stands of this community in the southern part of the Northern Blue Ridge but does not form dense stands. The herb layer is well-developed and usually lush with forbs.",
+   "macrogroup": null
+  },
+  "688792": {
+   "elementGlobalId": 688792,
+   "scientificName": "Vaccinium uliginosum / Deschampsia cespitosa Wet Shrubland",
+   "primaryCommonName": null,
+   "elcode": "CEGL001250",
+   "roundedGRank": "G2",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.688792/Vaccinium_uliginosum_-_Deschampsia_cespitosa_Wet_Shrubland",
+   "subnations": [
+    "US-OR"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Deschampsia cespitosa",
+    "Vaccinium uliginosum"
+   ],
+   "conceptSentence": null,
+   "summary": "This coastal shrubland association is found in Oregon and Washington and possibly California. The climate is very temperate with the mean temperatures ranging from 7-15\u00b0C. Precipitation is highly seasonal with most rain falling through the fall and winter months. Mean annual precipitation averages 190 cm. Stands grow in swales and ephemeral bogs with a well-developed iron pan about 30 cm below the soil surface. These strongly leached soils have developed in areas of ancient marine terraces, and their distribution is highly localized. The shrub <i>Vaccinium uliginosum</i> is the dominant plant attaining 40% cover, with occasional patches of <i>Sphagnum</i> spp. and <i>Deschampsia cespitosa</i>. <i>Sanguisorba menziesii</i> and <i>Carex obnupta</i> also occur with high constancy.",
+   "macrogroup": null
+  },
+  "689612": {
+   "elementGlobalId": 689612,
+   "scientificName": "Acer rubrum - Fraxinus nigra - Betula alleghaniensis / Veratrum viride - Carex bromoides Seep Forest",
+   "primaryCommonName": "Central Appalachian Basic Seepage Swamp",
+   "elcode": "CEGL008416",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.689612/Acer_rubrum_-_Fraxinus_nigra_-_Betula_alleghaniensis_-_Veratrum_viride_-_Carex_bromoides_Seep_Forest",
+   "subnations": [
+    "US-DE",
+    "US-MD",
+    "US-NJ",
+    "US-PA",
+    "US-VA",
+    "US-WV"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Acer rubrum",
+    "Betula alleghaniensis",
+    "Carex bromoides",
+    "Fraxinus nigra",
+    "Veratrum viride"
+   ],
+   "conceptSentence": "This community occupies groundwater-saturated stream headwaters, large spring seeps, and bases of slopes. Overstory composition is mixed, with <i>Acer rubrum, Fraxinus americana</i>, and <i>Liriodendron tulipifera</i> the most abundant species. <i>Fraxinus nigra</i> is a frequent associate. In the ground layer, <i>Symplocarpus foetidus</i> and <i>Veratrum viride</i> are usually dominant.",
+   "summary": "This community occupies groundwater-saturated stream headwaters, large spring seeps and runs, and lateral areas in ravine and stream bottoms where groundwater emerges at the base of slopes. It is most frequent and best developed on Catoctin Formation metabasalt (greenstone) of the Northern Blue Ridge and other base-rich substrates. Soil chemistry data indicate moderately high calcium and magnesium levels. Overstory composition is mixed, with <i>Acer rubrum, Fraxinus americana</i>, and <i>Liriodendron tulipifera</i> the most abundant species. <i>Fraxinus nigra</i> is a frequent overstory associate but more abundant and sometimes dominant in the understory, along with young <i>Acer rubrum</i> and <i>Fraxinus americana</i>. With increasing elevation, <i>Betula alleghaniensis</i> becomes increasingly important, codominating most stands above 760 m (2500 feet) in Virginia and in the Catoctin Mountains of Maryland. Minor tree associates include <i>Betula lenta</i> and <i>Tilia americana</i>. Canopy closure is often incomplete (mean stratum cover = 60-80%), most evidently because of blowdowns. Very wet microhabitats that impede the establishment and firm rooting of trees may also contribute to a somewhat open canopy. Shrub stratum diversity is moderately high; <i>Lindera benzoin</i> is usually the most abundant species, and considerable stratum cover is contributed by tree saplings. Other frequently occurring true shrubs are <i>Alnus serrulata, Carpinus caroliniana, Hamamelis virginiana, Ilex verticillata</i>, and <i>Sambucus nigra ssp. canadensis</i>. Except in local areas where shrubs are dense, herbaceous cover is high (mean stratum cover = 90%). One or both of the early-maturing forbs <i>Symplocarpus foetidus</i> (mostly at lower elevations) and <i>Veratrum viride</i> are usually dominant over substantial areas. Because of microtopographic diversity, herbaceous patch-mosaics are typical in this vegetation. More-or-less constant, sometimes locally abundant species include <i>Eurybia schreberi, Caltha palustris, Carex bromoides, Carex gynandra, Carex prasina, Chelone glabra, Chrysosplenium americanum, Cinna arundinacea, Dryopteris carthusiana, Dryopteris goldieana, Glyceria striata, Impatiens capensis, Osmunda cinnamomea, Osmunda regalis var. spectabilis, Ranunculus recurvatus, Saxifraga pensylvanica, Packera aurea, Sphenopholis pensylvanica, Thalictrum pubescens</i>, and <i>Viola cucullata</i>. Moss cover is often significant but only rarely includes <i>Sphagnum</i> spp. (not recorded in Virginia plots). Typical upland mesophytes commonly occur in well-drained hummock microhabitats and contribute to relatively high species-richness values for this type of wetland.",
+   "macrogroup": null
+  },
+  "787623": {
+   "elementGlobalId": 787623,
+   "scientificName": "Tsuga mertensiana - Callitropsis nootkatensis - Picea sitchensis / Veratrum viride - Nephrophyllidium crista-galli Forest",
+   "primaryCommonName": null,
+   "elcode": "CEGL002839",
+   "roundedGRank": "G3",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.787623/Tsuga_mertensiana_-_Callitropsis_nootkatensis_-_Picea_sitchensis_-_Veratrum_viride_-_Nephrophyllidium_crista-galli_Forest",
+   "subnations": [
+    "CA-BC"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Callitropsis nootkatensis",
+    "Nephrophyllidium crista-galli",
+    "Picea sitchensis",
+    "Tsuga mertensiana",
+    "Veratrum viride"
+   ],
+   "conceptSentence": null,
+   "summary": "This association is located within a subalpine Wet Hypermaritime Mountain Hemlock Subzone (MHwh) along the outer coast from approximately 500 to 1100 m above sea level. It occurs on broad ridge crests and moderate upper to lower slopes, where topographic conditions cause slowly moving seepage waters to saturate the shallow soils. Soil nutritional status in this community is widely variable from poor to rich, but this is not well-defined floristically, due in large part to the subalpine wet hypermaritime climate and the predominantly wet, poorly aerated soils. This low-productivity forest community is dominated by <i>Tsuga mertensiana</i>, with variable amounts of <i>Callitropsis nootkatensis</i> and <i>Tsuga heterophylla</i>. In addition to regeneration of the above tree species, the sparse to moderate cover shrub layer includes <i>Vaccinium ovalifolium</i> and <i>Vaccinium alaskaense</i>. Characteristic species in the lightly developed herb layer include moderate cover of <i>Veratrum viride, Calamagrostis nutkaensis</i> (drier sites), and low cover of <i>Nephrophyllidium crista-galli</i>. Other commonly occurring species include <i>Coptis aspleniifolia, Rubus pedatus, Cornus canadensis</i>, scattered <i>Caltha leptosepala</i>, and <i>Carex</i> spp. Common species in the well-developed moss layer are <i>Rhytidiadelphus loreus</i> (dominant), <i>Scapania</i> spp., <i>Hylocomium splendens</i>, and <i>Rhizomnium glabrescens</i>. A number of species which should be either absent or of insignificant cover include <i>Lysichiton americanus, Leptarrhena pyrolifolia, Phyllodoce empetriformis, Cassiope mertensiana</i>, and <i>Harrimanella stelleriana</i>.",
+   "macrogroup": null
+  },
+  "979494": {
+   "elementGlobalId": 979494,
+   "scientificName": "Tsuga mertensiana - Callitropsis nootkatensis - Abies amabilis / Veratrum viride - Lysichiton americanus Swamp Woodland",
+   "primaryCommonName": null,
+   "elcode": "CEGL007325",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.979494/Tsuga_mertensiana_-_Callitropsis_nootkatensis_-_Abies_amabilis_-_Veratrum_viride_-_Lysichiton_americanus_Swamp_Woodland",
+   "subnations": [
+    "CA-BC"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Abies amabilis",
+    "Callitropsis nootkatensis",
+    "Lysichiton americanus",
+    "Tsuga mertensiana",
+    "Veratrum viride"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "1176987": {
+   "elementGlobalId": 1176987,
+   "scientificName": "Veratrum viride - Carex scabrata / Sphagnum Seep",
+   "primaryCommonName": "Northern Appalachian Acidic Forest Seep",
+   "elcode": "CEGL008724",
+   "roundedGRank": "G4",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1176987/Veratrum_viride_-_Carex_scabrata_-_Sphagnum_Seep",
+   "subnations": [
+    "US-NH",
+    "US-VT"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Carex scabrata",
+    "Veratrum viride"
+   ],
+   "conceptSentence": "This acidic to subacidic forest seep is found in the northern Appalachian region.",
+   "summary": "This acidic to subacidic forest seep is found in the northern Appalachian region. These seeps occur on relatively minor to modest slopes and have mineral soils or a shallow muck or peat horizon at the surface and acidic to weakly acidic pH. Characteristic herb species include <i>Veratrum viride, Chrysosplenium americanum, Carex scabrella, Hydrocotyle americana, Circaea alpina, Glyceria melicaria Impatiens capensis, Cardamine pensylvanica, Rubus pubescens, Listera convallarioides, Listera cordata</i> and the mosses <i>Mnium</i> spp., and a variety of Sphagnum species, including <i>Sphagnum squarrosum. In more acid conditions, scattered occurrences of</i> Picea mariana and Abies balsamea may occur. This type occur where groundwater is discharged at or near the soil surface, either continuously or for substantial portions of the year. They are found in headwater positions of streams, along \"seepage runs\" or small drainages, on benches and sloping terrain of upland till hillsides, along upland margins of swamps, and on steep faces of river terraces.",
+   "macrogroup": null
+  },
+  "1176993": {
+   "elementGlobalId": 1176993,
+   "scientificName": "Calamagrostis pickeringii - Carex echinata - Veratrum viride Sloping Fen",
+   "primaryCommonName": "Northern Appalachian Montane Sloping Fen",
+   "elcode": "CEGL008727",
+   "roundedGRank": "G1",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1176993/Calamagrostis_pickeringii_-_Carex_echinata_-_Veratrum_viride_Sloping_Fen",
+   "subnations": [
+    "US-NH"
+   ],
+   "in_colorado": false,
+   "name_species": [
+    "Calamagrostis pickeringii",
+    "Carex echinata",
+    "Veratrum viride"
+   ],
+   "conceptSentence": "This sloping poor fen community occurs on flat to strongly (20%) sloping peat mats at moderate to high elevations &gt; 750 m (&gt; 2400 ft) in the White Mountains of New Hampshire. The distinctive dominants include <i>Calamagrostis pickeringii, Carex wiegandii, and Veratrum viride.</i>",
+   "summary": "This sloping poor fen community occurs on flat to strongly (20%) sloping peat mats at moderate to high elevations &gt; 750 m (&gt; 2400 ft) in the White Mountains of New Hampshire. It is dominated by dense graminoids or graminoids and shrubs, with a strong Sphagnum layer below. The distinctive dominants include <i>Calamagrostis pickeringii, Carex wiegandii</i>, and<i> Veratrum viride. Herbs</i> include the graminoids <i>Carex echinata, Carex pauciflora, Carex michauxiana, Carex wiegandii, Carex oligosperma, </i>and <i>Carex brunnescens, </i>and the forbs <i>Solidago purshii, Veratrum viride, Thalictrum pubescens, Sarracenia purpurea, Platanthera dilatata, Platanthera clavellata, Houstonia caerulea, Drosera rotundifolia, Maianthemum trifolium, Symphyotrichum radula, Coptis trifolia, </i>and <i>Eriophorum virginicum. </i>Common shrubs include <i>Chamaedaphne calculata, Kalmia polifolia, Rhododendrom groenlandicum, Vaccinium oxycoccus, Rhododendron canadense, Ilex mucronata, Viburnum nudum var. cassinoides, Vaccinium myrtilloides, Aronia melanocarpa</i>, and <i>Cornus canadensis. </i>Sphagnum mosses are abundant and include <i>Sphagnum subtile, Sphagnum angustifolium</i>, and <i>Sphagnum girgensohnii. Soils are</i> characterized by shallow organics over hydric, cryic, silty gravels. The pH ranges from 4.2 to 6.2 (average 5.3). Hummock and hollow topography is moderately to poorly developed. Climate, hydrologic conditions, and soil features are probably the primary factors contributing to the development of this unique community.",
+   "macrogroup": null
+  },
+  "1230028": {
+   "elementGlobalId": 1230028,
+   "scientificName": "Tsuga mertensiana - Picea sitchensis (Chamaecyparis nootkatensis) / Calamagrostis nutkaensis - Veratrum viride",
+   "primaryCommonName": "Mountain Hemlock - Sitka Spruce (Yellow-cedar) / Nootka Reedgrass - Green False Hellebore",
+   "elcode": "CEGL009145",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1230028/Tsuga_mertensiana_-_Picea_sitchensis_(Chamaecyparis_nootkatensis)_-_Calamagrostis_nutkaensis_-_Veratrum_viride",
+   "subnations": [],
+   "in_colorado": false,
+   "name_species": [
+    "Calamagrostis nutkaensis",
+    "Chamaecyparis nootkatensis",
+    "Picea sitchensis",
+    "Tsuga mertensiana",
+    "Veratrum viride"
+   ],
+   "conceptSentence": null,
+   "summary": null,
+   "macrogroup": null
+  },
+  "1230030": {
+   "elementGlobalId": 1230030,
+   "scientificName": "Chamaecyparis nootkatensis - Tsuga mertensiana (Picea sitchensis) / Veratrum viride - Fauria crista-galli",
+   "primaryCommonName": "Yellow-cedar - Mountain Hemlock (Sitka Spruce) / Green False Hellebore - Deer Cabbage",
+   "elcode": "CEGL009144",
+   "roundedGRank": "GNR",
+   "classificationLevel": "Association",
+   "nsxUrl": "/Taxon/ELEMENT_GLOBAL.2.1230030/Chamaecyparis_nootkatensis_-_Tsuga_mertensiana_(Picea_sitchensis)_-_Veratrum_viride_-_Fauria_crista-galli",
+   "subnations": [],
+   "in_colorado": false,
+   "name_species": [
+    "Chamaecyparis nootkatensis",
+    "Fauria crista-galli",
+    "Picea sitchensis",
+    "Tsuga mertensiana",
+    "Veratrum viride"
    ],
    "conceptSentence": null,
    "summary": null,
