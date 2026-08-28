@@ -588,6 +588,53 @@ cat(sprintf("\nSub-classes flagged needs_ancillary (recall < %.2f): %s\n",
             paste(sort(unique(asg$final_label[asg$needs_ancillary])),
                   collapse = ", ")))
 
+# --- Class codes: <Elev><Moist><NN> (user decision 2026-08-28) --------------
+# Final display/naming scheme for meadow classes: elevation letter (M/S/A =
+# montane/subalpine/alpine), moisture letter (D/M/W = dry/mesic/Wetland — the
+# W flags wetland classes), and a 2-digit rank of the class's MEAN snow-free
+# DOY across the whole meadow scheme (01 = earliest melt), so the number reads
+# as basin-wide phenological order. Codes are regenerated every run from
+# class_categories.csv (keyed by these internal labels) + environment.rds;
+# data/derived/class_codes.csv records the mapping. Internal labels (S##.x,
+# M##, species binomials) are kept in `internal_label` for provenance.
+# NOTE: codes shift if the class set or DOY ranks change across reclusters —
+# always cross-reference through class_codes.csv, not memory.
+cats_for_codes <- readr::read_csv("data/small_reference/class_categories.csv",
+                                  show_col_types = FALSE)
+code_tbl <- asg |>
+  dplyr::left_join(env, by = c("site_number", "Year")) |>
+  dplyr::group_by(internal_label = final_label) |>
+  dplyr::summarise(mean_doy = mean(snow_free_doy, na.rm = TRUE),
+                   n = dplyr::n(), .groups = "drop") |>
+  dplyr::left_join(cats_for_codes |>
+                     dplyr::select(internal_label = final_label,
+                                   moisture, elevation),
+                   by = "internal_label")
+if (any(is.na(code_tbl$moisture) | is.na(code_tbl$elevation)))
+  stop("class_categories.csv is missing moisture/elevation for: ",
+       paste(code_tbl$internal_label[is.na(code_tbl$moisture) |
+                                     is.na(code_tbl$elevation)], collapse = ", "))
+code_tbl <- code_tbl |>
+  dplyr::arrange(mean_doy, internal_label) |>
+  dplyr::mutate(
+    elev_letter  = c(montane = "M", subalpine = "S", alpine = "A")[elevation],
+    moist_letter = c(dry = "D", mesic = "M", wet = "W")[moisture],
+    doy_rank     = dplyr::row_number(),
+    code         = sprintf("%s%s%02d", elev_letter, moist_letter, doy_rank))
+stopifnot(!anyDuplicated(code_tbl$code))
+readr::write_csv(code_tbl |>
+                   dplyr::select(code, internal_label, n, mean_doy,
+                                 doy_rank, elevation, moisture),
+                 "data/derived/class_codes.csv")
+code_map <- setNames(code_tbl$code, code_tbl$internal_label)
+asg <- asg |>
+  dplyr::mutate(internal_label = final_label,
+                final_label    = unname(code_map[final_label]))
+cat(sprintf("\nApplied class codes (<Elev><Moist><DOYrank>): %d classes, e.g. %s\n",
+            nrow(code_tbl),
+            paste(sprintf("%s<-%s", head(code_tbl$code, 4),
+                          head(code_tbl$internal_label, 4)), collapse = "  ")))
+
 # --- RF eval on the CLUSTERED 2025 set only (NOT the inferred 2018) -------
 # Including inferred labels in CV would be circular -- they were assigned
 # by composition similarity, not learned from spectra.
@@ -660,7 +707,9 @@ year_b <- asg |> count(final_label, Year) |>
 
 final_summary <- sizes |>
   left_join(year_b, by = "final_label") |>
-  mutate(spec_cluster = stringr::str_extract(final_label, "^S\\d+"),
+  left_join(asg |> dplyr::distinct(final_label, internal_label),
+            by = "final_label") |>
+  mutate(spec_cluster = stringr::str_extract(internal_label, "^S\\d+"),
          recall = as.numeric(final_eval$recall[final_label])) |>
   left_join(per_label, by = "final_label") |>
   left_join(asg |> dplyr::distinct(final_label, map_recall, split_basis,

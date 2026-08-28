@@ -38,8 +38,12 @@ xwalk <- readr::read_csv("data/small_reference/species_natureserve_crosswalk.csv
                          show_col_types = FALSE)
 desc  <- readr::read_csv("data/derived/label_descriptions.csv",
                          show_col_types = FALSE)
-cats  <- readr::read_csv("data/small_reference/class_categories.csv",
-                         show_col_types = FALSE)
+# moisture x elevation now come from the code table written by 11 (keyed by
+# the <Elev><Moist><NN> class codes that label_descriptions uses); the
+# committed class_categories.csv is keyed by internal labels.
+cats  <- readr::read_csv("data/derived/class_codes.csv",
+                         show_col_types = FALSE) |>
+  dplyr::select(final_label = code, moisture, elevation)
 # per-class plot characterization (snow-free DOY + auto narrative) so the
 # curation file carries our side of the comparison alongside the candidates.
 names_tbl <- readr::read_csv("data/small_reference/label_community_names.csv",
