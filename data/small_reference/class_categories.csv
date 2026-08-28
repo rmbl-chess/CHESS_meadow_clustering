@@ -18,17 +18,21 @@ Osmorhiza occidentalis,mesic,subalpine
 Prunus virginiana,mesic,montane
 Purshia tridentata,dry,montane
 Ribes sp.,dry,subalpine
-S01.a,dry,montane
+S01.a.e,dry,montane
+S01.a.l,dry,montane
 S01.b,dry,montane
-S02.a,mesic,montane
+S02.a.e,mesic,montane
+S02.a.l,mesic,montane
 S02.b,mesic,montane
 S03,wet,subalpine
 S04.a,dry,montane
-S04.b,dry,montane
+S04.b.e,dry,montane
+S04.b.l,dry,montane
 S05.a,dry,montane
 S06.b,mesic,subalpine
 S07,wet,alpine
-S08.a,mesic,subalpine
+S08.a.e,mesic,subalpine
+S08.a.l,mesic,subalpine
 S09.a,mesic,subalpine
 S10.a,mesic,montane
 S10.b,mesic,montane
@@ -40,7 +44,8 @@ S14,wet,alpine
 S15,wet,subalpine
 S17,dry,montane
 S18,dry,montane
-S19,dry,montane
+S19.e,dry,montane
+S19.l,dry,montane
 S20,dry,montane
 S21,mesic,subalpine
 S22,dry,montane

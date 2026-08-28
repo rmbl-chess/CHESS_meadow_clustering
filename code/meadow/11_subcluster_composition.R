@@ -476,6 +476,104 @@ if (file.exists(merges_path)) {
                     collapse = "  ")))
 }
 
+# --- Phenology-coherence pass (user decision 2026-08-28) --------------------
+# The composition gate can't see snowmelt: compositionally amorphous dry/mesic
+# classes mixed early-melt shrub-steppe with subalpine meadow (e.g. S01.a
+# spanned DOY 83-159; S10.a held 4 Caltha snowbed sites). For non-wet,
+# non-monotypic classes whose within-class snow-free DOY sd exceeds
+# `pheno_sd_bar`, split at the largest internal DOY gap into early/late facies
+# (".e"/".l"); when the minority side is smaller than min_sub_size, REASSIGN
+# those outlier sites to the nearest other class instead (same Hellinger +
+# z-DOY distance as the 2018 fallback above). Wet classes are exempt (wetness,
+# not melt date, organizes them; user decision). Snow-free DOY is one of the
+# 22 inference features, so phenology splits are inherently mappable.
+# Trigger: sd > pheno_sd_bar (broad regardless of shape), OR sd >
+# pheno_sd_soft with an interior gap >= pheno_split_gap days at a viable cut
+# (catches clean bimodal classes like S19 that sit just under the hard bar;
+# smooth gradients like S11 stay whole).
+pheno_sd_bar    <- 13
+pheno_sd_soft   <- 10
+pheno_split_gap <- 7
+
+cats_tbl <- readr::read_csv("data/small_reference/class_categories.csv",
+                            show_col_types = FALSE)
+pheno_exempt <- c(cats_tbl$final_label[cats_tbl$moisture == "wet"],
+                  monotypic_table$label)
+
+nearest_other_class <- function(out_sites, exclude_label) {
+  targets <- setdiff(unique(asg$final_label), exclude_label)
+  memb <- asg |> dplyr::filter(final_label %in% targets) |>
+    dplyr::select(site_number, Year, final_label) |>
+    dplyr::inner_join(hell_full, by = c("site_number", "Year"))
+  labs_t <- sort(unique(memb$final_label))
+  cent <- t(vapply(labs_t, function(l)
+    colMeans(as.matrix(memb[memb$final_label == l, species_cols, drop = FALSE])),
+    numeric(length(species_cols))))
+  cent_doy <- vapply(labs_t, function(l)
+    mean(memb$snow_free_doy[memb$final_label == l]), 0)
+  o <- out_sites |> dplyr::inner_join(hell_full, by = c("site_number", "Year"))
+  H <- as.matrix(o[, species_cols, drop = FALSE])
+  d2 <- outer(rowSums(H^2), rowSums(cent^2), "+") - 2 * H %*% t(cent)
+  d2[d2 < 0] <- 0
+  doy_d2 <- (outer(o$snow_free_doy, cent_doy, "-") / doy_sd_global * doy_weight)^2
+  comb <- sqrt(d2 + doy_d2)
+  tibble::tibble(site_number = o$site_number, Year = o$Year,
+                 new_label = labs_t[apply(comb, 1, which.min)])
+}
+
+cat(sprintf("\nPhenology-coherence pass (sd bar %.0f d; wet + monotypic exempt):\n",
+            pheno_sd_bar))
+asg_doy <- asg |> dplyr::left_join(env, by = c("site_number", "Year"))
+pheno_outlier_gap <- 10   # a DOY discontinuity this large marks true outliers
+for (L in sort(unique(asg$final_label))) {
+  if (L %in% pheno_exempt) next
+  # Up to four rounds: outlier-trim rounds (each removes a >=10 d
+  # discontinuity group) may precede the facies split (S01.a: trim three
+  # stragglers over two rounds, then split at the best interior gap).
+  for (round in 1:4) {
+    mem <- asg_doy |> dplyr::semi_join(asg |> dplyr::filter(final_label == L),
+                                       by = c("site_number", "Year")) |>
+      dplyr::filter(!is.na(snow_free_doy)) |>
+      dplyr::arrange(snow_free_doy)
+    if (nrow(mem) < 2 * min_sub_size) break
+    doy_sd <- sd(mem$snow_free_doy)
+    gaps  <- diff(mem$snow_free_doy)
+    valid <- seq(min_sub_size, nrow(mem) - min_sub_size)
+    best_valid_gap <- if (length(valid)) max(gaps[valid]) else 0
+    if (!(doy_sd > pheno_sd_bar ||
+          (doy_sd > pheno_sd_soft && best_valid_gap >= pheno_split_gap))) break
+    g_max <- which.max(gaps)
+    n_lo  <- g_max; n_hi <- nrow(mem) - g_max
+    if (min(n_lo, n_hi) < min_sub_size && gaps[g_max] >= pheno_outlier_gap) {
+      # True discontinuity isolating a too-small group: reassign the minority
+      # to the nearest other class (Hellinger + z-DOY), then re-check.
+      out_rows <- if (n_lo < n_hi) mem[seq_len(g_max), ] else mem[(g_max + 1):nrow(mem), ]
+      rea <- nearest_other_class(out_rows |> dplyr::select(site_number, Year), L)
+      for (i in seq_len(nrow(rea))) {
+        mask <- asg$site_number == rea$site_number[i] & asg$Year == rea$Year[i]
+        asg$final_label[mask] <- rea$new_label[i]
+      }
+      cat(sprintf("  %s (sd %.1f, gap %.0f d): %d DOY outliers -> reassigned: %s\n",
+                  L, doy_sd, gaps[g_max], nrow(rea),
+                  paste(sprintf("%s->%s", rea$site_number, rea$new_label), collapse = ", ")))
+      next   # re-check this class in round 2
+    }
+    # Facies split at the largest gap among cuts leaving both sides viable.
+    cut_i <- valid[which.max(gaps[valid])]
+    for (i in seq_len(nrow(mem))) {
+      mask <- asg$site_number == mem$site_number[i] & asg$Year == mem$Year[i]
+      asg$final_label[mask] <- paste0(L, if (i <= cut_i) ".e" else ".l")
+    }
+    cat(sprintf("  %s (sd %.1f): SPLIT at %.0f d gap -> %s.e (n=%d, DOY %.0f-%.0f) + %s.l (n=%d, DOY %.0f-%.0f)\n",
+                L, doy_sd, gaps[cut_i],
+                L, cut_i, mem$snow_free_doy[1], mem$snow_free_doy[cut_i],
+                L, nrow(mem) - cut_i, mem$snow_free_doy[cut_i + 1],
+                mem$snow_free_doy[nrow(mem)]))
+    break
+  }
+}
+rm(asg_doy)
+
 # --- Mappability annotation -------------------------------------------------
 # Tag each split sub-class with its gate recall, and flag the ones below
 # `ancillary_recall` as needing ancillary data (topographic wetness /
