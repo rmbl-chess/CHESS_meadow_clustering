@@ -98,8 +98,8 @@ data/cache/
 !data/derived/punch_list.csv
 !data/derived/class_taxon_lists.csv
 !data/derived/temporal_gating_calibration.csv
-!data/derived/willow_change_summary.csv
-!data/derived/willow_change_by_meltband.csv
+!data/derived/*_change_summary.csv
+!data/derived/*_change_by_meltband.csv
 !data/derived/class_codes.csv
 !data/derived/merge_candidates.csv
 !data/derived/class_doy_coherence.csv
