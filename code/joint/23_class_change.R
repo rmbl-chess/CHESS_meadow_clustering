@@ -32,7 +32,14 @@ GROUPS <- list(
   veratrum = list(classes = "SW29",
                   name = "Veratrum (corn-lily) stands"),
   veratrum_wet_meadow = list(classes = "SW36",
-                  name = "Tall-forb wet meadow (Veratrum-led)")
+                  name = "Tall-forb wet meadow (Veratrum-led)"),
+  # Sagebrush-heavy: pure A. tridentata crowns + every class with sagebrush
+  # dominant/co-dominant (mean Artemisia cover >= ~10% per class_taxon_lists,
+  # incl. MD05 where it co-dominates with rabbitbrush/bitterbrush). Silver
+  # sage (A. cana; MD17) is excluded - different species, moist flats.
+  sagebrush = list(classes = c("Artemisia tridentata", "MD01", "MD13",
+                               "MD18", "MD03", "MD05"),
+                  name = "Sagebrush communities")
 )
 grp <- Sys.getenv("CHESS_CHANGE_GROUP", "willow")
 stopifnot(grp %in% names(GROUPS))
