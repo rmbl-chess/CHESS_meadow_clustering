@@ -10,3 +10,5 @@ M03,S05.b,Sagebrush-fescue shrubland,
 M04,S01.c,Lupine meadow,"Same top-1 NS community (Elymus lanceolatus - Lupinus argenteus Grassland); ratio 0.90"
 M04,S02.c,Lupine meadow,
 S15,S16,Wet sedge meadow,"Singleton absorption: one 2018 plot of 100% Carex aquatilis; S15 is the wet sedge meadow it belongs to (checklist item ratified 2026-08-27)"
+Salix other,Salix boothii,Salix riparian willow,"Shrub-side merge (2026-08-28, map review): boothii n=30 recall 0.40 with 12/30 predicted as Salix other; riparian willows misclassified on the maps. Merged into Salix other; wolfii (n=46, recall 0.67) kept."
+Salix other,Salix planifolia,Salix riparian willow,"Shrub-side merge (2026-08-28): planifolia n=28 recall 0.43, bleeding into Salix other/boothii; DOY separation not holding at current n. Merged into Salix other."

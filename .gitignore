@@ -97,6 +97,7 @@ data/cache/
 !data/derived/joint_training_set.csv
 !data/derived/punch_list.csv
 !data/derived/class_taxon_lists.csv
+!data/derived/temporal_gating_calibration.csv
 !data/derived/class_codes.csv
 !data/derived/merge_candidates.csv
 !data/derived/class_doy_coherence.csv

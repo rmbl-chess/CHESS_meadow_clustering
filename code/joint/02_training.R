@@ -107,6 +107,24 @@ shrub_slim <- shrub |>
   dplyr::mutate(class_type = "shrub") |>
   dplyr::select(dplyr::any_of(c(common_cols, "class_type")))
 joint <- dplyr::bind_rows(meadow_slim, shrub_slim)
+
+# Curated merges also apply to SHRUB labels (meadow labels arrive already
+# merged + code-renamed from meadow/11; e.g. Salix boothii/planifolia ->
+# Salix other, 2026-08-28 map review). Applying the full table here is a
+# no-op for meadow rows.
+merges_path <- "data/small_reference/class_merges.csv"
+if (file.exists(merges_path)) {
+  mg <- readr::read_csv(merges_path, show_col_types = FALSE)
+  mm <- setNames(mg$merged_label, mg$member_label)
+  n_mg <- sum(joint$final_label %in% names(mm))
+  if (n_mg > 0) {
+    joint <- joint |>
+      dplyr::mutate(final_label = dplyr::if_else(final_label %in% names(mm),
+                                                 unname(mm[final_label]),
+                                                 final_label))
+    cat(sprintf("Applied %d curated label merges to the joint set.\n", n_mg))
+  }
+}
 cat(sprintf("\nJoint training set: %d sites (%d meadow + %d shrub), %d classes\n",
             nrow(joint), sum(joint$class_type == "meadow"),
             sum(joint$class_type == "shrub"),
