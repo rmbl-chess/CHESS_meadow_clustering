@@ -57,6 +57,7 @@ NEON AOP spectra extracted at crown footprints for both campaign years. Spectral
 - `raw/` — gitignored; ESS-DIVE working copies.
 - `derived/` — gitignored; outputs from `code/` scripts (combined cover table, joined vegetation–spectrum dataset).
 - `small_reference/` — committed; small canonical inputs (taxonomy crosswalk, AOI polygons).
+  - `class_ecosystem_crosswalk.csv` — the NatureServe **curation sheet** for the review round: one row per meadow class, pre-filled with the top-1 draft community; reviewers fill `decision` (accept / replace / reject), the `curated_*` columns, and `notes`. Curated results get wired into `19`/`06`/`10` once the round closes.
 
 ## To do
 
